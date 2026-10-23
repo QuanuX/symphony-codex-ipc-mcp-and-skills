@@ -37,6 +37,7 @@
         ],
         "supportURL": "https://quanux.org/contact",
         "privacyPolicyURL": "https://quanux.org/privacy",
+        "termsOfServiceURL": "https://quanux.org/symphony-plugin-terms",
         "logo": "./assets/favicon.svg",
         "logoDark": "./assets/favicon-dark.svg",
         "composerIcon": "./assets/favicon.svg",
