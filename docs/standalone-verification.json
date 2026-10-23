@@ -14,7 +14,9 @@
       "client-adapters",
       "transport"
     ],
-    "limitation": "The first transport attempt could not bind a local socket in the sandbox (errno 1). Only that failed group was rerun with normal local socket access and passed."
+    "limitation": "The first transport attempt could not bind a local socket in the sandbox (errno 1). Transport was rerun with normal local socket access and passed. The MCP group was also rerun with socket access to ensure its optional IPC roundtrip executed; all 20 cases passed without skips.",
+    "transport_checks": 44,
+    "mcp_cases_no_skips": 20
   },
   "isolated_install": {
     "scope": "standalone root marketplace and read-only installed client",
