@@ -37,5 +37,5 @@
     "check_count": 8
   },
   "publication": "source repository only; no runtime release or OpenAI submission",
-  "hosted_smoke": "pending; separate result will record the exact repository commit"
+  "hosted_smoke": "passed on Ubuntu 24.04 x86_64, macOS 15 ARM64 and Windows-to-WSL2 Ubuntu 24.04 at 543c545c56d0f9fe4372bf9f51bc6d1c8a285e3b; see standalone-hosted-results.json"
 }
