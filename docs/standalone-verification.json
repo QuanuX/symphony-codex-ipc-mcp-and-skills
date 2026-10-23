@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-23",
+  "scope": "standalone repository migration",
+  "source_import_commit": "eb52dde28130a153e25398d7dda1bf950884f58b",
+  "runtime_skills_adapters_tests_unchanged": true,
+  "local_build": {
+    "system": "Darwin",
+    "architecture": "x86_64",
+    "configuration": "Release, Apple Clang 21, C++26, macOS deployment target 14.0",
+    "binary_sha256": "0d82ef8188bb064283a0734550f8c3e40846d8a46370fdbc00418705e6d406a1",
+    "ctest_groups_passed": [
+      "bounded-hashing",
+      "mcp-integration",
+      "client-adapters",
+      "transport"
+    ],
+    "limitation": "The first transport attempt could not bind a local socket in the sandbox (errno 1). Only that failed group was rerun with normal local socket access and passed."
+  },
+  "isolated_install": {
+    "scope": "standalone root marketplace and read-only installed client",
+    "passed": true,
+    "checks": [
+      "selected reviewer qxctl hash unchanged",
+      "root marketplace installs and enables Symphony",
+      "both skills and setup entrypoint resolve",
+      "missing connection profile fails closed",
+      "private read-only setup",
+      "six tools connect from standalone root",
+      "pinned installation remains read-only",
+      "native template read succeeds"
+    ],
+    "main_profile_changed": false,
+    "gui_verified": false,
+    "isolated_plugin_uninstalled": true,
+    "check_count": 8
+  },
+  "publication": "source repository only; no runtime release or OpenAI submission",
+  "hosted_smoke": "pending; separate result will record the exact repository commit"
+}

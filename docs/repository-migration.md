@@ -1,0 +1,15 @@
+# Standalone repository provenance — 23 October 2026
+
+At the publisher's direction, this integration lives in **Symphony Codex IPC/MPC and Skills**, a separate QuanuX repository. The URL uses the GitHub-compatible name `symphony-codex-ipc-mpc-and-skills`. MCP remains the protocol's technical name. The package and skill identifiers remain `symphony`, `symphony-setup` and `symphony-admin`.
+
+The source was imported from [`QuanuX/Symphony` commit `eb52dde28130a153e25398d7dda1bf950884f58b`](https://github.com/QuanuX/Symphony/tree/eb52dde28130a153e25398d7dda1bf950884f58b/integrations/symphony-agent), specifically `integrations/symphony-agent/` and its dedicated target workflow. [Draft PR #164](https://github.com/QuanuX/Symphony/pull/164) is the historical review record. No other Symphony framework source or runtime is bundled here.
+
+The import retains the C++ implementation, skills, adapters, manifest, tests, bundled dependency and licenses. Repository-local changes update build/workflow paths, add the standalone marketplace and document the new source location. Installing this plugin still requires an operator-selected registry-capable `qxctl`; this repository does not install or upgrade Symphony itself.
+
+Historical evidence files retain their original commits, URLs and dates. In particular, the revision 2 review package was frozen from source `299281b207621a18c6e58626d324d728ae27a1d7`; subsequent source commits added documentation. The hosted Ubuntu/Apple/WSL results, real Codex/client and model results, and updated-client verification describe their recorded revisions. They are not represented as new runs of this repository.
+
+The source move does not change the currently installed local demonstration package or its profiles. A user-supplied desktop image shows the Symphony listing in the Personal directory; it does not by itself verify setup, connected tools or a completed recording. Private images, profiles, transcripts and reviewer binaries are excluded from this source repository.
+
+Initial public directory eligibility, an applicable terms page, genuine reviewer video and remaining GUI/distribution checks are still required. NVIDIA qualification remains deferred. Repository publication is not an OpenAI submission or a runtime release.
+
+[Local migration verification](standalone-verification.json) records a fresh standalone Intel build, all four CTest groups and eight isolated installed-client checks, including the new root marketplace, both skills, private read-only setup, six tools and a native template read. The first socket test hit the execution sandbox's bind restriction; its focused rerun passed with local socket access. Hosted smoke verification selects one Ubuntu, Apple Silicon and actual WSL2 lane to exercise the changed repository paths; the full eleven-lane matrix remains available by manual dispatch.
