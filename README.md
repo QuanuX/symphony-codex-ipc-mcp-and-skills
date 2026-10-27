@@ -1,4 +1,4 @@
-# Symphony Codex IPC/MPC and Skills
+# Symphony Codex IPC/MCP and Skills
 
 Standalone repository: [QuanuX/symphony-codex-ipc-mpc-and-skills](https://github.com/QuanuX/symphony-codex-ipc-mpc-and-skills). The repository title preserves the publisher's requested wording; the implemented protocol is **MCP (Model Context Protocol)**. Runtime version: `0.1.0-alpha.1`.
 
