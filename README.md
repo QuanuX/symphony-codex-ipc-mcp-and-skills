@@ -1,3 +1,6 @@
+[![M8ven Score](https://m8ven.ai/badge/mcp/quanux-symphony-codex-ipc-mcp-and-skills-176dh3)](https://m8ven.ai/mcp/quanux-symphony-codex-ipc-mcp-and-skills-176dh3?s=readme)
+[![M8ven Score](https://m8ven.ai/badge/mcp/quanux-symphony-codex-ipc-mpc-and-skills-9cs7ch)](https://m8ven.ai/mcp/quanux-symphony-codex-ipc-mpc-and-skills-9cs7ch?s=readme)
+
 # Symphony Codex IPC/MCP and Skills
 
 Standalone repository: [QuanuX/symphony-codex-ipc-mpc-and-skills](https://github.com/QuanuX/symphony-codex-ipc-mpc-and-skills). The repository title preserves the publisher's requested wording; the implemented protocol is **MCP (Model Context Protocol)**. Runtime version: `0.1.0-alpha.1`.
