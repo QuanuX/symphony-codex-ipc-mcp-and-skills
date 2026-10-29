@@ -1,5 +1,4 @@
 [![M8ven Score](https://m8ven.ai/badge/mcp/quanux-symphony-codex-ipc-mcp-and-skills-176dh3)](https://m8ven.ai/mcp/quanux-symphony-codex-ipc-mcp-and-skills-176dh3?s=readme)
-[![M8ven Score](https://m8ven.ai/badge/mcp/quanux-symphony-codex-ipc-mpc-and-skills-9cs7ch)](https://m8ven.ai/mcp/quanux-symphony-codex-ipc-mpc-and-skills-9cs7ch?s=readme)
 
 # Symphony Codex IPC/MCP and Skills
 
