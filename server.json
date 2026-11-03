@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.QuanuX/symphony",
+  "title": "Symphony",
+  "description": "Inspect and administer a configured Symphony installation through its qxctl contracts.",
+  "version": "0.1.0-alpha.1",
+  "repository": {
+    "url": "https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills",
+    "source": "github"
+  },
+  "websiteUrl": "https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills#readme",
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/releases/download/v0.1.0-alpha.1-mcpb/symphony-0.1.0-alpha.1.mcpb",
+      "version": "0.1.0-alpha.1",
+      "fileSha256": "4ad45862a3e64fe23b8f6aac07529227236a01b981d5600cdea8ec1434f780f4",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
