@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
+import re
 import stat
 import struct
 import subprocess
@@ -104,14 +105,14 @@ def collect_source(root):
             continue
         data = read_regular(root / name, root)
         # Profiles must never be shipped, even when renamed or accidentally tracked.
-        if path.suffix == ".json":
+        if data.lstrip().startswith(b"{"):
             try:
                 document = json.loads(data)
             except (UnicodeDecodeError, json.JSONDecodeError):
                 document = None
             if isinstance(document, dict) and document.get("schema") == "symphony.agent.connection.v1":
                 raise ValueError("Connection profile cannot be packaged: " + name)
-        if b"-----BEGIN PRIVATE KEY-----" in data or b"-----BEGIN OPENSSH PRIVATE KEY-----" in data:
+        if re.search(rb"(?m)^-----BEGIN (?:[A-Z0-9 ]+ )?PRIVATE KEY-----\r?$", data):
             raise ValueError("Private key cannot be packaged: " + name)
         members[name] = (data, 0o644)
     required = {"LICENSE", "CMakeLists.txt", "src/main.cpp", "src/transport.cpp", "include/symphony/transport.hpp", "third_party/nlohmann/json.hpp", "third_party/nlohmann/LICENSE.MIT", "scripts/configure_connection.py", "skills/symphony-admin/SKILL.md", "skills/symphony-setup/SKILL.md", "packaging/mcpb/manifest.json", "packaging/mcpb/launcher.sh", "docs/mcp-registry.md"}
@@ -184,6 +185,8 @@ def build(args):
         receipt = {
             "artifact": output.name, "sha256": package_hash, "version": VERSION,
             "source_commit": git(root, "rev-parse", "HEAD").decode().strip(),
+            "source_files_match_commit": not bool(git(root, "diff", "--name-only", "HEAD", "--", *sorted(name for name in members if name not in {"manifest.json", "launcher.sh"} and not name.startswith("bin/"))).strip()),
+            "source_revision_note": "source_commit is repository HEAD; source_sha256 binds the exact included contents, including any staged or working changes when source_files_match_commit is false.",
             "binary_sha256": {target: digest(data) for target, data in sorted(binaries.items())},
             "source_sha256": {name: digest(data) for name, (data, _) in sorted(members.items()) if not name.startswith("bin/")},
             "files": len(members), "compressed_bytes": temporary.stat().st_size,

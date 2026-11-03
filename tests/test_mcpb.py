@@ -156,10 +156,20 @@ class PackageTest(unittest.TestCase):
         self.assertFalse(self.args.output.exists())
 
     def test_rejects_tracked_profile_even_when_renamed(self):
-        path = self.root / "docs/renamed.json"
+        path = self.root / "docs/renamed.txt"
         path.write_text(json.dumps({"schema": "symphony.agent.connection.v1", "qxctl": "/private/tool"}))
-        self.track("docs/renamed.json")
+        self.track("docs/renamed.txt")
         with self.assertRaisesRegex(ValueError, "Connection profile"):
+            pack.build(self.args)
+
+    def test_rejects_pem_keys_without_rejecting_scanner_source(self):
+        shutil.copyfile(ROOT / "scripts/package_mcpb.py", self.root / "scripts/package_mcpb.py")
+        self.track("scripts/package_mcpb.py")
+        pack.collect_source(self.root)
+        path = self.root / "docs/secret.txt"
+        path.write_text("-----BEGIN RSA PRIVATE KEY-----\nfixture\n-----END RSA PRIVATE KEY-----\n")
+        self.track("docs/secret.txt")
+        with self.assertRaisesRegex(ValueError, "Private key"):
             pack.build(self.args)
 
     def test_rejects_unsafe_paths_and_release_url(self):
