@@ -2,7 +2,7 @@
 
 # Symphony Codex IPC/MCP and Skills
 
-Standalone repository: [QuanuX/symphony-codex-ipc-mpc-and-skills](https://github.com/QuanuX/symphony-codex-ipc-mpc-and-skills). The repository title preserves the publisher's requested wording; the implemented protocol is **MCP (Model Context Protocol)**. Runtime version: `0.1.0-alpha.1`.
+Standalone repository: [QuanuX/symphony-codex-ipc-mpc-and-skills](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills). The implemented protocol is **MCP (Model Context Protocol)**; historical migration records preserve the former repository spelling. Runtime version: `0.1.0-alpha.1`.
 
 A C++26 MCP bridge, Codex skill/plugin, and reusable client adapters for direct administration of a selected Symphony installation. Publisher: **QuanuX**, [quanux.org](https://quanux.org).
 
@@ -17,8 +17,8 @@ This is a local Alpha candidate, not an OpenAI-approved directory release. Curre
 Requirements: macOS or Linux; a compiler accepting C++26 draft mode (`-std=c++2c`), CMake 3.30+, and Python 3.11+ for configuration/tests. Linux also requires OpenSSL 3 development files. nlohmann/json 3.12.0 is included with its license. No build-time dependency download occurs.
 
 ```sh
-git clone https://github.com/QuanuX/symphony-codex-ipc-mpc-and-skills.git
-cd symphony-codex-ipc-mpc-and-skills
+git clone https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills.git
+cd symphony-codex-ipc-mcp-and-skills
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j 4
 ctest --test-dir build --output-on-failure
@@ -75,6 +75,8 @@ Both peers verify the kernel UID; the socket is 0600 in an owned 0700 directory.
 
 ## Packaging and release
 
+The native MCP Bundle (`.mcpb`) distribution packages the same C++ runtime for macOS Intel/Apple Silicon and Linux x86-64/ARM64. It requires an existing private connection profile and does not download, compile, upgrade or configure Symphony at launch. See [MCP Registry installation and publishing](docs/mcp-registry.md) for requirements, exact-package checks, and the separate official-registry/GitHub-catalogue publication steps. Windows hosts continue to use the explicit WSL adapter.
+
 ```sh
 python3 scripts/package_release.py --binary build/symphony-mcp \
   --output /absolute/output/symphony-alpha-platform.zip
@@ -82,7 +84,7 @@ python3 scripts/package_release.py --binary build/symphony-mcp \
 
 The packager includes source, the selected binary, skill, adapters and licenses; it excludes local profiles, build caches and private evidence. It emits an archive digest and never uploads. Build distinct qualified platform artifacts. A source-only archive omits `--binary` and requires a build before installation.
 
-OpenAI's public local-MCP path currently requires partner allowlisting. Publisher contact, original branding, published plugin privacy coverage and [publisher-approved terms](https://quanux.org/symphony-plugin-terms) are included. Reviewer demonstration, desktop GUI qualification and release acceptance remain open. The configured C++ runtime and adapters have the focused evidence recorded in [Codex acceptance](docs/codex-acceptance.md). Neither this package nor a successful test guarantees a public launch date.
+OpenAI's public local-MCP path currently requires partner allowlisting. Publisher contact, original branding, published plugin privacy coverage and [publisher-approved terms](https://quanux.org/symphony-plugin-terms) are included. The publisher supplied a demonstration, and an OpenAI draft was uploaded on 31 October 2026. Formal OpenAI review remains blocked by command-line MCP eligibility; this independent MCP Registry distribution does not imply OpenAI approval. The configured C++ runtime and adapters have the focused evidence recorded in [Codex acceptance](docs/codex-acceptance.md). Neither this package nor a successful test guarantees a public launch date.
 
 Eleven hosted plugin candidates now pass the [platform qualification checks](docs/platforms.md): Ubuntu on x86-64/ARM64, Apple Silicon and Windows-to-WSL 2. [Windows clients use an explicit WSL adapter](docs/windows-wsl2.md). DGX/Spark hardware and actual agent UI/native-owner acceptance remain open. The original verification report remains a dated baseline.
 
