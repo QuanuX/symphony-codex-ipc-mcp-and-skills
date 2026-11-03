@@ -1,0 +1,68 @@
+name: MCP registry bundle
+
+on:
+  pull_request:
+    paths: ['server.json', 'packaging/**', 'scripts/package_mcpb.py', 'tests/test_mcpb.py', 'ci/check_mcpb.py', '.github/workflows/mcp-registry.yml']
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the validated server.json to the official MCP Registry
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-22.04, ubuntu-22.04-arm, macos-15]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - name: Check packaging and launcher contracts
+        run: python3 -m unittest discover -s tests -p test_mcpb.py -v
+      - name: Download the exact release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download v0.1.0-alpha.1-mcpb --repo "$GITHUB_REPOSITORY" --pattern 'symphony-0.1.0-alpha.1.mcpb' --dir "$RUNNER_TEMP/bundle"
+      - name: Exercise the exact bundle with private fixtures
+        run: python3 ci/check_mcpb.py "$RUNNER_TEMP/bundle/symphony-0.1.0-alpha.1.mcpb"
+
+  publish:
+    if: github.event_name == 'workflow_dispatch' && inputs.publish && github.ref == 'refs/heads/main'
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      MCP_PUBLISHER_VERSION: v1.8.1
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6
+      - name: Download and authenticate the official publisher
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive=mcp-publisher_linux_amd64.tar.gz
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+          curl --fail --location --silent --show-error --output "$RUNNER_TEMP/$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$RUNNER_TEMP/$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob --bundle "$RUNNER_TEMP/$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com "$RUNNER_TEMP/$archive"
+          tar xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP" mcp-publisher
+      - name: Validate and publish metadata with GitHub identity
+        run: |
+          "$RUNNER_TEMP/mcp-publisher" validate server.json
+          "$RUNNER_TEMP/mcp-publisher" login github-oidc
+          "$RUNNER_TEMP/mcp-publisher" publish server.json
