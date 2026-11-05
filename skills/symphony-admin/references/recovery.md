@@ -2,7 +2,7 @@
 
 ## Transport failure is not an outcome
 
-A timeout, dropped MCP connection, interrupted bridge, or lost response can occur after a native operation begins or completes. Do not treat a bridge error as proof that nothing happened. Do not automatically call `symphony_apply` again, generate a replacement plan, or resubmit the native mutation.
+A timeout, dropped MCP connection, interrupted bridge, or lost response can occur after a native operation begins or completes. Do not treat a bridge error as proof that nothing happened. Do not automatically call the operation-specific apply tool again, generate a replacement plan, or resubmit the native mutation.
 
 Record the operation's stable identity, requested target, native operation ID where supplied, expected-state values, and last observed evidence. Reconnect to the same selected installation, then discover the owner's read-only status/receipt/query interface. Use that evidence to distinguish not started, in progress, completed, rejected, failed, or unknown, if the owner exposes those states.
 

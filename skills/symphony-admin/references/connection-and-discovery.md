@@ -10,22 +10,18 @@ Client registration examples are provided by the package's adapter generator. A 
 
 For a Windows-host client, use the package's `adapters/codex/windows-wsl2.toml.example` or `adapters/generic/windows-wsl2.json.example` and `docs/windows-wsl2.md`. Select the distribution, Linux user and Linux paths explicitly. A Windows client launches the Linux binary through `wsl.exe`; a POSIX executable path alone is insufficient.
 
-## Discovery sequence
+## Select an exposed operation
 
-1. Call `symphony_connection`. Record the selected configuration's installation identity and available connection details without exposing private paths unnecessarily.
-2. Call `symphony_discover` with a focused query such as `engines`, `ssiag`, `stav`, `scv`, `shv`, `snv`, `sqv`, `sbv`, or `sov`. Queries are search terms, not executable commands. Use `offset` and `limit` to page results when needed.
-3. Call `symphony_describe` with a returned `command_id`. Inspect the accepted flags and positionals, mutability, owner, and schema references. Registry grammar is not a complete requiredness/default schema: resolve required native inputs from the owner's schemas, templates, and current evidence before constructing a call.
-4. Inspect exact installation/binding status when the operation depends on an installed engine. Discovery alone does not establish runtime readiness.
+1. Inspect `symphony_connection` when installation identity matters.
+2. Use the host's available operation-specific tool definitions. Each includes its own schema, native contract and safety annotations. MCP clients page `tools/list` using its opaque `nextCursor`.
+3. Supply the exact named arguments; resolve native requiredness, targets and owner input protocols from the task and owner evidence. A command being listed does not prove that its native contract matches this installation or that the owner can run.
+4. Use the operation's read tool, or its matching `_preview`/`_apply` pair. Never substitute a generic executor, shell call or another plugin for an unavailable public operation.
 
-The optional `mutability` discovery filter selects the registry's actual classification. Do not infer effects from a friendly command name. In particular, a command called `plan`, `verify`, or `recover` is not necessarily read-only.
-
-Hosts that expose MCP resources can also read `symphony://connection` and `symphony://usage`. The `symphony-admin` MCP prompt accepts a `goal` string and supplies the same discovery-first workflow. These optional host conveniences do not change access or operation semantics; the tools remain the direct interface.
-
-The source baseline distinguishes `read_only`, `permission_backed_mutation`, `proposal_only`, `evidence_only`, and `prohibited`. The bridge runs only the operations admitted by its configuration and runtime. `symphony_read` is for `read_only` commands. Other permitted classifications use preparation/application even when their owner-specific effects are limited to local artifacts. A prohibited command must remain unavailable.
+Start the public stdio server with `--tool-catalog ABSOLUTE/catalog/tools.json`. For IPC, the listening server must have that argument; the relay cannot impose a catalogue on a legacy server. The public plugin package supplies the catalogue argument automatically. The separate standalone legacy adapter remains outside this public review interface.
 
 ## Arguments and result interpretation
 
-Supply structured `flags` and `positionals` using the tool schema and command description. Flag keys are bare long names without `--`. Value-taking flags accept strings or arrays of strings for repetition; represent numbers as strings to preserve precision. Valueless boolean flags accept booleans. Positionals are strings. Omit `json`: the bridge requests JSON itself when supported. Do not construct shell syntax, pipelines, redirects, scripts, or a `qxctl ...` command string in an argument. The bridge executes argv directly; shell-like characters inside a value are data and do not establish a supported argument value.
+Supply the named top-level parameters in each tool's schema. Value flags are strings to preserve numerical precision, repeated flags are bounded string arrays, booleans are booleans, and positional parameters use `arg_` names. Omit `json`, which the bridge owns. No `command_id`, arbitrary `flags` map, route selector, or command string is accepted by these tools. Native owners still validate domain payloads and requiredness.
 
 The connection pins the qxctl executable and working directory. It does not implicitly bind every command's TOPS identity, scope, installation prefix, or version. Resolve those exact targets through the user's request and the owner's schemas and evidence, then pass the command's supported arguments. A different command-selected target does not by itself require a new profile. Selecting a different executable or working directory uses the documented connection setup workflow. Do not invent missing target choices or native defaults.
 

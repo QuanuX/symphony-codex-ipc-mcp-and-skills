@@ -3,29 +3,74 @@
   "title": "Symphony generated JSON stdio adapter",
   "description": "Narrow output contract for configure_clients.py; not a complete host configuration schema.",
   "type": "object",
-  "required": ["mcpServers"],
+  "required": [
+    "mcpServers"
+  ],
   "additionalProperties": false,
   "properties": {
     "mcpServers": {
       "type": "object",
-      "required": ["symphony"],
+      "required": [
+        "symphony"
+      ],
       "additionalProperties": false,
       "properties": {
         "symphony": {
           "type": "object",
-          "required": ["command", "args"],
+          "required": [
+            "command",
+            "args"
+          ],
           "additionalProperties": false,
           "properties": {
-            "type": {"const": "stdio"},
-            "command": {"type": "string", "pattern": "^/", "minLength": 2},
+            "type": {
+              "const": "stdio"
+            },
+            "command": {
+              "type": "string",
+              "pattern": "^/",
+              "minLength": 2
+            },
             "args": {
               "type": "array",
               "prefixItems": [
-                {"enum": ["--config", "--connect-socket"]},
-                {"type": "string", "pattern": "^/", "minLength": 2}
+                {
+                  "enum": [
+                    "--config",
+                    "--connect-socket"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "pattern": "^/",
+                  "minLength": 2
+                },
+                {
+                  "const": "--tool-catalog"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^/",
+                  "minLength": 2
+                }
               ],
               "minItems": 2,
-              "maxItems": 2
+              "maxItems": 4,
+              "oneOf": [
+                {
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                {
+                  "minItems": 4,
+                  "maxItems": 4,
+                  "prefixItems": [
+                    {
+                      "const": "--config"
+                    }
+                  ]
+                }
+              ]
             }
           }
         }

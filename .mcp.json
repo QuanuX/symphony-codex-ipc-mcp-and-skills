@@ -3,7 +3,7 @@
     "symphony": {
       "type": "stdio",
       "command": "${CLAUDE_PLUGIN_ROOT}/bin/symphony-mcp",
-      "args": ["--config", "${CLAUDE_PLUGIN_DATA}/connection.json"]
+      "args": ["--config", "${CLAUDE_PLUGIN_DATA}/connection.json", "--tool-catalog", "${CLAUDE_PLUGIN_ROOT}/catalog/tools.json"]
     }
   }
 }

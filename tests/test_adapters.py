@@ -15,6 +15,17 @@ SCRIPT = ROOT / "scripts" / "configure_clients.py"
 
 
 class AdapterTests(unittest.TestCase):
+    def test_public_catalogue_survives_all_client_formats(self):
+        catalog = '/opt/Review Build/catalog/tools.json'
+        for client in ('codex', 'claude', 'antigravity', 'generic'):
+            result = self.invoke(client, '--binary', '/opt/bridge', '--config', '/tmp/config.json', '--tool-catalog', catalog)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            parsed = tomllib.loads(result.stdout) if client == 'codex' else json.loads(result.stdout)
+            server = parsed['mcp_servers' if client == 'codex' else 'mcpServers']['symphony']
+            self.assertEqual(server['args'], ['--config', '/tmp/config.json', '--tool-catalog', catalog])
+        rejected = self.invoke('generic', '--binary', '/opt/bridge', '--connect-socket', '/tmp/socket', '--tool-catalog', catalog)
+        self.assertNotEqual(rejected.returncode, 0)
+
     def invoke(self, client, *extra):
         return subprocess.run(
             [sys.executable, str(SCRIPT), "--client", client, *extra],

@@ -2,7 +2,7 @@
 # Replace the example absolute paths with the selected installed files.
 [mcp_servers.symphony]
 command = "/absolute/path/to/bin/symphony-mcp"
-args = ["--config", "/absolute/path/to/connection.json"]
+args = ["--config", "/absolute/path/to/connection.json", "--tool-catalog", "/absolute/path/to/plugin/catalog/tools.json"]
 startup_timeout_sec = 70
 tool_timeout_sec = 70
 default_tools_approval_mode = "writes"

@@ -10,11 +10,11 @@ Being an AI, a human, a service, or a workload does not itself grant or remove a
 
 For supported non-read commands:
 
-1. Discover and describe the exact command.
+1. Select the exact operation-specific tool and read its schema.
 2. Resolve the target and required arguments from the user's request and current owner evidence.
-3. Call `symphony_prepare` with `command_id`, `flags`, and `positionals`.
+3. Call the selected operation’s `_preview` tool with its named arguments.
 4. Review the returned plan. It must express the authorized operation, exact argument values, and intended target. Identify any actual destructive or externally consequential effect before proceeding.
-5. Call `symphony_apply` with that plan's `plan_id` when the user's authorization covers the operation.
+5. Call the matching operation’s `_apply` tool with that plan's `plan_id` when the user's authorization covers the operation.
 6. Inspect native outcome and retained state where the command's contract requires it.
 
 The plan is an ephemeral bridge transport preview. It does not execute native validation, resolve a selected deployment, obtain credentials, reserve resources, certify input files, or grant permission. It is not evidence that the operation will succeed. A plan ID is not a native policy grant, operation ID, expected-state digest, or install receipt.
@@ -25,7 +25,7 @@ If the native workflow requires a proposal file followed by native apply, bridge
 
 ## Exact installation and lifecycle changes
 
-Use registry discovery to locate the relevant installation, binding, lifecycle, and removal operations. Confirm the selected prefix, module role, version, and receipt from current evidence. Keep side-by-side installations distinct. Neither a listed module nor a source checkout proves the corresponding engine is installed.
+Use the exposed tool definitions to locate the relevant installation, binding, lifecycle, and removal operations. Confirm the selected prefix, module role, version, and receipt from current evidence. Keep side-by-side installations distinct. Neither a listed module nor a source checkout proves the corresponding engine is installed.
 
 Use the owner's expected-state precondition and recovery mechanism. On a stale digest or concurrent change, inspect current state and reassess the user's intended operation. Do not replace the digest automatically to force a retry. Do not choose a different engine/version simply because the requested one is missing.
 
