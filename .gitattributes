@@ -1,2 +1,4 @@
 *.sh text eol=lf
 *.py text eol=lf
+# Preserve the exact upstream license bytes and recorded digest.
+third_party/httplib.LICENSE whitespace=-blank-at-eof
