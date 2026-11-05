@@ -99,7 +99,7 @@ jobs:
             --expected-os macos --expected-arch arm64 --host-kind vm --macos-deployment-target 14.0
           "$RUNNER_TEMP/tools/bin/python" "$PLUGIN_ROOT/scripts/package_release.py" \
             --binary "$RUNNER_TEMP/result/build/symphony-mcp" \
-            --output "$RUNNER_TEMP/packages/symphony-0.1.0-alpha.1-macos-arm64-candidate.zip"
+            --output "$RUNNER_TEMP/packages/symphony-0.2.0-alpha.1-macos-arm64-candidate.zip"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:

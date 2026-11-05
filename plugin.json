@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "symphony",
-  "version": "0.1.0-alpha.1",
+  "version": "0.2.0-alpha.1",
   "description": "Connect an agent to a configured Symphony installation and administer its available qxctl capabilities through a C++ MCP bridge.",
   "author": {
     "name": "QuanuX",
@@ -22,7 +22,7 @@
       "interface": {
         "displayName": "Symphony",
         "shortDescription": "Administer Symphony",
-        "longDescription": "Inspect a configured Symphony installation, discover its available commands, and prepare and execute authorized administration. This Alpha uses a local C++ MCP bridge and the installation's qxctl contracts. Optional local IPC connects clients to a same-user bridge process. Available features depend on the selected installation and enabled commands. Public directory acceptance and host qualification are separate release gates.",
+        "longDescription": "Inspect and administer a selected Symphony installation through individually exposed operation tools with explicit schemas and safety annotations. This candidate retains C++ stdio and optional same-user IPC. Write previews and apply tools are bound to one operation; native owner authority remains required. Public catalogue metadata review and organization allowlisting remain pending.",
         "developerName": "QuanuX",
         "websiteURL": "https://quanux.org",
         "category": "Developer Tools",
@@ -31,9 +31,9 @@
           "Write"
         ],
         "defaultPrompt": [
-          "Inspect my Symphony connection and discover its available administration capabilities.",
-          "Help diagnose an interrupted Symphony operation using its retained status and recovery commands.",
-          "Prepare the Symphony administration change I requested using the installed command contract."
+          "Inspect my Symphony connection and explain which individually exposed tools fit my task.",
+          "Help reconcile an interrupted Symphony operation using its retained owner state.",
+          "Preview the specific Symphony administration change I requested."
         ],
         "supportURL": "https://quanux.org/contact",
         "privacyPolicyURL": "https://quanux.org/privacy",
@@ -48,33 +48,33 @@
         "test_cases": {
           "positive": [
             {
-              "description": "Identify the selected local bridge and advertised SOV administration. Use the read-only profile in docs/reviewer-setup.md.",
+              "description": "Inspect the selected local bridge and explain available SOV operations using individually exposed tool metadata. Use the read-only reviewer profile.",
               "prompt": "Show which Symphony bridge is connected and what SOV target administration is available.",
-              "tools_triggered": "symphony_connection, symphony_discover, symphony_describe",
+              "tools_triggered": "symphony_connection",
               "expected_behavior": "Reports the selected bridge, availability and boundaries without claiming service health or native authority."
             },
             {
-              "description": "Describe the exact installed SOV target configuration contract and its limits.",
+              "description": "Explain the packaged target-configure tool schemas and native authority; no generic command selector or executor is available.",
               "prompt": "Describe the exact SOV target configure command, arguments, authority and recovery command available from this Symphony installation.",
-              "tools_triggered": "symphony_connection, symphony_discover, symphony_describe",
+              "tools_triggered": "symphony_connection",
               "expected_behavior": "Reports returned grammar, target-host permission and target inspect recovery; does not mistake grammar for complete native validation."
             },
             {
               "description": "Read a native template and distinguish example references from a working installation.",
               "prompt": "Read the native Symphony SOV target_configure template and explain whether its example target and job references establish a working live installation.",
-              "tools_triggered": "symphony_connection, symphony_discover, symphony_describe, symphony_read",
+              "tools_triggered": "symphony_sov_remote_template",
               "expected_behavior": "Successful native template retrieval; synthetic references do not establish live execution."
             },
             {
               "description": "With configuration-write.json selected, use the exact create.json path produced by the disposable reviewer setup. Only local SOV configuration persistence is in scope.",
               "prompt": "Create the disposable SOV target configuration from the exact create.json supplied by the reviewer setup. I authorize this local configuration write. References are synthetic; do not invoke them or create a job. Use the native owner inspect command to verify the saved configuration.",
-              "tools_triggered": "symphony_connection, symphony_discover, symphony_describe, symphony_prepare, symphony_apply, symphony_read",
+              "tools_triggered": "symphony_sov_target_configure_preview, symphony_sov_target_configure_apply, symphony_sov_target_inspect",
               "expected_behavior": "One prepared and applied configuration creation; native inspect returns the saved configuration and digest. No job or remote invocation."
             },
             {
               "description": "After P4, select read-only.json and start a fresh session with only the input/configuration paths. This model scenario represents an unavailable prior reply; separate deterministic testing discards a real response and restarts Codex.",
               "prompt": "The prior disposable SOV configure response is unavailable to this session. Inspect the owner configuration.json from the reviewer setup to determine what is retained. Do not retry the write or execute its synthetic job references.",
-              "tools_triggered": "symphony_connection, symphony_discover, symphony_describe, symphony_read",
+              "tools_triggered": "symphony_sov_target_inspect",
               "expected_behavior": "Reports retained native configuration and digest without an apply. Distinguishes verified presence from any input comparison that is unavailable."
             }
           ],
@@ -95,7 +95,7 @@
         }
       },
       "publication": {
-        "release_notes": "Initial Alpha review candidate: C++26 local MCP bridge, installed-command discovery, pinned connection profiles, owner-preserving administration and recovery, optional same-user IPC, guided setup and disposable reviewer cases. NVIDIA hardware qualification is deferred."
+        "release_notes": "Operation-specific public-tool review candidate; versioned catalogue, explicit schemas and annotations, operation-bound previews and apply, stable paginated tools/list. Partner allowlisting and metadata review remain pending."
       }
     }
   }

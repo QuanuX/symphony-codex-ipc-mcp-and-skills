@@ -3,7 +3,7 @@
     "symphony": {
       "type": "stdio",
       "command": "/absolute/path/to/bin/symphony-mcp",
-      "args": ["--config", "/absolute/path/to/connection.json"]
+      "args": ["--config", "/absolute/path/to/connection.json", "--tool-catalog", "/absolute/path/to/plugin/catalog/tools.json"]
     }
   }
 }

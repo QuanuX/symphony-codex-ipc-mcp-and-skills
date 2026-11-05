@@ -4,7 +4,7 @@
     "symphony": {
       "type": "stdio",
       "command": "./bin/symphony-mcp",
-      "args": ["--config", "${PLUGIN_DATA}/connection.json"],
+      "args": ["--config", "${PLUGIN_DATA}/connection.json", "--tool-catalog", "${PLUGIN_ROOT}/catalog/tools.json"],
       "cwd": "${PLUGIN_ROOT}"
     }
   }

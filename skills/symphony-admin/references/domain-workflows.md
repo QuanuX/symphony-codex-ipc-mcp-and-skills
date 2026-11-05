@@ -1,6 +1,6 @@
 # Domain workflows
 
-Use these terms to find current commands with `symphony_discover`; use `symphony_describe` for the executable contract. The map records ownership and practical interpretation. It is not a static feature inventory or an assertion that each installation has these engines.
+Use these terms to find the corresponding individually exposed tool definitions; their schemas and descriptions identify the executable contract. The map records ownership and practical interpretation. It is not a static feature inventory or an assertion that each installation has these engines.
 
 ## Knowledge, modules, and lifecycle
 

@@ -25,20 +25,20 @@ def absolute_path(value: str) -> str:
     return value
 
 
-def connection(client: str, binary: str, argument: str, target: str) -> dict:
-    server = {"command": binary, "args": [argument, target]}
+def connection(client: str, binary: str, argument: str, target: str, catalog: str | None = None) -> dict:
+    server = {"command": binary, "args": [argument, target] + (["--tool-catalog", catalog] if catalog else [])}
     if client == "claude":
         server = {"type": "stdio", **server}
     return {"mcpServers": {"symphony": server}}
 
 
-def render(client: str, binary: str, argument: str, target: str) -> str:
-    profile = connection(client, binary, argument, target)
+def render(client: str, binary: str, argument: str, target: str, catalog: str | None = None) -> str:
+    profile = connection(client, binary, argument, target, catalog)
     if client != "codex":
         return json.dumps(profile, ensure_ascii=False, indent=2) + "\n"
     # JSON basic string escaping is also valid for these TOML basic strings.
     command = json.dumps(binary, ensure_ascii=False)
-    arguments = json.dumps([argument, target], ensure_ascii=False)
+    arguments = json.dumps(profile["mcpServers"]["symphony"]["args"], ensure_ascii=False)
     return (
         "[mcp_servers.symphony]\n"
         f"command = {command}\n"
@@ -57,9 +57,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     target.add_argument("--config", type=absolute_path)
     target.add_argument("--connect-socket", type=absolute_path)
     parser.add_argument("--output", help="create a new private file; refuse an existing path")
+    parser.add_argument("--tool-catalog", type=absolute_path, help="Packaged operation catalogue; configure this on an IPC server, not its relay")
     args = parser.parse_args(argv)
     argument, selected = ("--config", args.config) if args.config is not None else ("--connect-socket", args.connect_socket)
-    result = render(args.client, args.binary, argument, selected)
+    if args.tool_catalog and args.connect_socket:
+        parser.error("Configure the catalogue on the IPC server, not its relay")
+    result = render(args.client, args.binary, argument, selected, args.tool_catalog)
     if args.output is None:
         sys.stdout.write(result)
         return 0
