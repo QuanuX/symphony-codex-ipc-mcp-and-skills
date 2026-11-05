@@ -6,6 +6,12 @@ Standalone repository: [QuanuX/symphony-codex-ipc-mpc-and-skills](https://github
 
 A C++26 MCP bridge, Codex skill/plugin, and reusable client adapters for direct administration of a selected Symphony installation. Publisher: **QuanuX**, [quanux.org](https://quanux.org).
 
+Optional development features: [Notion Agent / remote MCP gateway](docs/notion-integration.md),
+[Notion report, incident and research publishing](docs/notion-publishing.md), and
+[marketplace preparation](docs/notion-marketplace.md). The gateway is a separate,
+opt-in C++ build; existing local installs acquire no listener. These additions
+require actual Notion/HTTPS qualification before public availability is claimed.
+
 This is a separately maintained integration, not a Symphony module. It builds without a Symphony source checkout and connects to an explicitly selected, independently installed `qxctl`. [Migration provenance](docs/repository-migration.md) identifies the original source and historical test evidence.
 
 The bridge discovers the selected qxctl's actual command registry, exposes exact command descriptions, runs reads, and previews/applies configured administration operations. It preserves qxctl as Symphony's operating interface and the native owners' identity, authority, receipts, versions and recovery rules. It adds no new vector or mandatory workload dependency. User modules and compositions remain open-ended.

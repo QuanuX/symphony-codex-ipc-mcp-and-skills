@@ -1,0 +1,9 @@
+{
+  "schema": "symphony.notion.publisher.v1",
+  "client_id": "YOUR_NOTION_OAUTH_CLIENT_ID",
+  "client_secret_file": "/absolute/private/notion/client-secret.json",
+  "redirect_uri": "https://YOUR_CALLBACK_HOST/notion/callback",
+  "token_file": "/absolute/private/notion/workspace-token.json",
+  "workspace_id": "YOUR_SELECTED_WORKSPACE_ID",
+  "allowed_parent_pages": ["YOUR_SELECTED_PARENT_PAGE_ID"]
+}

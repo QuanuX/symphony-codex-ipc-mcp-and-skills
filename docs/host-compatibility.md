@@ -60,7 +60,13 @@ Use `--output FILE` to create a new file exclusively with private permissions. I
 
 For each named host, record the exact host version, platform, binary digest, configuration mode, and actual results for connection/discovery/read, an enabled disposable mutation, native refusal, unknown-outcome recovery, and reconnect. Test from a clean installation. A protocol test harness is useful evidence but is not a substitute for these real host checks.
 
-No remote HTTPS/OAuth MCP endpoint is configured by this package. Existing bounded Symphony remote-owner commands may be discoverable through local qxctl; that is distinct from exposing this MCP bridge remotely. Client adapter support and a provider or broker integration must also be qualified separately.
+No remote endpoint is configured by the default package. The optional
+[C++ HTTP gateway](notion-integration.md) adds a loopback Streamable HTTP endpoint
+with per-client bearer grants for an operator-owned HTTPS proxy/tunnel, including
+Notion's documented header-auth connection path. Its direct core and existing
+private IPC backends are locally testable; actual Notion host qualification is
+separate. It does not implement an MCP OAuth server. Existing bounded Symphony
+remote-owner commands through local qxctl are distinct from this network adapter.
 
 Official host documentation was inspected on 2026-10-22. Recheck before public submission. The core uses C++; the official MCP SDK inventory currently does not list a C++ SDK, so this implementation must maintain its own conformance evidence. [Official SDK inventory](https://modelcontextprotocol.io/docs/2026-07-28/sdk).
 

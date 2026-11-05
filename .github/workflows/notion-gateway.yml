@@ -1,0 +1,39 @@
+name: Optional Notion gateway
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'third_party/**'
+      - 'scripts/*gateway*'
+      - 'scripts/notion_publish.py'
+      - 'tests/**'
+      - 'CMakeLists.txt'
+      - '.github/workflows/notion-gateway.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gateway:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Linux compiler and crypto
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-19 libssl-dev
+          echo 'CXX=clang++-19' >> "$GITHUB_ENV"
+      - name: Configure and compile optional gateway
+        run: |
+          cmake -S . -B build-gateway -DSYMPHONY_BUILD_GATEWAY=ON -DCMAKE_BUILD_TYPE=Debug
+          cmake --build build-gateway -j 2
+      - name: Native bridge, gateway and publishing fixtures
+        run: ctest --test-dir build-gateway --output-on-failure

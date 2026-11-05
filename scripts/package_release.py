@@ -15,6 +15,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output', required=True, type=Path)
     p.add_argument('--binary', type=Path, help='Include an explicitly selected built binary as bin/symphony-mcp')
+    p.add_argument('--gateway-binary', type=Path, help='Optionally include a separately built gateway; does not enable it')
     args = p.parse_args()
     selected = [ROOT / name for name in FILES if (ROOT / name).is_file()]
     for name in DIRS:
@@ -26,6 +27,10 @@ def main():
         if not args.binary.is_file() or args.binary.is_symlink():
             p.error('Select a regular compiled binary')
         members['bin/symphony-mcp'] = args.binary
+    if args.gateway_binary:
+        if not args.gateway_binary.is_file() or args.gateway_binary.is_symlink():
+            p.error('Select a regular compiled gateway binary')
+        members['bin/symphony-mcp-gateway'] = args.gateway_binary
     if len(members) > 5000:
         p.error('Too many archive members')
     total = 0
@@ -34,7 +39,7 @@ def main():
         if source.is_symlink() or Path(name).is_absolute() or '..' in Path(name).parts:
             p.error('Unsafe archive member')
         data = source.read_bytes()
-        if name != 'bin/symphony-mcp':
+        if name not in ('bin/symphony-mcp', 'bin/symphony-mcp-gateway'):
             # Do not ship developer-machine paths, connection profiles or local evidence.
             if str(Path.home()).encode() in data or str(ROOT.parent / 'symphony-agent-plugin-evidence').encode() in data:
                 p.error('Private local path/evidence found in '+name)
@@ -48,14 +53,14 @@ def main():
         for name,data in entries:
             info=zipfile.ZipInfo(name, (2026,10,22,0,0,0))
             info.create_system=3
-            mode=0o755 if name=='bin/symphony-mcp' else 0o644
+            mode=0o755 if name in ('bin/symphony-mcp', 'bin/symphony-mcp-gateway') else 0o644
             info.external_attr=(stat.S_IFREG|mode)<<16
             info.compress_type=zipfile.ZIP_DEFLATED
             archive.writestr(info,data)
     if args.output.stat().st_size>100_000_000:
         args.output.unlink()
         p.error('Compressed archive exceeds100MB')
-    result={'artifact':str(args.output),'sha256':hashlib.sha256(args.output.read_bytes()).hexdigest(),'files':len(entries),'expanded_bytes':total,'compressed_bytes':args.output.stat().st_size,'includes_binary':bool(args.binary),'submitted':False}
+    result={'artifact':str(args.output),'sha256':hashlib.sha256(args.output.read_bytes()).hexdigest(),'files':len(entries),'expanded_bytes':total,'compressed_bytes':args.output.stat().st_size,'includes_binary':bool(args.binary),'includes_optional_gateway':bool(args.gateway_binary),'submitted':False}
     args.output.with_suffix(args.output.suffix+'.sha256').write_text(result['sha256']+'  '+args.output.name+'\n')
     print(json.dumps(result,indent=2))
 

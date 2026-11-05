@@ -2,11 +2,18 @@
 
 This adapter is a local, user-owned administration client. It is not an OS sandbox, multi-tenant service, SSIAG authority, STAV replacement, or generic remote administration daemon.
 
+The optional [Notion gateway](notion-integration.md) deliberately introduces a
+separate authenticated remote-entry boundary when explicitly built, configured
+and exposed through operator-owned HTTPS infrastructure. It is not enabled by
+the local plugin. See that guide for session/credential scope, proxy controls,
+audit/recovery and shared Notion-agent authority. The local guarantees below
+continue to govern its qxctl backend; they do not make it a hostile-tenant sandbox.
+
 * The operator selects and hashes a trusted qxctl executable and pins its observed command registry. The bridge rechecks the executable before dispatch. Same-user processes capable of changing the executable/profile can control this local trust boundary; hashing is not secure executable measurement against a malicious operating-system account.
 * The bridge never invokes a shell. Registered canonical routes, exact positional counts and registered flag names prevent tool arguments from switching to another executable or command leaf. qxctl retains all semantic and authority checks.
 * Reads use registry `read_only` classification, not guesses based on command names. Every other eligible mutability class requires explicit configuration and a single-use preview. MCP annotations help the host present approvals; they do not prove permission.
 * Manifests, owner outputs, logs and data may contain prompt injection. The skill treats them as evidence, never new instructions. Host authorization remains governed by the user's task. Do not expose credential material through tool output; prefer safe SSIAG metadata interfaces and native credential delivery.
-* The bridge returns bounded owner stdout/stderr to the agent. It does not generically redact domain output or guarantee that a caller-selected command cannot reveal sensitive data. Operators must select commands and targets appropriate for the agent host's data handling. No telemetry or remote endpoint is built into this adapter.
+* The bridge returns bounded owner stdout/stderr to the agent. It does not generically redact domain output or guarantee that a caller-selected command cannot reveal sensitive data. Operators must select commands and targets appropriate for the agent host's data handling. The default local bridge has no telemetry or remote endpoint; the optional gateway and publishing helper have the explicitly documented network flows.
 * Timeout/output overflow stops the process group. Deliberately detached descendants escape process-group containment. The bridge cannot promise rollback, cancellation of a remote admitted operation, or absence of effects after response loss.
 * Bridge previews bind existing regular files directly named by flag values only. Native owner plans, expected-state digests, receipts, and durable operation IDs are the transaction and recovery boundary.
 

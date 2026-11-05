@@ -1,0 +1,15 @@
+[Unit]
+Description=User-owned Symphony MCP gateway
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/ABSOLUTE/PATH/bin/symphony-mcp-gateway --config /ABSOLUTE/PRIVATE/gateway.json
+Restart=on-failure
+RestartSec=5
+UMask=0077
+# Install as a systemd USER unit, not a root system service. A restart invalidates
+# MCP sessions; callers must reconcile uncertain writes before creating new ones.
+
+[Install]
+WantedBy=default.target

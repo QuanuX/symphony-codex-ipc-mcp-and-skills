@@ -1,0 +1,12 @@
+# Operator-owned HTTPS edge. Replace hostname; validate with your Caddy version.
+# Do not enable request/body/Authorization logging or upstream retries.
+symphony.example.org {
+    handle /mcp {
+        reverse_proxy 127.0.0.1:8765
+    }
+    # Optional Notion publisher callback; listener runs only during authorize.
+    handle /notion/callback {
+        reverse_proxy 127.0.0.1:8766
+    }
+    respond 404
+}
