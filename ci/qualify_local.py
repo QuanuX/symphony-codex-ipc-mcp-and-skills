@@ -15,7 +15,24 @@ import shutil
 import subprocess
 import struct
 import sys
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
+
+
+def validate_test_report(path):
+    """Require the actual named CTest suites; test counts may grow within them."""
+    required = {'transport', 'bounded-hashing', 'mcp-integration',
+                'public-operation-tools', 'client-adapters', 'qualification-report'}
+    cases = ET.parse(path).getroot().findall('.//testcase')
+    names = [case.get('name') for case in cases]
+    if len(names) != len(set(names)) or not required.issubset(names):
+        raise RuntimeError('Missing or duplicate required CTest suites')
+    for case in cases:
+        if case.get('status') != 'run' or any(case.find(tag) is not None for tag in ('failure', 'error', 'skipped')):
+            raise RuntimeError('CTest suite did not pass: '+str(case.get('name')))
+        if re.search(r'\bskipped\b|\bNOT_RUN\b|\bNot Run\b', ''.join(case.itertext()), re.I):
+            raise RuntimeError('Nested test skipped: '+str(case.get('name')))
+    return sorted(names)
 
 
 def version_tuple(text):
@@ -49,7 +66,7 @@ def elf_architecture(path):
 def source_inventory(source):
     # Include build rules, test expectations and adapter scripts as well as C++.
     files = [source/name for name in ('CMakeLists.txt', 'README.md', 'LICENSE', 'plugin.json', 'mcp.json', '.mcp.json') if (source/name).is_file()]
-    for folder in ('src', 'include', 'third_party', 'scripts', 'tests', 'skills', 'docs', 'adapters', '.claude-plugin'):
+    for folder in ('src', 'include', 'third_party', 'scripts', 'tests', 'skills', 'docs', 'adapters', '.claude-plugin', 'catalog', 'ci'):
         directory=source/folder
         if directory.is_symlink():raise RuntimeError('Source directory must not be a symlink')
         for path in directory.rglob('*'):
@@ -134,11 +151,12 @@ def main():
             configure += ['-DCMAKE_OSX_ARCHITECTURES='+args.expected_arch,'-DCMAKE_OSX_DEPLOYMENT_TARGET='+args.macos_deployment_target]
         run('configure',configure)
         run('build',[cmake,'--build',build,'--parallel',str(args.jobs)],timeout=900)
-        run('ctest',[ctest,'--test-dir',build,'--output-on-failure'],timeout=600)
+        run('ctest',[ctest,'--test-dir',build,'--output-on-failure','--output-junit',out/'ctest.xml'],timeout=600)
+        report['passed_test_suites']=validate_test_report(out/'ctest.xml')
         details=(build/'Testing/Temporary/LastTest.log').read_text(errors='replace')
         (out/'test-details.log').write_text(details)
         if re.search(r'\bskipped\b|\bNOT_RUN\b|\bNot Run\b',details,re.I):raise RuntimeError('Tests skipped: resolve the missing boundary; do not call this target qualified')
-        for marker in ['transport checks passed','hash checks passed','Ran 20 tests','Ran 4 tests']:
+        for marker in ['transport checks passed','hash checks passed']:
             if marker not in details:raise RuntimeError('Expected focused suite missing: '+marker)
         binary=build/'symphony-mcp';report['binary_sha256']=hashlib.sha256(binary.read_bytes()).hexdigest()
         if facts['system']=='Linux':report['binary_architecture']=elf_architecture(binary)
