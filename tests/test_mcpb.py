@@ -69,7 +69,7 @@ class LauncherTest(unittest.TestCase):
         args = [value.replace("${__dirname}", str(self.root)).replace("${user_config.connection_profile}", profile) for value in config["args"]]
         result = subprocess.run([config["command"], *args], env=dict(self.env, TEST_SYSTEM="Linux", TEST_MACHINE="x86_64"), capture_output=True, text=True, cwd=self.root)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(json.loads(result.stdout)["argv"], ["--config", profile])
+        self.assertEqual(json.loads(result.stdout)["argv"], ["--config", profile, "--tool-catalog", str(self.root / "catalog/tools.json")])
         self.assertFalse((self.root / "injected").exists())
         self.assertTrue(manifest["user_config"]["connection_profile"]["required"])
         self.assertNotIn("win32", manifest["compatibility"]["platforms"])
@@ -100,7 +100,7 @@ class PackageTest(unittest.TestCase):
         self.root = self.base / "source"
         self.root.mkdir()
         subprocess.run(["git", "init", "-q", str(self.root)], check=True)
-        files = ["README.md", "LICENSE", "CMakeLists.txt", "src/main.cpp", "src/transport.cpp", "include/symphony/transport.hpp", "third_party/nlohmann/json.hpp", "third_party/nlohmann/LICENSE.MIT", "scripts/configure_connection.py", "skills/symphony-admin/SKILL.md", "skills/symphony-setup/SKILL.md", "docs/mcp-registry.md"]
+        files = ["README.md", "LICENSE", "CMakeLists.txt", "src/main.cpp", "src/transport.cpp", "include/symphony/transport.hpp", "third_party/nlohmann/json.hpp", "third_party/nlohmann/LICENSE.MIT", "scripts/configure_connection.py", "skills/symphony-admin/SKILL.md", "skills/symphony-setup/SKILL.md", "docs/mcp-registry.md", "catalog/tools.json"]
         for name in files:
             path = self.root / name
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -114,7 +114,7 @@ class PackageTest(unittest.TestCase):
             path.write_bytes(executable_header(target))
             path.chmod(0o755)
             self.binaries.append(target + "=" + str(path))
-        self.args = types.SimpleNamespace(source_root=self.root, binary=self.binaries, output=self.base / "test.mcpb", release_url=pack.REPOSITORY + "/releases/download/v0.1.0-alpha.1/symphony.mcpb")
+        self.args = types.SimpleNamespace(source_root=self.root, binary=self.binaries, output=self.base / "test.mcpb", release_url=pack.REPOSITORY + "/releases/download/v0.2.0-alpha.1/symphony.mcpb")
 
     def track(self, name):
         subprocess.run(["git", "-C", str(self.root), "add", "--", name], check=True)
@@ -128,6 +128,8 @@ class PackageTest(unittest.TestCase):
         self.assertEqual(server["packages"][0]["fileSha256"], first["sha256"])
         with zipfile.ZipFile(self.args.output) as archive:
             self.assertIsNone(archive.testzip())
+            self.assertIn("catalog/tools.json", archive.namelist())
+            self.assertEqual(json.loads(archive.read("manifest.json"))["version"], pack.VERSION)
             self.assertNotIn("untracked-private.txt", archive.namelist())
             self.assertEqual(archive.read("skills/symphony-admin/SKILL.md"), (self.root / "skills/symphony-admin/SKILL.md").read_bytes())
             self.assertEqual(archive.read("manifest.json"), archive.read("packaging/mcpb/manifest.json"))
