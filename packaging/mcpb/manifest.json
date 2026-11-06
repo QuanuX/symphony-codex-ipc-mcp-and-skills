@@ -2,9 +2,9 @@
   "manifest_version": "0.3",
   "name": "symphony",
   "display_name": "Symphony",
-  "version": "0.1.0-alpha.1",
+  "version": "0.2.0-alpha.1",
   "description": "Inspect and administer a configured Symphony installation through its qxctl contracts.",
-  "long_description": "Local C++ MCP bridge for an independently installed Symphony qxctl. A required private connection profile pins the selected executable and registry. Profiles default to read operations; specific non-read commands require explicit configuration and native authorization. Bundled launchers select included macOS or Linux x86-64/ARM64 executables. Linux requires Ubuntu 22.04 or newer with OpenSSL 3 and libstdc++ runtime libraries; macOS executables are unsigned. See docs/mcp-registry.md for setup and qualification limits.",
+  "long_description": "Local C++ MCP bridge for an independently installed Symphony qxctl. A required private connection profile pins the selected executable and registry. Profiles default to read operations; specific non-read commands require explicit configuration and native authorization. Bundled launchers select included macOS or Linux x86-64/ARM64 executables. Linux requires Ubuntu 22.04 or newer with OpenSSL 3 and libstdc++ runtime libraries; macOS executables are unsigned. See docs/mcp-registry.md for setup and qualification limits. The 0.2.0 public interface exposes the same versioned operation catalogue as the OpenAI package: 653 operation tools plus connection status.",
   "author": {
     "name": "QuanuX",
     "email": "duncan@quanux.org",
@@ -18,17 +18,28 @@
     "url": "https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills"
   },
   "license": "AGPL-3.0",
-  "privacy_policies": ["https://quanux.org/privacy"],
+  "privacy_policies": [
+    "https://quanux.org/privacy"
+  ],
   "server": {
     "type": "binary",
     "entry_point": "launcher.sh",
     "mcp_config": {
       "command": "/bin/sh",
-      "args": ["${__dirname}/launcher.sh", "--config", "${user_config.connection_profile}"]
+      "args": [
+        "${__dirname}/launcher.sh",
+        "--config",
+        "${user_config.connection_profile}",
+        "--tool-catalog",
+        "${__dirname}/catalog/tools.json"
+      ]
     }
   },
   "compatibility": {
-    "platforms": ["darwin", "linux"]
+    "platforms": [
+      "darwin",
+      "linux"
+    ]
   },
   "user_config": {
     "connection_profile": {

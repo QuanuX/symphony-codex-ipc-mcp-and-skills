@@ -12,7 +12,37 @@ The public package exposes versioned, individually named operation tools and che
 
 This is a local Alpha candidate, not an OpenAI-approved directory release. Current compatibility is the explicitly pinned MCP **2025-11-25** protocol. See [verification](docs/verification.md), [host compatibility](docs/host-compatibility.md) and [public submission requirements](docs/submission.md).
 
-## Build and connect
+## What Symphony and qxctl do
+
+[Symphony](https://github.com/QuanuX/Symphony) is QuanuX's publicly available, free and open-source **quantOS** for composing quantitative research, trading systems and infrastructure. It is headless and self-hosted: users operate their own installations through agents and command-line tools. Symphony is licensed **GNU AGPLv3**, with no commercial feature gates or paid feature tiers. Native permissions, explicit authorization and third-party service requirements are operational controls, not paid access gates.
+
+**qxctl** is Symphony's administrative command-line interface. It discovers installed capabilities and invokes their native owners using structured command contracts. This MCP bridge translates individually named agent tools into those qxctl operations; it does not install Symphony or replace the underlying engines.
+
+- [Symphony documentation](https://docs.quanux.org/symphony)
+- [qxctl documentation tab and overview](https://docs.quanux.org/symphony/qxctl/overview)
+- [Current Symphony getting-started guidance](https://docs.quanux.org/symphony/quickstart)
+- [Public Symphony source and license](https://github.com/QuanuX/Symphony)
+
+The current public documentation/source are available now. Final beta installation channels, qxctl distribution URLs and the release-specific bundle quick start will be supplied in the release packet next week, before **November 16, 2026**. We are seeking coordinated approval for that beta date, not earlier publication.
+
+## End-user bundle installation
+
+The forthcoming 0.2.0 release packet will lead with a short, tested `.mcpb` installation path:
+
+1. Install Symphony and its compatible qxctl using the finalized beta installation guide.
+2. Download the matching published `.mcpb` and verify the release checksum.
+3. Create a private connection profile selecting your qxctl installation, then install the bundle in a client that supports native MCP bundles and select that profile.
+4. Ask the agent to inspect `symphony_connection`, then perform the documented harmless read. Enable only the non-read operations you intend to delegate.
+
+This is the onboarding outline, not a claim that the beta download is published. The final packet will contain exact URLs, platform requirements, commands and expected results. Existing Alpha users can consult the [currently published 0.1.0-alpha.1 bundle](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/releases/tag/v0.1.0-alpha.1-mcpb) and [its setup instructions](docs/mcp-registry.md); that older bundle does not provide the 0.2.0 public operation catalogue.
+
+## Shared 0.2.0 review specification
+
+The exact current review version is **0.2.0-alpha.1**, in the 0.2.0 release line. Both the OpenAI ZIP and the next MCPB specification use the same local C++/stdio runtime and packaged catalogue: **653 operation tools plus connection status, 654 tools total**. The next MCPB manifest now selects that catalogue explicitly. See [beta review handoff](docs/beta-review-handoff.md).
+
+`server.json` remains the truthful, checksum-pinned record of the already published **0.1.0-alpha.1** MCPB. It will be replaced by the generated 0.2.0 metadata only after the finalized new bundle exists. An old binary is never relabeled as 0.2.0. The source specification is aligned today; published-artifact and registry version alignment remain part of next week's final packet.
+
+## Developer build and connect
 
 Requirements: macOS or Linux; a compiler accepting C++26 draft mode (`-std=c++2c`), CMake 3.30+, and Python 3.11+ for configuration/tests. Linux also requires OpenSSL 3 development files. nlohmann/json 3.12.0 is included with its license. No build-time dependency download occurs.
 
