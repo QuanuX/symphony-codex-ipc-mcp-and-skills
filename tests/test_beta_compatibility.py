@@ -47,6 +47,7 @@ class CompatibilityTests(unittest.TestCase):
         self.put('assertions', [dict(id=c, status='passed') for c in v.CASES])
         for phase in ('readonly', 'enabled', 'restarted'): self.blobs[phase] = b'synthetic transcript, not real client evidence'
         for target in self.clients:
+            self.blobs[target['id'] + '-config'] = target['mode'].encode()
             self.put(target['id'], dict(schema='symphony.beta-client-evidence.v1', sources=self.sources, bindings=self.bindings, client=target, cases=[dict(id=c, status='passed', evidence=['assertions']) for c in v.CASES], scope='deterministic_app_server_native_owner', transcripts=['readonly', 'enabled', 'restarted']))
         self.req = dict(schema='symphony.beta-compatibility.requirements.v1', sources=self.sources, bindings=self.bindings, artifacts={}, clients=self.clients)
         self.sync()
@@ -114,6 +115,10 @@ class CompatibilityTests(unittest.TestCase):
             self.put(key, data); self.sync()
             with self.subTest(key=key), self.assertRaises(ValueError): self.check()
             self.blobs[key] = original; self.sync()
+
+    def test_configuration_must_match_selected_digest(self):
+        self.blobs['stdio-config'] += b'changed'; self.sync()
+        with self.assertRaises(ValueError): self.check()
 
     def test_contradictory_assertion_rejected_even_when_rehashed(self):
         ledger = json.loads(self.blobs['assertions']); ledger[0]['status'] = 'failed'

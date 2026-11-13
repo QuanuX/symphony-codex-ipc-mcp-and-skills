@@ -57,6 +57,8 @@ python3 scripts/verify_beta_compatibility.py \
 The schema in `schemas/` defines the two input shapes. Requirements fix the two
 repository/commit/tree identities, six bindings, artifact paths and digests, and
 exact Codex version/OS/architecture/configuration for stdio and same-user IPC.
+Each selected client requires a `<client-id>-config` artifact whose bytes match
+its configuration digest. Keep profiles and transcripts in private evidence.
 Each client observation references a separately hashed report with every required
 case and hashed transcript attachments. The verifier checks native build identity,
 expected/observed record parity, complete catalog census, package inventory and
@@ -70,3 +72,26 @@ symlinks. JSON, archives and files have explicit bounds. The verifier never runs
 attachments and cannot authenticate an operator, compiler or signer: independent
 requirements review and retained build/client logs remain essential. Do not turn
 a fabricated fixture packet into a real-client claim merely by changing labels.
+
+
+## Reproduce the actual-client boundary
+
+After building and packaging a committed source pair, extract the private ZIP into
+an empty directory and verify every source member against that plugin commit.
+Supply `IDENTITIES.json` containing the same `sources` and `bindings` objects as
+the independently reviewed compatibility requirements, then run:
+
+```sh
+python3 STAGE/scripts/qualify_beta_client.py \
+  --codex EXACT_NATIVE_CODEX --qxctl EXACT_QXCTL \
+  --bridge STAGE/bin/symphony-mcp --catalog STAGE/catalog/tools.json \
+  --identities IDENTITIES.json --out NEW_PRIVATE_DIRECTORY
+```
+
+Select the native Codex executable, not an unexamined PATH wrapper. The harness
+records its version and streamed executable hash. Each mode retains three session
+transcripts, a private profile, an assertion ledger and a client report. It creates
+only disposable SOV configuration with synthetic references, verifies CAS and
+recovery, then removes that configuration through its native owner. On failure it
+preserves state for inspection and does not replay uncertain effects. It never
+runs a model turn or changes the user's installed profiles.

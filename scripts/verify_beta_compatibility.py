@@ -217,6 +217,9 @@ def verify(req, obs, root):
         if key is None: pending.append('missing client: ' + target['id']); continue
         need(type(key) is str and key in req['artifacts'], 'Unbound client evidence')
         if key not in data: continue
+        config_key = target['id'] + '-config'
+        need(config_key in req['artifacts'] and req['artifacts'][config_key]['sha256'] == target['config_sha256'], 'Unbound client configuration')
+        need(config_key in data, 'Client configuration evidence is missing')
         report = strict_json(data[key])
         fields(report, ('schema', 'sources', 'bindings', 'client', 'cases', 'scope', 'transcripts'), 'client report')
         need(report['schema'] == 'symphony.beta-client-evidence.v1' and report['scope'] == 'deterministic_app_server_native_owner', 'Fixture is not real client evidence')
