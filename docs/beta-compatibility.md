@@ -95,3 +95,6 @@ only disposable SOV configuration with synthetic references, verifies CAS and
 recovery, then removes that configuration through its native owner. On failure it
 preserves state for inspection and does not replay uncertain effects. It never
 runs a model turn or changes the user's installed profiles.
+
+The dated [W13 engineering handoff](w13-engineering-handoff.md) records exact
+tested artifacts, observed client/platform scope and the remaining distribution gates.
