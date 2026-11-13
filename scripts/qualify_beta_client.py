@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import platform
 import queue
+import socket
 import subprocess
 import sys
 import tempfile
@@ -132,8 +133,16 @@ def run_mode(args, identity, root, mode, version):
             if listener is None:
                 listener = subprocess.Popen([str(args.bridge), '--config', str(profile), '--tool-catalog', str(args.catalog), '--listen', str(sock)], stdout=subprocess.DEVNULL, stderr=listener_log)
                 end = time.monotonic() + 15
-                while not sock.exists() and time.monotonic() < end and listener.poll() is None: time.sleep(.02)
-                need(sock.exists() and sock.stat().st_mode & 0o777 == 0o600, 'Private IPC listener unavailable')
+                ready = False
+                while time.monotonic() < end and listener.poll() is None:
+                    if sock.exists() and sock.stat().st_mode & 0o777 == 0o600:
+                        try:
+                            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
+                                probe.settimeout(.1); probe.connect(str(sock))
+                            ready = True; break
+                        except OSError: pass
+                    time.sleep(.02)
+                need(ready, 'Private IPC listener unavailable')
             fragment = render('codex', str(args.bridge), '--connect-socket', str(sock))
         else:
             fragment = render('codex', str(args.bridge), '--config', str(profile), str(args.catalog))
