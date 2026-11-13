@@ -21,3 +21,8 @@ profile={'schema':'symphony.agent.connection.v1','qxctl':str(fake),'qxctl_sha256
          'working_directory':str(root),'registry_digest':manifest['registry_digest'],'environment':{'FIXTURE_LOG':str(log)},
          'inherit_environment':[],'timeout_ms':5000,'max_output_bytes':16384,'enabled_nonread_commands':[]}
 path=root/'connection.json';path.write_text(json.dumps(profile));path.chmod(0o600)
+
+# Exercise the same operation-specific interface as the shipped adapters.
+sys.path.insert(0, "/work/source/scripts")
+from build_tool_catalog import build
+(root/"tools.json").write_text(json.dumps(build(manifest)))

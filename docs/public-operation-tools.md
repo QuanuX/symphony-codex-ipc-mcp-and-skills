@@ -8,7 +8,7 @@ allowlisting remain separate prerequisites.
 
 ## Public interface
 
-The versioned catalogue contains **653 operation tools for 459 command contracts**
+The versioned catalogue contains **743 operation tools for 523 command contracts**
 from the selected review installation, plus the bridge's `symphony_connection`
 tool. Read commands have one named tool. Each non-read command has its own
 `_preview` and `_apply` tools. Public MCP `tools/list` pages 50 tools at a time.
@@ -51,8 +51,9 @@ packaged catalogue; generation is a maintainer action, not runtime discovery.
 This is a **generated candidate, not a claim of approval or completed metadata
 review**. In particular:
 
-- Six STAV accordare commands return unsuccessful native help; their exact
-  contracts remain present and `native_help_unavailable` records the gap.
+- The six prior STAV/Accordare help failures are repaired in the paired W13
+  native source. All 523 exposed contracts pass native help; this establishes
+  dispatch/help availability, not installed producer or grant authority.
 - Generated descriptions and native input-file protocols need owner-by-owner
   review for clear purpose, required arguments, side effects and any nested
   operation selectors. Separate materially different operations if a native
@@ -79,3 +80,8 @@ Official guidance, checked November 5, 2026:
 reviewer: loopback names resolve on the caller's machine. For this desktop-only
 package, retain stdio and the documented approval path. A remote HTTPS gateway is
 a separate deployment choice, not an allowlisting workaround.
+
+W13 reconciles all 525 beta native identities: 523 callable contracts plus the
+two documented exclusions. The six former Accordare help gaps are repaired by
+core PR #198; the paired qxctl source is recorded in `catalog/beta-source.json`.
+See [beta compatibility](beta-compatibility.md) for scope, evidence and release boundaries.

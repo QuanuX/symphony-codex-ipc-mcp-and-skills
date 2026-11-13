@@ -22,7 +22,7 @@ from datetime import datetime, timezone
 def validate_test_report(path):
     """Require the actual named CTest suites; test counts may grow within them."""
     required = {'transport', 'bounded-hashing', 'mcp-integration',
-                'public-operation-tools', 'client-adapters', 'qualification-report'}
+                'public-operation-tools', 'client-adapters', 'qualification-report', 'beta-compatibility', 'catalog-contract'}
     cases = ET.parse(path).getroot().findall('.//testcase')
     names = [case.get('name') for case in cases]
     if len(names) != len(set(names)) or not required.issubset(names):
@@ -66,7 +66,7 @@ def elf_architecture(path):
 def source_inventory(source):
     # Include build rules, test expectations and adapter scripts as well as C++.
     files = [source/name for name in ('CMakeLists.txt', 'README.md', 'LICENSE', 'plugin.json', 'mcp.json', '.mcp.json') if (source/name).is_file()]
-    for folder in ('src', 'include', 'third_party', 'scripts', 'tests', 'skills', 'docs', 'adapters', '.claude-plugin', 'catalog', 'ci'):
+    for folder in ('src', 'include', 'third_party', 'scripts', 'tests', 'skills', 'docs', 'adapters', '.claude-plugin', 'catalog', 'schemas', 'ci'):
         directory=source/folder
         if directory.is_symlink():raise RuntimeError('Source directory must not be a symlink')
         for path in directory.rglob('*'):

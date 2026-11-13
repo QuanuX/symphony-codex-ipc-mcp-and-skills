@@ -9,7 +9,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = ('README.md', 'LICENSE', 'CMakeLists.txt', 'plugin.json', 'mcp.json', '.mcp.json', '.gitignore')
-DIRS = ('src', 'include', 'third_party', 'scripts', 'tests', 'skills', 'docs', 'adapters', '.claude-plugin', '.codex-plugin', 'assets', 'catalog', 'ci')
+DIRS = ('src', 'include', 'third_party', 'scripts', 'tests', 'skills', 'docs', 'adapters', '.claude-plugin', '.codex-plugin', 'assets', 'catalog', 'schemas', 'ci')
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)

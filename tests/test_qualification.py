@@ -19,7 +19,7 @@ class QualificationTests(unittest.TestCase):
                 self.check_report(mode)
 
     def check_report(self, mode):
-        names = ('transport', 'bounded-hashing', 'mcp-integration', 'public-operation-tools', 'client-adapters', 'qualification-report')
+        names = ('transport', 'bounded-hashing', 'mcp-integration', 'public-operation-tools', 'client-adapters', 'qualification-report', 'beta-compatibility', 'catalog-contract')
         root = ET.Element('testsuite')
         for name in names:
             case = ET.SubElement(root, 'testcase', name=name, status='run')
