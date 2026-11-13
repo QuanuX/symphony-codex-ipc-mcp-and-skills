@@ -1,0 +1,33 @@
+{
+  "schema": "symphony.beta-catalog-source.v1",
+  "core": {
+    "repository": "QuanuX/Symphony",
+    "commit": "995cc46d11e509180f589d32ea859c3795a4a844",
+    "tree": "ffec92cedc5e169a5c21b82d5c4b246bf19eee54"
+  },
+  "client_dependency": {
+    "repository": "QuanuX/symphony-codex-ipc-mcp-and-skills",
+    "commit": "ee086a22d5a5f04ffdebaf06a06008cc70e75fac"
+  },
+  "qxctl_build": {
+    "protocol": "symphony.qxctl.build-info.v1",
+    "component_id": "qxctl",
+    "version": "0.1.0-dev",
+    "source_state": "stamped",
+    "source_commit": "995cc46d11e509180f589d32ea859c3795a4a844",
+    "source_tree": "ffec92cedc5e169a5c21b82d5c4b246bf19eee54",
+    "source_date_epoch": "1794598599",
+    "dependency_map_sha256": "24f027730510315f8e4ac1a0ddfdb039d819b0e93dccaa209578116c666420b7",
+    "build_recipe": "symphony.qxctl.reproducible-build.v1",
+    "go_version": "go1.26.5",
+    "goos": "darwin",
+    "goarch": "amd64",
+    "executable_sha256": "ab3aa33d0cd1bebadd978df3be45bc9ac3e2c083bd8f76e5d7415a716a69a902"
+  },
+  "expected_registry_digest": "sha256:1d06a5e60b406652452ffd27a29ba8c1e3a742e28427ffcce1ea4b3ee78f6713",
+  "observed_registry_digest": "sha256:f4c6a0cb6dccc64456f70eeb2a82c633ac7c2224dd28ca07884d6b9dae68c9de",
+  "catalog_sha256": "sha256:dbc93502a773573bc1584af0f72718df5ccffa0183e7a57b813652c943b87afb",
+  "native_help_checked": 523,
+  "native_help_unavailable": [],
+  "publication_authorized": false
+}

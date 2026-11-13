@@ -16,7 +16,7 @@ Candidate: `0.1.0-alpha.1`. Fresh local verification on macOS 26.7.1, x86_64, Ap
 | Real qxctl | Fresh offline Go 1.26.5 build from Symphony commit `53d6a5a3bbdfac209b5885a690a8847f0144759e`; live manifest, discovery, describe, repository status and inventory pass through the release C++ bridge |
 | Native runtime linkage | The macOS x86_64 executable links only system libc++ and libSystem; no build-machine shared library dependency |
 
-The source-current qxctl manifest contains **461 records**; **459 are routable** through this Alpha. The hidden/prohibited `stav.append` command is excluded. `sov.target.invoke` is excluded because it requires a stdin control payload; this bridge deliberately provides `/dev/null` stdin. The existing controller-side remote commands remain discoverable under their own contracts. `routable` means the adapter can construct the registered invocation; it does not mean all 461/459 operations or engine installations were executed.
+At this October 22 snapshot, the qxctl manifest contains **461 records**; **459 are routable** through this Alpha. The hidden/prohibited `stav.append` command is excluded. `sov.target.invoke` is excluded because it requires a stdin control payload; this bridge deliberately provides `/dev/null` stdin. The existing controller-side remote commands remain discoverable under their own contracts. `routable` means the adapter can construct the registered invocation; it does not mean all 461/459 operations or engine installations were executed.
 
 The system-PATH qxctl encountered during development was older and lacked command discovery. Verification used a separate current-source binary; no existing installation was replaced. The live source checkout remained clean and unchanged.
 
@@ -31,3 +31,7 @@ The system-PATH qxctl encountered during development was older and lacked comman
 Full SCV/SHV/SBV and historical installation suites were not rerun: those engines were unchanged. Existing engine test reports remain dated evidence. A fixture result does not establish real provider connectivity, deployed SSIAG/STAV authority, live trading, WAN behavior or general service health.
 
 Public release requirements are tracked separately in [submission.md](submission.md). Private machine-specific logs and connection profiles are intentionally outside the distributable archive.
+
+For the separately bound W13 candidate and Codex-primary scope, see
+[beta compatibility](beta-compatibility.md). This dated Alpha report is preserved
+as historical evidence and is not the W13 qualification record.

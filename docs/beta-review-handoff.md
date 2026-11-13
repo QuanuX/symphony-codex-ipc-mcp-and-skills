@@ -2,7 +2,12 @@
 
 Publisher direction, November 6, 2026: Symphony Beta is planned for **November 16, 2026**. Seek coordinated approval for that date, not earlier publication. Reviewer approval is not guaranteed by this schedule.
 
-## Available for review now
+This is the November 6 review snapshot. W13 advances the local source candidate
+to 743 operation tools plus connection inspection (744 total), covering 523 of
+525 native records. The earlier uploaded draft below remains a separate artifact;
+its reported checks do not qualify W13. See [current compatibility](beta-compatibility.md).
+
+## Available for review at that snapshot
 
 - Symphony is publicly available, free open-source software under GNU AGPLv3: https://github.com/QuanuX/Symphony. There are no commercial feature gates or paid feature tiers. Normal native authorization and third-party service prerequisites remain applicable.
 - Documentation: https://docs.quanux.org/symphony; administrative CLI: https://docs.quanux.org/symphony/qxctl/overview; existing getting-started guidance: https://docs.quanux.org/symphony/quickstart.

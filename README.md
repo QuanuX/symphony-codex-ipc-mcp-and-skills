@@ -38,9 +38,9 @@ This is the onboarding outline, not a claim that the beta download is published.
 
 ## Shared 0.2.0 review specification
 
-The exact current review version is **0.2.0-alpha.1**, in the 0.2.0 release line. Both the OpenAI ZIP and the next MCPB specification use the same local C++/stdio runtime and packaged catalogue: **653 operation tools plus connection status, 654 tools total**. The next MCPB manifest now selects that catalogue explicitly. See [beta review handoff](docs/beta-review-handoff.md).
+The exact current review version is **0.2.0-alpha.1**, in the 0.2.0 release line. Both the OpenAI ZIP and the next MCPB specification use the same local C++/stdio runtime and packaged catalogue: **743 operation tools plus connection status, 744 tools total**. The next MCPB manifest now selects that catalogue explicitly. See [W13 compatibility](docs/beta-compatibility.md) and the [dated beta review handoff](docs/beta-review-handoff.md). This source candidate does not replace or requalify previously uploaded packages.
 
-`server.json` remains the truthful, checksum-pinned record of the already published **0.1.0-alpha.1** MCPB. It will be replaced by the generated 0.2.0 metadata only after the finalized new bundle exists. An old binary is never relabeled as 0.2.0. The source specification is aligned today; published-artifact and registry version alignment remain part of next week's final packet.
+`server.json` remains the truthful, checksum-pinned record of the already published **0.1.0-alpha.1** MCPB. It will be replaced by the generated 0.2.0 metadata only after the finalized new bundle exists. An old binary is never relabeled as 0.2.0. The source specification is aligned today; published-artifact and registry version alignment remain part of the later distribution packet.
 
 ## Developer build and connect
 
@@ -77,8 +77,8 @@ Profiles default to read operations. Add `--enable EXACT_COMMAND_ID` when creati
 
 ## Agent interface
 
-The public review candidate exposes **654 tools**: connection inspection and
-653 individually defined read/preview/apply tools covering 459 native command
+The public review candidate exposes **744 tools**: connection inspection and
+743 individually defined read/preview/apply tools covering 523 native command
 contracts. See the [catalogue and review boundaries](docs/public-operation-tools.md).
 Each has named parameters, a description, input/output schemas and explicit safety
 annotations. Clients page MCP `tools/list`; generic executors are not callable in
