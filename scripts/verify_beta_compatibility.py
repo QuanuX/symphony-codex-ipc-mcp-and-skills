@@ -219,13 +219,15 @@ def verify(req, obs, root):
         if key not in data: continue
         config_key = target['id'] + '-config'
         need(config_key in req['artifacts'] and req['artifacts'][config_key]['sha256'] == target['config_sha256'], 'Unbound client configuration')
-        need(config_key in data, 'Client configuration evidence is missing')
+        # Declared attachments may arrive later. The artifact loop has already
+        # recorded absent bytes as pending and rejected any present digest drift.
+        # Continue validating present reports rather than hiding contradictions.
         report = strict_json(data[key])
         fields(report, ('schema', 'sources', 'bindings', 'client', 'cases', 'scope', 'transcripts'), 'client report')
         need(report['schema'] == 'symphony.beta-client-evidence.v1' and report['scope'] == 'deterministic_app_server_native_owner', 'Fixture is not real client evidence')
         need(report['sources'] == req['sources'] and report['bindings'] == req['bindings'] and report['client'] == target, 'Client evidence identity mismatch')
         transcripts = report['transcripts']
-        need(type(transcripts) is list and len(transcripts) == 3 and len(set(transcripts)) == 3 and all(t in data and t not in ARTIFACTS and t != key for t in transcripts), 'Missing session transcripts')
+        need(type(transcripts) is list and len(transcripts) == 3 and len(set(transcripts)) == 3 and all(t in req['artifacts'] and t not in ARTIFACTS and t != key for t in transcripts), 'Unbound session transcripts')
         need(type(report['cases']) is list and len(report['cases']) <= 128, 'Invalid cases')
         seen = set()
         for case in report['cases']:
@@ -234,8 +236,9 @@ def verify(req, obs, root):
             need(case['status'] in ('passed', 'failed', 'pending'), 'Invalid case status')
             need(type(case['evidence']) is list and len(case['evidence']) <= 32 and len(case['evidence']) == len(set(case['evidence'])), 'Invalid evidence references')
             if case['status'] != 'passed': pending.append(target['id'] + ': ' + case['id']); continue
-            need(case['evidence'] and all(e in data and e not in ARTIFACTS and e != key for e in case['evidence']), 'Passed case missing bound observations')
+            need(case['evidence'] and all(e in req['artifacts'] and e not in ARTIFACTS and e != key for e in case['evidence']), 'Passed case missing bound observations')
             for evidence in case['evidence']:
+                if evidence not in data: continue
                 assertions = strict_json(data[evidence])
                 need(type(assertions) is list and len(assertions) <= 128, 'Invalid assertion ledger')
                 matches = [a for a in assertions if type(a) is dict and a.get('id') == case['id']]

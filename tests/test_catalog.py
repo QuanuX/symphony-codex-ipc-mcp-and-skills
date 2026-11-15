@@ -2,7 +2,9 @@
 import copy
 import json
 from pathlib import Path
+import subprocess
 import sys
+import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,6 +67,28 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(delta['excluded']), 2)
         self.assertEqual(len(delta['native_help_repaired']), 6)
         self.assertFalse(source['publication_authorized'])
+
+    def test_windows_checkout_preserves_catalog_bytes(self):
+        # WSL receives the Windows checkout, so core.autocrlf must not alter
+        # catalog bytes after their source-bound digests have been sealed.
+        with tempfile.TemporaryDirectory() as work:
+            root = Path(work)
+            subprocess.run(['git', 'init', '-q', work], check=True)
+            subprocess.run(['git', '-C', work, 'config', 'core.autocrlf', 'true'], check=True)
+            (root / '.gitattributes').write_bytes((ROOT / '.gitattributes').read_bytes())
+            (root / 'catalog').mkdir()
+            original = {p.name: p.read_bytes() for p in (ROOT / 'catalog').glob('*.json')}
+            for name, content in original.items():
+                (root / 'catalog' / name).write_bytes(content)
+            subprocess.run(['git', '-C', work, 'add', '.gitattributes', 'catalog'], check=True,
+                           capture_output=True)
+            for name in original:
+                (root / 'catalog' / name).unlink()
+            subprocess.run(['git', '-C', work, 'checkout-index', '--all', '--force'], check=True)
+            for name, content in original.items():
+                with self.subTest(file=name):
+                    self.assertEqual(verifier.sha((root / 'catalog' / name).read_bytes()),
+                                     verifier.sha(content))
 
 
 if __name__ == '__main__': unittest.main()

@@ -9,7 +9,7 @@ accept or publish the Public Beta. The feature freeze remains in force.
 - Symphony: `995cc46d11e509180f589d32ea859c3795a4a844`, tree
   `ffec92cedc5e169a5c21b82d5c4b246bf19eee54`, [core PR #198](https://github.com/QuanuX/Symphony/pull/198).
 - Client: `62bfdd948025376aab94c031731cd4543a6850ac`, tree
-  `48cf034c2a98684195447af86c011db55c7b1a97`, [client PR #6](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/pull/6), stacked on unmerged client #5.
+  `48cf034c2a98684195447af86c011db55c7b1a97`, [client PR #6](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/pull/6), originally stacked on client #5.
 - Private ZIP: `symphony-w13-macos-x86_64-final.zip`, 86 members, SHA256
   `351dff2ebfede7d85a3c85c57c2850e810e418af9aad085dba40926510330ef7`.
 - Compatibility report SHA256:
@@ -70,10 +70,27 @@ Rithmic, SSIAG grants, Accordare installations, remote invocation or trading.
 
 ## Distribution work after W13
 
+Integration review, 15 November 2026: core #198 is merged as `976b2329`
+with the same tested core tree. Client #5 is merged as `874402db`; #6 is now
+based on client main. The retained target run passed Ubuntu and Apple Silicon,
+but WSL failed its catalog digest check because the Windows checkout converted
+JSON line endings to CRLF. The corrective increment pins catalog JSON to LF and
+tests an actual Git checkout with `core.autocrlf=true`. It also preserves the
+verifier's incomplete/exit-2 result when declared client attachments have not
+arrived, while continuing to reject undeclared references and invalid present
+evidence. Focused regressions cover both defects. Review the new hosted WSL and
+focused checks before merging #6; this record does not claim their completion.
+These source/test changes require new bindings for any newly built package and
+do not change the historical private ZIP or its qualification claims above.
+
+The publisher has selected QuanuX on Anaconda for CLI packages and Cloudflare
+storage plus the website for later `.pkg` downloads. Production signing,
+final retrieval, fresh-host and independent acceptance remain separate gates.
+
 | Priority | Concrete next work | Owner/acceptance |
 | --- | --- | --- |
-| 1 | Review hosted checks and the source pair; integrate core #198 and client #5/#6 in dependency order. | Component maintainer; @quantDIY retains merge/scope decisions. |
-| 2 | Select Anaconda account/channel, package form and intentional release version. Keep native and client packages/source identities distinct. | Publisher decision; no destination or upload is selected by W13. |
+| 1 | Review the corrected #6 hosted checks and source pair, then finish client integration; core #198 and client #5 are merged. | Component maintainer; @quantDIY retains merge/scope decisions. |
+| 2 | Prepare clean CI-built binaries for QuanuX on Anaconda, optional source/SDK packages, and later Cloudflare-hosted `.pkg` downloads. Select the intentional release version and preserve native/client source identities. | Publisher destination and package form selected; uploads and final publication remain separate gates. |
 | 3 | Supply publisher signing identities, independently delivered trust policy, notices, loader/platform requirements and final artifact inventories. | Publisher plus independent trust reviewer; names/policy still pending. |
 | 4 | Produce and retrieve final artifacts through the chosen channel, record real URLs/digests, and run fresh-host install/read/recovery/remove and rollback gates. | Channel and target-host owners; local private ZIP success is not this gate. |
 | 5 | Complete independent acceptance and backup review; reconcile retained W08/W12/provider gaps against all core/paper/supplemental cells. | Named acceptance and backup reviewers still pending. |

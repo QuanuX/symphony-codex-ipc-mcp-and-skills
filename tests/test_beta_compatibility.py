@@ -109,6 +109,39 @@ class CompatibilityTests(unittest.TestCase):
             self.put('stdio', r); self.sync()
             with self.subTest(mode=mode), self.assertRaises(ValueError): self.check()
 
+    def test_missing_declared_client_attachments_remain_incomplete(self):
+        for key in ('stdio-config', 'same_user_ipc-config', 'readonly', 'enabled',
+                    'restarted', 'assertions'):
+            with self.subTest(artifact=key):
+                path = self.root / key
+                path.unlink()
+                try:
+                    result = self.check()
+                    self.assertEqual(result['status'], 'incomplete')
+                    self.assertIn('missing artifact: ' + key, result['pending'])
+                finally:
+                    path.write_bytes(self.blobs[key])
+
+    def test_missing_attachment_does_not_hide_invalid_present_evidence(self):
+        (self.root / 'stdio-config').unlink()
+        original = self.blobs['stdio']
+        for change in ('undeclared_transcript', 'undeclared_assertion', 'wrong_client'):
+            report = json.loads(original)
+            if change == 'undeclared_transcript': report['transcripts'][0] = 'unknown'
+            elif change == 'undeclared_assertion': report['cases'][0]['evidence'] = ['unknown']
+            else: report['client']['version'] = 'wrong'
+            self.put('stdio', report); self.sync()
+            (self.root / 'stdio-config').unlink()
+            with self.subTest(change=change), self.assertRaises(ValueError): self.check()
+        self.blobs['stdio'] = original; self.sync()
+        (self.root / 'stdio-config').unlink()
+        ledger = json.loads(self.blobs['assertions']); ledger[0]['status'] = 'failed'
+        self.put('assertions', ledger)
+        # Preserve the missing configuration while updating only present evidence.
+        (self.root / 'assertions').write_bytes(self.blobs['assertions'])
+        self.req['artifacts']['assertions']['sha256'] = v.sha(self.blobs['assertions'])
+        with self.assertRaises(ValueError): self.check()
+
     def test_rehashed_semantic_tampering_is_rejected(self):
         for key, field, value in [('qxctl_version', 'source_commit', '3' * 40), ('observed_registry', 'executable_digest', v.sha(b'other')), ('source_inventory', 'source', {}), ('package_inventory', 'src/main.cpp', v.sha(b'other'))]:
             original = self.blobs[key]; data = json.loads(original); data[field] = value
@@ -150,6 +183,21 @@ class CompatibilityTests(unittest.TestCase):
         self.assertEqual(run(), 0); original = out.read_bytes(); self.assertEqual(out.stat().st_mode & 0o777, 0o600)
         self.assertEqual(run(), 1); self.assertEqual(out.read_bytes(), original)
         out.unlink(); self.obs['clients'] = {}; obs.write_text(json.dumps(self.obs)); self.assertEqual(run(), 2)
+
+    def test_cli_missing_declared_client_attachments_returns_incomplete(self):
+        req, obs = [self.root / x for x in ('requirements.json', 'observations.json')]
+        req.write_text(json.dumps(self.req)); obs.write_text(json.dumps(self.obs))
+        for key in ('stdio-config', 'readonly', 'assertions'):
+            path = self.root / key; path.unlink()
+            out = self.root / (key + '-report.json')
+            cmd = [sys.executable, str(ROOT / 'scripts/verify_beta_compatibility.py'),
+                   '--requirements', str(req), '--observations', str(obs),
+                   '--evidence-root', str(self.root), '--output', str(out)]
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            with self.subTest(artifact=key):
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn('missing artifact: ' + key, json.loads(out.read_text())['pending'])
+            path.write_bytes(self.blobs[key])
 
 
 if __name__ == '__main__': unittest.main()
