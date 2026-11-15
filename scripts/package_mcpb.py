@@ -13,12 +13,12 @@ import tempfile
 from urllib.parse import urlsplit
 import zipfile
 
-VERSION = "0.1.0-alpha.1"
+VERSION = json.loads((Path(__file__).resolve().parents[1] / "plugin.json").read_text())["version"]
 SERVER_NAME = "io.github.QuanuX/symphony"
 REPOSITORY = "https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills"
 TARGETS = ("darwin-x86_64", "darwin-arm64", "linux-x86_64", "linux-aarch64")
 SOURCE_FILES = {"README.md", "LICENSE", "CMakeLists.txt", "plugin.json", "mcp.json", ".mcp.json", ".gitignore"}
-SOURCE_DIRS = {"src", "include", "third_party", "scripts", "tests", "skills", "docs", "adapters", ".claude-plugin", ".codex-plugin", "assets", "packaging"}
+SOURCE_DIRS = {"src", "include", "third_party", "scripts", "tests", "skills", "docs", "adapters", ".claude-plugin", ".codex-plugin", "assets", "packaging", "catalog", "ci"}
 FORBIDDEN_PARTS = {"private", "evidence", "test-results", ".git", ".venv", "__pycache__"}
 MAX_FILE_BYTES = 100 * 1024 * 1024
 MAX_TOTAL_BYTES = 512 * 1024 * 1024
@@ -115,7 +115,7 @@ def collect_source(root):
         if re.search(rb"(?m)^-----BEGIN (?:[A-Z0-9 ]+ )?PRIVATE KEY-----\r?$", data):
             raise ValueError("Private key cannot be packaged: " + name)
         members[name] = (data, 0o644)
-    required = {"LICENSE", "CMakeLists.txt", "src/main.cpp", "src/transport.cpp", "include/symphony/transport.hpp", "third_party/nlohmann/json.hpp", "third_party/nlohmann/LICENSE.MIT", "scripts/configure_connection.py", "skills/symphony-admin/SKILL.md", "skills/symphony-setup/SKILL.md", "packaging/mcpb/manifest.json", "packaging/mcpb/launcher.sh", "docs/mcp-registry.md"}
+    required = {"LICENSE", "CMakeLists.txt", "src/main.cpp", "src/transport.cpp", "include/symphony/transport.hpp", "third_party/nlohmann/json.hpp", "third_party/nlohmann/LICENSE.MIT", "scripts/configure_connection.py", "skills/symphony-admin/SKILL.md", "skills/symphony-setup/SKILL.md", "packaging/mcpb/manifest.json", "packaging/mcpb/launcher.sh", "docs/mcp-registry.md", "catalog/tools.json"}
     missing = required - members.keys()
     if missing:
         raise ValueError("Required corresponding source/package files are not tracked: " + ", ".join(sorted(missing)))
@@ -149,7 +149,7 @@ def build(args):
     members = collect_source(root)
     manifest = json.loads(members["packaging/mcpb/manifest.json"][0])
     if manifest["version"] != VERSION or manifest["server"]["mcp_config"] != {
-        "command": "/bin/sh", "args": ["${__dirname}/launcher.sh", "--config", "${user_config.connection_profile}"]
+        "command": "/bin/sh", "args": ["${__dirname}/launcher.sh", "--config", "${user_config.connection_profile}", "--tool-catalog", "${__dirname}/catalog/tools.json"]
     }:
         raise ValueError("Unexpected manifest version or launch configuration")
     members["manifest.json"] = (members["packaging/mcpb/manifest.json"][0], 0o644)
