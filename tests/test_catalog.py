@@ -68,6 +68,37 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(delta['native_help_repaired']), 6)
         self.assertFalse(source['publication_authorized'])
 
+    def test_distribution_refresh_preserves_unavailable_self_stamp(self):
+        source = json.loads((ROOT / 'catalog/beta-source.json').read_text())
+        evidence = source['distribution_source_binding']
+        self.assertEqual(source['qxctl_build']['source_state'], 'unavailable')
+        for field in ('source_commit', 'source_tree', 'source_date_epoch',
+                      'dependency_map_sha256', 'build_recipe'):
+            self.assertIsNone(source['qxctl_build'][field])
+        self.assertEqual(evidence['self_stamp'], 'unavailable')
+        self.assertEqual(evidence['legacy_w13_source_stamp_gate'], 'not_passed')
+        self.assertFalse(evidence['release_acceptance_complete'])
+        for field in ('cohort_result_sha256', 'round_result_sha256', 'delivery_record_sha256'):
+            verifier.digest(evidence[field])
+
+    def test_scoped_lifecycle_arguments_reach_only_the_existing_contracts(self):
+        delta = json.loads((ROOT / 'catalog/distribution-delta.json').read_text())
+        expected = {'qxcmd:symphony:knowledge.lifecycle.' + x
+                    for x in ('apply', 'apply-recover', 'apply-status')}
+        self.assertEqual(set(delta['changed']), expected)
+        self.assertEqual(delta['added'], [])
+        self.assertEqual(delta['removed'], [])
+        for entry in self.catalog['entries']:
+            binding, shape = entry['binding'], entry['tool']['inputSchema']
+            if binding['command_id'] not in expected:
+                continue
+            if binding['kind'] == 'apply':
+                self.assertEqual(set(shape['properties']), {'plan_id'})
+                continue
+            self.assertEqual(shape['properties']['execution-scope']['type'], 'string')
+            if binding['command_id'].endswith('.apply'):
+                self.assertEqual(shape['properties']['native-owner']['type'], 'array')
+
     def test_windows_checkout_preserves_catalog_bytes(self):
         # WSL receives the Windows checkout, so core.autocrlf must not alter
         # catalog bytes after their source-bound digests have been sealed.

@@ -89,7 +89,7 @@ final retrieval, fresh-host and independent acceptance remain separate gates.
 
 | Priority | Concrete next work | Owner/acceptance |
 | --- | --- | --- |
-| 1 | Review the corrected #6 hosted checks and source pair, then finish client integration; core #198 and client #5 are merged. | Component maintainer; @quantDIY retains merge/scope decisions. |
+| 1 | Review the corrected #6 hosted checks and source pair, then finish client integration; core #198 and client #5 are merged. | Component maintainer; the release approver retains merge/scope decisions. |
 | 2 | Prepare clean CI-built binaries for QuanuX on Anaconda, optional source/SDK packages, and later Cloudflare-hosted `.pkg` downloads. Select the intentional release version and preserve native/client source identities. | Publisher destination and package form selected; uploads and final publication remain separate gates. |
 | 3 | Supply publisher signing identities, independently delivered trust policy, notices, loader/platform requirements and final artifact inventories. | Publisher plus independent trust reviewer; names/policy still pending. |
 | 4 | Produce and retrieve final artifacts through the chosen channel, record real URLs/digests, and run fresh-host install/read/recovery/remove and rollback gates. | Channel and target-host owners; local private ZIP success is not this gate. |

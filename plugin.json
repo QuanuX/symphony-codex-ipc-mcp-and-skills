@@ -5,8 +5,7 @@
   "description": "Connect an agent to a configured Symphony installation and administer its available qxctl capabilities through a C++ MCP bridge.",
   "author": {
     "name": "QuanuX",
-    "url": "https://quanux.org",
-    "email": "duncan@quanux.org"
+    "url": "https://quanux.org"
   },
   "homepage": "https://quanux.org",
   "keywords": [
