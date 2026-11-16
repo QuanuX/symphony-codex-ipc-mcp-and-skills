@@ -23,7 +23,7 @@ This is a local Alpha candidate, not an OpenAI-approved directory release. Curre
 - [Current Symphony getting-started guidance](https://docs.quanux.org/symphony/quickstart)
 - [Public Symphony source and license](https://github.com/QuanuX/Symphony)
 
-The public documentation and source are available now. Final beta installation channels, qxctl distribution URLs and the release-specific bundle quick start remain pending qualification and release approval. The [D07 distribution handoff](docs/d07-distribution-handoff.md) records current source binding and the remaining gates.
+The public documentation and source are available now. Final beta installation channels, qxctl distribution URLs and the release-specific bundle quick start remain pending qualification and release approval. The [D08 stamped-owner handoff](docs/d08-stamped-owner-handoff.md) records current source binding and the remaining gates.
 
 ## End-user bundle installation
 
@@ -128,3 +128,5 @@ OpenAI's public local-MCP path currently requires partner allowlisting. Publishe
 Eleven hosted plugin candidates now pass the [platform qualification checks](docs/platforms.md): Ubuntu on x86-64/ARM64, Apple Silicon and Windows-to-WSL 2. [Windows clients use an explicit WSL adapter](docs/windows-wsl2.md). DGX/Spark hardware and actual agent UI/native-owner acceptance remain open. The original verification report remains a dated baseline.
 
 The manifest now offers the packaged `symphony-setup` onboarding workflow for selecting an existing installation and creating its private pinned profile. See [Codex acceptance](docs/codex-acceptance.md) for installed client evidence and remaining GUI checks. NVIDIA DGX/Spark qualification is a later milestone.
+
+The [D08 stamped-owner handoff](docs/d08-stamped-owner-handoff.md) supersedes the D07 missing-source-stamp limitation for its newly built qxctl. Historical packets remain unchanged; the existing W13 verifier is retained and final artifact/client evidence must bind the new bytes.

@@ -1,7 +1,7 @@
 {
   "schema": "symphony.public-tool-catalog.v1",
   "version": "0.1.0-review.1",
-  "source_registry_digest": "sha256:20e098266f2491dc26617588070c13965dba88534a3ce4a077c9381b1c8a4eb0",
+  "source_registry_digest": "sha256:d5c6d4541cba08cb35b1c14a275d0bef2d00a4106e164a7bba921987205ad6be",
   "review_status": "generated_candidate_not_approved",
   "annotation_policy": "Conservative write/destructive and external-entity hints; review each operation before submission.",
   "entries": [
