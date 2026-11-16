@@ -68,18 +68,25 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(delta['native_help_repaired']), 6)
         self.assertFalse(source['publication_authorized'])
 
-    def test_distribution_refresh_preserves_unavailable_self_stamp(self):
+    def test_distribution_refresh_binds_real_original_git_stamp(self):
         source = json.loads((ROOT / 'catalog/beta-source.json').read_text())
-        evidence = source['distribution_source_binding']
-        self.assertEqual(source['qxctl_build']['source_state'], 'unavailable')
-        for field in ('source_commit', 'source_tree', 'source_date_epoch',
-                      'dependency_map_sha256', 'build_recipe'):
-            self.assertIsNone(source['qxctl_build'][field])
-        self.assertEqual(evidence['self_stamp'], 'unavailable')
-        self.assertEqual(evidence['legacy_w13_source_stamp_gate'], 'not_passed')
+        evidence = source['original_git_source_binding']
+        version = source['qxctl_build']
+        self.assertEqual(version['source_state'], 'stamped')
+        self.assertEqual(version['source_commit'], source['core']['commit'])
+        self.assertEqual(version['source_tree'], source['core']['tree'])
+        self.assertEqual(version['build_recipe'], 'symphony.qxctl.reproducible-build.v1')
+        self.assertEqual(evidence['kind'], 'component_original_git_rebuild')
+        self.assertTrue(evidence['compiled_inputs_identical_to_reviewed_export'])
+        self.assertEqual(evidence['compiled_input_count'], 291)
+        self.assertEqual(evidence['isolated_builds'], 2)
+        self.assertEqual(evidence['legacy_w13_source_stamp'], 'present')
         self.assertFalse(evidence['release_acceptance_complete'])
-        for field in ('cohort_result_sha256', 'round_result_sha256', 'delivery_record_sha256'):
-            verifier.digest(evidence[field])
+        verifier.digest(evidence['proof_sha256'])
+        delta = json.loads((ROOT / 'catalog/stamped-owner-delta.json').read_text())
+        self.assertEqual(delta['changed_command_ids'], [])
+        self.assertEqual(delta['changed_tool_descriptors'], [])
+        self.assertEqual(delta['new_qxctl_sha256'], version['executable_sha256'])
 
     def test_scoped_lifecycle_arguments_reach_only_the_existing_contracts(self):
         delta = json.loads((ROOT / 'catalog/distribution-delta.json').read_text())

@@ -104,3 +104,5 @@ tested artifacts, observed client/platform scope and the remaining distribution 
 The [D07 handoff](d07-distribution-handoff.md) records the later clean D06 core/client
 selection. Its external build-provenance gate is separate from this historical
 W13 self-stamped-owner contract; an unavailable self-stamp is never fabricated.
+
+The [D08 stamped-owner handoff](d08-stamped-owner-handoff.md) supersedes the D07 missing-source-stamp limitation for its newly built qxctl. Historical packets remain unchanged; the existing W13 verifier is retained and final artifact/client evidence must bind the new bytes.
