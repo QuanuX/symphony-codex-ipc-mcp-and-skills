@@ -23,7 +23,7 @@ This is a local Alpha candidate, not an OpenAI-approved directory release. Curre
 - [Current Symphony getting-started guidance](https://docs.quanux.org/symphony/quickstart)
 - [Public Symphony source and license](https://github.com/QuanuX/Symphony)
 
-The current public documentation/source are available now. Final beta installation channels, qxctl distribution URLs and the release-specific bundle quick start will be supplied in the release packet next week, before **November 16, 2026**. We are seeking coordinated approval for that beta date, not earlier publication.
+The public documentation and source are available now. Final beta installation channels, qxctl distribution URLs and the release-specific bundle quick start remain pending qualification and release approval. The [D07 distribution handoff](docs/d07-distribution-handoff.md) records current source binding and the remaining gates.
 
 ## End-user bundle installation
 

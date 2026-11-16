@@ -98,3 +98,9 @@ runs a model turn or changes the user's installed profiles.
 
 The dated [W13 engineering handoff](w13-engineering-handoff.md) records exact
 tested artifacts, observed client/platform scope and the remaining distribution gates.
+
+## D07 distribution companion
+
+The [D07 handoff](d07-distribution-handoff.md) records the later clean D06 core/client
+selection. Its external build-provenance gate is separate from this historical
+W13 self-stamped-owner contract; an unavailable self-stamp is never fabricated.

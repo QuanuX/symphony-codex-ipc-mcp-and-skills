@@ -22,7 +22,8 @@ from datetime import datetime, timezone
 def validate_test_report(path):
     """Require the actual named CTest suites; test counts may grow within them."""
     required = {'transport', 'bounded-hashing', 'mcp-integration',
-                'public-operation-tools', 'client-adapters', 'qualification-report', 'beta-compatibility', 'catalog-contract'}
+                'public-operation-tools', 'client-adapters', 'qualification-report', 'beta-compatibility',
+                'distribution-compatibility', 'catalog-contract'}
     cases = ET.parse(path).getroot().findall('.//testcase')
     names = [case.get('name') for case in cases]
     if len(names) != len(set(names)) or not required.issubset(names):
