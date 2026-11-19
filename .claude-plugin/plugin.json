@@ -1,7 +1,7 @@
 {
   "name": "symphony",
-  "version": "0.2.0-alpha.1",
-  "description": "Connect to a configured Symphony installation and administer available qxctl capabilities.",
+  "version": "0.2.0-beta.2",
+  "description": "Connect to a configured Symphony beta.2 installation to build and administer user-owned engines through native qxctl capabilities.",
   "author": {
     "name": "QuanuX",
     "url": "https://quanux.org"

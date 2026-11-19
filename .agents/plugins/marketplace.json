@@ -1,7 +1,7 @@
 {
   "name": "quanux-symphony-codex",
   "interface": {
-    "displayName": "QuanuX — Symphony Codex IPC/MPC and Skills"
+    "displayName": "QuanuX — Symphony Codex IPC/MCP and Skills"
   },
   "plugins": [
     {

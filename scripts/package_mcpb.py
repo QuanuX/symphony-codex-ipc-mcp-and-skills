@@ -13,12 +13,14 @@ import tempfile
 from urllib.parse import urlsplit
 import zipfile
 
-VERSION = json.loads((Path(__file__).resolve().parents[1] / "plugin.json").read_text())["version"]
+# The legacy multi-target MCPB channel has its own version. A profile-specific
+# OpenAI ZIP refresh does not replace an already published registry artifact.
+VERSION = json.loads((Path(__file__).resolve().parents[1] / "packaging/mcpb/manifest.json").read_text())["version"]
 SERVER_NAME = "io.github.QuanuX/symphony"
 REPOSITORY = "https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills"
 TARGETS = ("darwin-x86_64", "darwin-arm64", "linux-x86_64", "linux-aarch64")
 SOURCE_FILES = {"README.md", "LICENSE", "CMakeLists.txt", "plugin.json", "mcp.json", ".mcp.json", ".gitignore"}
-SOURCE_DIRS = {"src", "include", "third_party", "scripts", "tests", "skills", "docs", "adapters", ".claude-plugin", ".codex-plugin", "assets", "packaging", "catalog", "ci"}
+SOURCE_DIRS = {"src", "include", "third_party", "scripts", "tests", "skills", "docs", "adapters", ".claude-plugin", ".codex-plugin", "assets", "packaging", "catalog", "schemas", "ci"}
 FORBIDDEN_PARTS = {"private", "evidence", "test-results", ".git", ".venv", "__pycache__"}
 MAX_FILE_BYTES = 100 * 1024 * 1024
 MAX_TOTAL_BYTES = 512 * 1024 * 1024

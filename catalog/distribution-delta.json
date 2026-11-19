@@ -1,0 +1,31 @@
+{
+  "schema": "symphony.distribution-catalog-delta.v1",
+  "previous_client_commit": "3fa4c666c36d947f40b68471f13aa5d1cff3ba28",
+  "previous_catalog_sha256": "sha256:dbc93502a773573bc1584af0f72718df5ccffa0183e7a57b813652c943b87afb",
+  "previous_core": {
+    "repository": "QuanuX/Symphony",
+    "commit": "995cc46d11e509180f589d32ea859c3795a4a844",
+    "tree": "ffec92cedc5e169a5c21b82d5c4b246bf19eee54"
+  },
+  "new_core": {
+    "repository": "QuanuX/Symphony",
+    "commit": "5fd6cee1bae477048bf0045b691ee8bdf334e216",
+    "tree": "327edd0f22860e84d30fe745f5a2b0e602f4af88"
+  },
+  "added": [],
+  "removed": [],
+  "changed": [
+    "qxcmd:symphony:knowledge.lifecycle.apply",
+    "qxcmd:symphony:knowledge.lifecycle.apply-recover",
+    "qxcmd:symphony:knowledge.lifecycle.apply-status"
+  ],
+  "changed_tools": [
+    "symphony_knowledge_lifecycle_apply_apply",
+    "symphony_knowledge_lifecycle_apply_preview",
+    "symphony_knowledge_lifecycle_apply_recover_apply",
+    "symphony_knowledge_lifecycle_apply_recover_preview",
+    "symphony_knowledge_lifecycle_apply_status"
+  ],
+  "reason": "Existing scoped lifecycle apply/recovery/status contracts now match the selected D06 source; no new native identity or bridge capability.",
+  "publication_authorized": false
+}

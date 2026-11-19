@@ -1,8 +1,40 @@
 # GitHub and OpenAI beta review handoff
 
-Publisher direction, November 6, 2026: Symphony Beta is planned for **November 16, 2026**. Seek coordinated approval for that date, not earlier publication. Reviewer approval is not guaranteed by this schedule.
+## Current handoff — November 19, 2026
 
-## Available for review now
+Symphony `0.2.0-beta.2` is published. The [current package refresh](openai-beta2-refresh.md)
+uses the released beta's client source, 523 native command contracts and 744
+exposed tools. Prepare one package per exact released cohort with its matching
+bridge, catalogue and provenance. The released bridge's `0.2.0-alpha.1` runtime
+identity is separate from the beta.2 framework and refreshed package version.
+
+Use the [beta.2 installation guide](https://downloads.quanux.org/symphony/0.2.0-beta.2/docs/BETA-INSTALL.md)
+for verified downloads, fresh private installation and retention. The four
+released profiles are macOS 15 ARM64, Ubuntu 24.04 AMD64, Ubuntu 24.04 ARM64 and
+Ubuntu 26.04 AMD64. Preserve each cohort's qualification boundary.
+
+Package alignment, OpenAI eligibility/review routing, portal validation and
+publication are separate outcomes. Keep the earlier uploaded draft and its
+checks as historical evidence. Do not describe new ZIPs as uploaded or approved
+before those actions are verified. Keep the existing published MCPB and
+`server.json` intact until an independently qualified replacement exists.
+
+## Historical handoff — November 6, 2026
+
+The following snapshot records the pre-launch plan and earlier draft. Its
+future-tense delivery dates are historical commitments, not current availability
+statements.
+
+Publisher direction at that time: Symphony Beta was planned for **November 16,
+2026**, with coordinated approval sought for that date. The schedule did not
+guarantee reviewer approval.
+
+This is the November 6 review snapshot. W13 advances the local source candidate
+to 743 operation tools plus connection inspection (744 total), covering 523 of
+525 native records. The earlier uploaded draft below remains a separate artifact;
+its reported checks do not qualify W13. See [current compatibility](beta-compatibility.md).
+
+### Available for review at that snapshot
 
 - Symphony is publicly available, free open-source software under GNU AGPLv3: https://github.com/QuanuX/Symphony. There are no commercial feature gates or paid feature tiers. Normal native authorization and third-party service prerequisites remain applicable.
 - Documentation: https://docs.quanux.org/symphony; administrative CLI: https://docs.quanux.org/symphony/qxctl/overview; existing getting-started guidance: https://docs.quanux.org/symphony/quickstart.
@@ -10,7 +42,7 @@ Publisher direction, November 6, 2026: Symphony Beta is planned for **November 1
 - The next MCPB packaging specification includes the same catalogue and explicitly supplies `--tool-catalog`. Packaging reads the version from the plugin manifest rather than maintaining a separate hard-coded version.
 - OpenAI draft checks were reported passed by the publisher. That does not establish local-MCP allowlisting or approval. Remaining metadata/native-help and new-interface demo requirements are disclosed in `public-operation-tools.md`.
 
-## Final delivery next week, before November 16
+### Planned delivery before November 16
 
 1. Finalize official Symphony/qxctl installation channels and distribution URLs, including supported platforms and installation prerequisites.
 2. Build and qualify the release binaries from the selected source revision. Build the MCPB from those binaries, preserving provenance; do not reuse an older executable under the new version.
