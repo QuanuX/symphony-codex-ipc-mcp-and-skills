@@ -30,6 +30,8 @@ try {
     Invoke-Wsl @('--terminate', $distro)
     & python (Join-Path $PSScriptRoot 'wsl_stdio_smoke.py') --distribution $distro --output (Join-Path $out 'windows-stdio.json')
     if ($LASTEXITCODE -ne 0) { throw 'Windows-to-WSL stdio fixture failed' }
+    & python (Join-Path $PSScriptRoot 'wsl_stdio_smoke.py') --distribution $distro --public-catalog --output (Join-Path $out 'windows-public-stdio.json')
+    if ($LASTEXITCODE -ne 0) { throw 'Windows-to-WSL public catalog fixture failed' }
     @{ status='wsl2_bridge_fixtures_passed'; distribution=$distro; repository_commit=$env:GITHUB_SHA; agent_ui_qualified=$false; native_owner_qualified=$false } | ConvertTo-Json | Set-Content (Join-Path $out 'RESULTS.json')
 } finally {
     # Preserve diagnostics even if nested virtualization or distro setup fails.

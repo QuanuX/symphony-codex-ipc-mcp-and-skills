@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://quanux.org/symphony/schemas/distribution-client-v1.schema.json",
+  "title": "Independently selected D07 distribution and client requirements",
+  "description": "Exact evidence identities for consistency verification; no publisher authentication or release approval is inferred.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "compatibility", "owner_build_evidence"],
+  "properties": {
+    "schema": {"const": "symphony.distribution-client.requirements.v1"},
+    "compatibility": {"$ref": "beta-compatibility-v1.schema.json#/$defs/requirements"},
+    "owner_build_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "cohort_result_sha256", "round_result_sha256", "delivery_record_sha256", "derived_source_export_digest", "round", "qxctl_payload_path"],
+      "properties": {
+        "kind": {"const": "d06-external-cohort"},
+        "cohort_result_sha256": {"$ref": "#/$defs/digest"},
+        "round_result_sha256": {"$ref": "#/$defs/digest"},
+        "delivery_record_sha256": {"$ref": "#/$defs/digest"},
+        "derived_source_export_digest": {"$ref": "#/$defs/digest"},
+        "round": {"const": "round-1"},
+        "qxctl_payload_path": {"const": "go/qxctl/bin/qxctl"}
+      }
+    }
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

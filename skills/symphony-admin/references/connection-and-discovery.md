@@ -8,6 +8,13 @@ The socket belongs to this bridge. It is not a generic pre-existing Symphony adm
 
 Client registration examples are provided by the package's adapter generator. A missing binary, configuration, socket, or qxctl installation is setup work. Preserve an existing configuration and report the exact missing input; do not invent an installation from repository contents. Never collect credentials in chat.
 
+For the public beta.2, follow [release-specific setup](../../../docs/openai-beta2-refresh.md)
+and select a matching retained qxctl/client pair. Keep the exact operating-system
+cohort, binary and observed-registry identities with its catalogue. Ubuntu 24.04
+and 26.04 AMD64 builds are distinct even though they share an architecture.
+Preserve the new private prefix and retention boundary for beta.2; an older
+installation is not upgraded by replacing a bridge profile or catalogue.
+
 For a Windows-host client, use the package's `adapters/codex/windows-wsl2.toml.example` or `adapters/generic/windows-wsl2.json.example` and `docs/windows-wsl2.md`. Select the distribution, Linux user and Linux paths explicitly. A Windows client launches the Linux binary through `wsl.exe`; a POSIX executable path alone is insufficient.
 
 ## Select an exposed operation
@@ -40,4 +47,4 @@ Distinguish these observations:
 
 ## When no operation matches
 
-Try the owner's actual terminology and inspect its registered capabilities. Do not claim an absent operation is available because a white paper names it. If the current bridge cannot expose a needed command, report the concrete gap. User-authored modules and alternative adapters are valid extensions; this Alpha's current registry support is not a universal limit on Symphony.
+Try the owner's actual terminology and inspect its registered capabilities. Do not claim an absent operation is available because a white paper names it. If the current bridge cannot expose a needed command, report the concrete gap. User-authored modules and alternative adapters are valid extensions; this package's current registry support is not a universal limit on Symphony.

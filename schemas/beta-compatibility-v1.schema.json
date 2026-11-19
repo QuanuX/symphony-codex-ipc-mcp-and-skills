@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://quanux.org/schemas/symphony/beta-compatibility-v1.schema.json",
+  "title": "Private W13 compatibility inputs",
+  "description": "Shape only. The verifier additionally enforces source, artifact, package, case, path, size and identity invariants. Requirements must be independently reviewed; success is not authenticity or release acceptance.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/requirements"
+    },
+    {
+      "$ref": "#/$defs/observations"
+    }
+  ],
+  "$defs": {
+    "sources": {
+      "type": "object",
+      "properties": {
+        "core": {
+          "type": "object",
+          "properties": {
+            "repository": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "commit": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "tree": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            }
+          },
+          "required": [
+            "repository",
+            "commit",
+            "tree"
+          ],
+          "additionalProperties": false
+        },
+        "plugin": {
+          "type": "object",
+          "properties": {
+            "repository": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "commit": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "tree": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            }
+          },
+          "required": [
+            "repository",
+            "commit",
+            "tree"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "core",
+        "plugin"
+      ],
+      "additionalProperties": false
+    },
+    "bindings": {
+      "type": "object",
+      "properties": {
+        "qxctl_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "catalog_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "bridge_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "package_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "expected_registry_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "observed_registry_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "qxctl_sha256",
+        "catalog_sha256",
+        "bridge_sha256",
+        "package_sha256",
+        "expected_registry_digest",
+        "observed_registry_digest"
+      ],
+      "additionalProperties": false
+    },
+    "client": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "name": {
+          "const": "Codex"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "os": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "architecture": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "mode": {
+          "enum": [
+            "stdio",
+            "same_user_ipc"
+          ]
+        },
+        "config_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "version",
+        "os",
+        "architecture",
+        "mode",
+        "config_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "requirements": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "symphony.beta-compatibility.requirements.v1"
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        },
+        "bindings": {
+          "$ref": "#/$defs/bindings"
+        },
+        "artifacts": {
+          "type": "object",
+          "minProperties": 9,
+          "maxProperties": 256,
+          "required": [
+            "qxctl",
+            "qxctl_version",
+            "expected_registry",
+            "observed_registry",
+            "catalog",
+            "bridge",
+            "package",
+            "package_inventory",
+            "source_inventory"
+          ],
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "clients": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/client"
+          }
+        }
+      },
+      "required": [
+        "schema",
+        "sources",
+        "bindings",
+        "artifacts",
+        "clients"
+      ],
+      "additionalProperties": false
+    },
+    "observations": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "symphony.beta-compatibility.observations.v1"
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        },
+        "bindings": {
+          "$ref": "#/$defs/bindings"
+        },
+        "clients": {
+          "type": "object",
+          "maxProperties": 16,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          }
+        },
+        "distribution": {
+          "const": "pending"
+        },
+        "release_acceptance_complete": {
+          "const": false
+        },
+        "publication_authorized": {
+          "const": false
+        }
+      },
+      "required": [
+        "schema",
+        "sources",
+        "bindings",
+        "clients",
+        "distribution",
+        "release_acceptance_complete",
+        "publication_authorized"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

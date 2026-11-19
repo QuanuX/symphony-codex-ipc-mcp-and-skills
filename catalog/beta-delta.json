@@ -1,0 +1,246 @@
+{
+  "schema": "symphony.beta-catalog-delta.v1",
+  "baseline_client_commit": "ee086a22d5a5f04ffdebaf06a06008cc70e75fac",
+  "added": [
+    "qxcmd:symphony:sov.cloudflare.cf.capability.describe",
+    "qxcmd:symphony:sov.cloudflare.cf.capability.list",
+    "qxcmd:symphony:sov.cloudflare.cf.capability.schema",
+    "qxcmd:symphony:sov.cloudflare.cf.capability.template",
+    "qxcmd:symphony:sov.cloudflare.cf.context.apply",
+    "qxcmd:symphony:sov.cloudflare.cf.context.inspect",
+    "qxcmd:symphony:sov.cloudflare.cf.context.plan",
+    "qxcmd:symphony:sov.cloudflare.cf.context.reconcile",
+    "qxcmd:symphony:sov.cloudflare.cf.context.status",
+    "qxcmd:symphony:sov.cloudflare.cf.installation.apply",
+    "qxcmd:symphony:sov.cloudflare.cf.installation.inspect",
+    "qxcmd:symphony:sov.cloudflare.cf.installation.list",
+    "qxcmd:symphony:sov.cloudflare.cf.installation.plan",
+    "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile",
+    "qxcmd:symphony:sov.cloudflare.cf.installation.status",
+    "qxcmd:symphony:sov.cloudflare.cf.project.inspect",
+    "qxcmd:symphony:sov.cloudflare.cf.project.plan",
+    "qxcmd:symphony:sov.cloudflare.cf.resource.apply",
+    "qxcmd:symphony:sov.cloudflare.cf.resource.inspect",
+    "qxcmd:symphony:sov.cloudflare.cf.resource.list",
+    "qxcmd:symphony:sov.cloudflare.cf.resource.plan",
+    "qxcmd:symphony:sov.cloudflare.cf.resource.reconcile",
+    "qxcmd:symphony:sov.cloudflare.cf.resource.status",
+    "qxcmd:symphony:sov.cloudflare.connector.installation.apply",
+    "qxcmd:symphony:sov.cloudflare.connector.installation.inspect",
+    "qxcmd:symphony:sov.cloudflare.connector.installation.list",
+    "qxcmd:symphony:sov.cloudflare.connector.installation.plan",
+    "qxcmd:symphony:sov.cloudflare.connector.installation.reconcile",
+    "qxcmd:symphony:sov.cloudflare.connector.installation.status",
+    "qxcmd:symphony:sov.cloudflare.connector.instance.apply",
+    "qxcmd:symphony:sov.cloudflare.connector.instance.inspect",
+    "qxcmd:symphony:sov.cloudflare.connector.instance.list",
+    "qxcmd:symphony:sov.cloudflare.connector.instance.plan",
+    "qxcmd:symphony:sov.cloudflare.connector.instance.reconcile",
+    "qxcmd:symphony:sov.cloudflare.connector.instance.status",
+    "qxcmd:symphony:sov.transport.profile.apply",
+    "qxcmd:symphony:sov.transport.profile.inspect",
+    "qxcmd:symphony:sov.transport.profile.list",
+    "qxcmd:symphony:sov.transport.profile.plan",
+    "qxcmd:symphony:sov.transport.profile.recover",
+    "qxcmd:symphony:sov.transport.profile.schema",
+    "qxcmd:symphony:sov.transport.profile.status",
+    "qxcmd:symphony:sov.transport.profile.template",
+    "qxcmd:symphony:sov.transport.session.authenticate",
+    "qxcmd:symphony:sov.transport.session.clear",
+    "qxcmd:symphony:sov.transport.session.inspect",
+    "qxcmd:symphony:sov.transport.session.plan",
+    "qxcmd:symphony:sov.transport.session.renew",
+    "qxcmd:symphony:sov.transport.session.schema",
+    "qxcmd:symphony:sov.transport.session.template",
+    "qxcmd:symphony:sqv.rithmic.api.describe",
+    "qxcmd:symphony:sqv.rithmic.binding.compare",
+    "qxcmd:symphony:sqv.rithmic.binding.validate",
+    "qxcmd:symphony:sqv.rithmic.catalog.inspect",
+    "qxcmd:symphony:sqv.rithmic.coverage.assess",
+    "qxcmd:symphony:sqv.rithmic.runtime.attempts",
+    "qxcmd:symphony:sqv.rithmic.runtime.events",
+    "qxcmd:symphony:sqv.rithmic.runtime.invoke",
+    "qxcmd:symphony:sqv.rithmic.runtime.start",
+    "qxcmd:symphony:sqv.rithmic.runtime.status",
+    "qxcmd:symphony:sqv.rithmic.runtime.stop",
+    "qxcmd:symphony:sqv.rithmic.schema",
+    "qxcmd:symphony:sqv.rithmic.template",
+    "qxcmd:symphony:version"
+  ],
+  "removed": [],
+  "changed": [
+    {
+      "command_id": "qxcmd:symphony:sov.remote.invoke",
+      "fields": {
+        "feature_bindings": {
+          "before": [
+            {
+              "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+              "interaction": "invoke"
+            }
+          ],
+          "after": [
+            {
+              "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+              "interaction": "invoke"
+            },
+            {
+              "feature_id": "ssfv:symphony:sov-stdio-adapter",
+              "interaction": "invoke"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.remote.ssh-endpoint",
+      "fields": {
+        "output_protocols": {
+          "before": [
+            "symphony.sov.ssh-endpoint-result.v1"
+          ],
+          "after": [
+            "symphony.sov.ssh-endpoint-result.v1",
+            "symphony.sov.ssh-endpoint-result.v2"
+          ]
+        },
+        "grammar": {
+          "before": "qxctl sov remote ssh-endpoint [--input VALUE] [--json]",
+          "after": "qxctl sov remote ssh-endpoint [--input VALUE] [--json] [--transport-profile VALUE]"
+        },
+        "result_validation_protocols": {
+          "before": [
+            "symphony.sov.ssh-endpoint-result.v1"
+          ],
+          "after": [
+            "symphony.sov.ssh-endpoint-result.v1",
+            "symphony.sov.ssh-endpoint-result.v2"
+          ]
+        },
+        "input_protocols": {
+          "before": [
+            "symphony.sov.ssh-endpoint.v1"
+          ],
+          "after": [
+            "symphony.sov.ssh-endpoint.v1",
+            "symphony.sov.ssh-profile-selection.v1"
+          ]
+        }
+      }
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.remote.ssh-invoke",
+      "fields": {
+        "feature_bindings": {
+          "before": [
+            {
+              "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
+              "interaction": "invoke"
+            }
+          ],
+          "after": [
+            {
+              "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
+              "interaction": "invoke"
+            },
+            {
+              "feature_id": "ssfv:symphony:sov-ssh-adapter",
+              "interaction": "invoke"
+            }
+          ]
+        },
+        "output_protocols": {
+          "before": [
+            "symphony.sov.ssh-invoke.v1"
+          ],
+          "after": [
+            "symphony.sov.ssh-invoke.v1",
+            "symphony.sov.ssh-invoke.v2"
+          ]
+        },
+        "result_validation_protocols": {
+          "before": [
+            "symphony.sov.ssh-invoke.v1"
+          ],
+          "after": [
+            "symphony.sov.ssh-invoke.v1",
+            "symphony.sov.ssh-invoke.v2"
+          ]
+        },
+        "input_protocols": {
+          "before": [
+            "symphony.sov.ssh-invoke-input.v1"
+          ],
+          "after": [
+            "symphony.sov.ssh-invoke-input.v1",
+            "symphony.sov.ssh-invoke-input.v2"
+          ]
+        }
+      }
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.target.configure",
+      "fields": {
+        "feature_bindings": {
+          "before": [
+            {
+              "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+              "interaction": "invoke"
+            }
+          ],
+          "after": [
+            {
+              "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+              "interaction": "invoke"
+            },
+            {
+              "feature_id": "ssfv:symphony:sov-stdio-adapter",
+              "interaction": "invoke"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.target.remove",
+      "fields": {
+        "feature_bindings": {
+          "before": [
+            {
+              "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+              "interaction": "invoke"
+            }
+          ],
+          "after": [
+            {
+              "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+              "interaction": "invoke"
+            },
+            {
+              "feature_id": "ssfv:symphony:sov-stdio-adapter",
+              "interaction": "invoke"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "command_id": "qxcmd:symphony:sov.target.invoke",
+      "reason": "not_supported_by_bridge"
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.append",
+      "reason": "not_supported_by_bridge"
+    }
+  ],
+  "native_help_repaired": [
+    "qxcmd:symphony:stav.accordare-grant.install",
+    "qxcmd:symphony:stav.accordare-grant.remove",
+    "qxcmd:symphony:stav.accordare.reconcile",
+    "qxcmd:symphony:stav.accordare.status",
+    "qxcmd:symphony:stav.accordare.supervisor-install",
+    "qxcmd:symphony:stav.accordare.supervisor-uninstall"
+  ]
+}

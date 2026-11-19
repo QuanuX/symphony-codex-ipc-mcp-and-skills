@@ -1,0 +1,10 @@
+{
+  "schema": "symphony.distribution.stamped-owner-delta.v1",
+  "base_client_commit": "71b2021aeefb704b9c3e63797d04a0cc021757a9",
+  "changed_command_ids": [],
+  "changed_tool_descriptors": [],
+  "old_qxctl_sha256": "49e74ba2d778c821b2c3f52ff3b889bef18db7cf6fc74cd5ef93d358c71b3ce6",
+  "new_qxctl_sha256": "abbcdd7e4c66ae74cf5faefe28e30600446d2a1859bb24e4bf04fdd84e40d6b4",
+  "scope": "same runtime command contracts; original-Git build identity embedded and exact observed-registry/catalog identities refreshed",
+  "publication_authorized": false
+}

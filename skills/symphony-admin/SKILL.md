@@ -9,9 +9,21 @@ Apply this workflow when the user's task concerns their Symphony installation or
 
 Use the Symphony MCP bridge to carry out the user's requested work on their selected installation. Symphony is a quantOS built through Vector-Graph Application Architecture (VGAA). Users choose their programs, modules, providers, models, and topology. Published components have exact operating contracts; those contracts do not prescribe every system users may build.
 
+Treat supplied engines as examples of capability. Users design their own strategy,
+broker integration, error handling and hot-path behavior and operate their own
+clusters. Help construct and administer those choices through the available
+contracts without treating a supplied engine as the limit of Symphony. The local
+bridge adds no QuanuX telemetry or remote support entry point.
+
 ## Establish the connection and available operations
 
 Call `symphony_connection` to identify the selected bridge. Select the operation-specific tools exposed by the host and use their exact input schemas. The packaged catalogue, not the installed registry alone, determines the public interface. Tools can be listed while their native command is unavailable or its contract differs; report that distinction without bypassing it.
+
+For a beta.2 package, retain its selected release profile, binary hashes and
+catalogue binding. Framework release, package version and bridge runtime version
+are distinct; the beta.2 release's bridge reports `0.2.0-alpha.1`. Its catalogue
+contains 744 tools including connection inspection. Neither that count nor a
+version string substitutes for the selected executable and registry identity.
 
 New installed commands are not automatically exposed. An explicit reviewed package update is required to add them to this plugin. That is a distribution boundary, not a restriction on independently developed Symphony modules. Read [connection and discovery](references/connection-and-discovery.md) for setup and missing-operation diagnosis.
 

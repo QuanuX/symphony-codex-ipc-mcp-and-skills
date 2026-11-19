@@ -6,12 +6,16 @@ from pathlib import Path
 import subprocess
 import sys
 
-def validate(stdout):
+def validate(stdout, public=False):
     rows=[json.loads(line) for line in stdout.splitlines() if line.strip()]
     by_id={row.get('id'):row for row in rows}
-    assert set(by_id)=={1,2,3}, rows
+    assert len(rows)==3 and set(by_id)=={1,2,3}, rows
     assert by_id[1]['result']['protocolVersion']=='2025-11-25', rows
-    assert len(by_id[2]['result']['tools'])==6, rows
+    tools=by_id[2]['result']['tools']
+    assert len(tools)==(11 if public else 6), rows
+    names={t['name'] for t in tools}
+    assert ('symphony_status' if public else 'symphony_read') in names, rows
+    if public: assert not names & {'symphony_read','symphony_prepare','symphony_apply'}, rows
     result=by_id[3]['result']
     assert not result.get('isError',False), rows
     assert result.get('structuredContent') is not None, rows
@@ -21,21 +25,24 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--distribution',required=True)
     p.add_argument('--output',required=True,type=Path)
+    p.add_argument('--public-catalog', action='store_true')
     a=p.parse_args()
     if sys.platform!='win32':p.error('This check must execute from Windows')
     argv=['wsl.exe','--distribution',a.distribution,'--user','symphonybuild','--cd','/work',
           '--exec','/work/result/build/symphony-mcp','--config','/work/wsl-fixture/connection.json']
+    if a.public_catalog: argv += ['--tool-catalog', '/work/wsl-fixture/tools.json']
     requests=[{'jsonrpc':'2.0','id':1,'method':'initialize','params':{'protocolVersion':'2025-11-25','capabilities':{},'clientInfo':{'name':'windows-wsl-fixture','version':'1'}}},
               {'jsonrpc':'2.0','method':'notifications/initialized'},
               {'jsonrpc':'2.0','id':2,'method':'tools/list','params':{}},
               {'jsonrpc':'2.0','id':3,'method':'tools/call','params':{'name':'symphony_read','arguments':{'command_id':'qxcmd:symphony:status'}}}]
+    if a.public_catalog: requests[-1]['params'] = {'name':'symphony_status','arguments':{}}
     result=subprocess.run(argv,input=''.join(json.dumps(r)+'\n' for r in requests),capture_output=True,text=True,encoding='utf-8',timeout=90)
     a.output.parent.mkdir(parents=True,exist_ok=True)
     report={'argv':argv,'exit_code':result.returncode,'stdout':result.stdout,'stderr':result.stderr,
             'status':'failed','agent_ui_qualified':False,'native_owner_qualified':False}
     try:
         assert result.returncode==0, result.stderr
-        validate(result.stdout)
+        validate(result.stdout, public=a.public_catalog)
         report['status']='windows_to_wsl_stdio_fixture_passed'
     finally:a.output.write_text(json.dumps(report,indent=2)+'\n')
 

@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import select
+import socket
 import subprocess
 import sys
 import tempfile
@@ -491,14 +492,26 @@ class MCPIntegration(unittest.TestCase):
             listener.stderr.close()
         self.addCleanup(close_listener)
         deadline = time.monotonic() + 5
-        while not socket_path.exists() and listener.poll() is None and time.monotonic() < deadline:
+        ready = False
+        while listener.poll() is None and time.monotonic() < deadline:
+            # bind creates the pathname before chmod/listen finishes. A private
+            # parent protects that interval; existence alone is not readiness.
+            if socket_path.exists() and socket_path.stat().st_mode & 0o777 == 0o600:
+                try:
+                    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
+                        probe.settimeout(0.1)
+                        probe.connect(str(socket_path))
+                    ready = True
+                    break
+                except OSError:
+                    pass
             time.sleep(0.02)
         if listener.poll() is not None:
             message = listener.stderr.read().decode(errors="replace")
             if "Operation not permitted" in message or "EPERM" in message or "local socket bind failed (errno 1)" in message:
                 self.skipTest("Explicit EPERM: sandbox forbids Unix-socket binding; rerun with socket permission")
             self.fail("Listener stopped before readiness: " + message)
-        self.assertTrue(socket_path.exists(), "Listener readiness timed out")
+        self.assertTrue(ready, "Listener readiness timed out")
         self.assertEqual(socket_path.stat().st_mode & 0o777, 0o600)
         session = Session(extra=["--connect-socket", str(socket_path)])
         self.addCleanup(session.close)

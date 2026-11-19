@@ -1,12 +1,11 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "symphony",
-  "version": "0.2.0-alpha.1",
-  "description": "Connect an agent to a configured Symphony installation and administer its available qxctl capabilities through a C++ MCP bridge.",
+  "version": "0.2.0-beta.2",
+  "description": "Connect an agent to a configured Symphony beta.2 installation to build and administer user-owned engines through its native qxctl capabilities.",
   "author": {
     "name": "QuanuX",
-    "url": "https://quanux.org",
-    "email": "duncan@quanux.org"
+    "url": "https://quanux.org"
   },
   "homepage": "https://quanux.org",
   "keywords": [
@@ -21,8 +20,8 @@
       "requires_local_executor": true,
       "interface": {
         "displayName": "Symphony",
-        "shortDescription": "Administer Symphony",
-        "longDescription": "Inspect and administer a selected Symphony installation through individually exposed operation tools with explicit schemas and safety annotations. This candidate retains C++ stdio and optional same-user IPC. Write previews and apply tools are bound to one operation; native owner authority remains required. Public catalogue metadata review and organization allowlisting remain pending.",
+        "shortDescription": "Build and administer Symphony",
+        "longDescription": "Build and administer user-owned Symphony engines through individually exposed native operation tools with explicit schemas and safety annotations. This beta.2 review package retains the released local C++ stdio bridge and optional same-user IPC. The user selects their installation and cluster and owns strategy, broker integration, error handling and risk controls. Write previews and apply tools are bound to one operation; native owner authority remains required.",
         "developerName": "QuanuX",
         "websiteURL": "https://quanux.org",
         "category": "Developer Tools",
@@ -32,10 +31,10 @@
         ],
         "defaultPrompt": [
           "Inspect my Symphony connection and explain which individually exposed tools fit my task.",
-          "Help reconcile an interrupted Symphony operation using its retained owner state.",
+          "Help me design a Symphony engine using the capabilities available in my selected installation.",
           "Preview the specific Symphony administration change I requested."
         ],
-        "supportURL": "https://quanux.org/contact",
+        "supportURL": "https://quanux.org/help",
         "privacyPolicyURL": "https://quanux.org/privacy",
         "termsOfServiceURL": "https://quanux.org/symphony-plugin-terms",
         "logo": "./assets/favicon.svg",
@@ -95,7 +94,7 @@
         }
       },
       "publication": {
-        "release_notes": "Operation-specific public-tool review candidate; versioned catalogue, explicit schemas and annotations, operation-bound previews and apply, stable paginated tools/list. Partner allowlisting and metadata review remain pending."
+        "release_notes": "Beta.2 package refresh: 523 native command contracts, 303 read tools, 220 preview tools and 220 apply tools, plus connection status (744 total). Includes updated setup and administration skills and profile-specific provenance. The released bridge runtime remains 0.2.0-alpha.1. Local-MCP eligibility, organization allowlisting and publication approval remain separate OpenAI review decisions."
       }
     }
   }

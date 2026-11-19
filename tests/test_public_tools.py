@@ -104,6 +104,47 @@ class PublicTools(unittest.TestCase):
         # Listed but not installed operations report unavailable, never substitute.
         self.assertTrue(s.tool("symphony_item0", {})["isError"])
 
+    def test_full_beta_catalog_pages_preserve_every_descriptor(self):
+        self.data = json.loads((Path(__file__).resolve().parents[1] / "catalog/tools.json").read_text())
+        self.save()
+        s = self.start()
+        found, params = [], {}
+        while True:
+            page = s.rpc("tools/list", params)["result"]
+            self.assertLessEqual(len(page["tools"]), 50)
+            found.extend(page["tools"])
+            if "nextCursor" not in page: break
+            params = {"cursor": page["nextCursor"]}
+        actual = {t["name"]: t for t in found if t["name"] != "symphony_connection"}
+        self.assertEqual(len(found), len(actual) + 1)
+        self.assertEqual(actual, {e["tool"]["name"]: e["tool"] for e in self.data["entries"]})
+        for cursor in ("-1", "not-a-cursor", "999999", 5):
+            self.assertIn("error", s.rpc("tools/list", {"cursor": cursor}))
+        self.assertEqual(self.f.calls(), [])
+
+    def test_public_failure_and_changed_input_do_not_allow_replay(self):
+        s = self.start()
+        source = self.f.root / "input.json"
+        source.write_text('{}')
+        plan = s.tool("symphony_mutate_preview", {"input": str(source)})["structuredContent"]["plan_id"]
+        source.write_text('{"changed":true}')
+        self.assertTrue(s.tool("symphony_mutate_apply", {"plan_id": plan})["isError"])
+        self.assertEqual(self.f.calls(), [])
+        plan = s.tool("symphony_mutate_preview", {"mode": "failure"})["structuredContent"]["plan_id"]
+        result = s.tool("symphony_mutate_apply", {"plan_id": plan})
+        self.assertTrue(result["isError"])
+        self.assertFalse(result["structuredContent"]["retry_automatically"])
+        self.assertEqual(result["structuredContent"]["recovery_command_id"], fixture.PREFIX + "status")
+        self.assertTrue(s.tool("symphony_mutate_apply", {"plan_id": plan})["isError"])
+        self.assertEqual(len(self.f.calls()), 1)
+
+    def test_public_preview_is_session_bound(self):
+        first, second = self.start(), self.start()
+        plan = first.tool("symphony_mutate_preview", {})["structuredContent"]["plan_id"]
+        self.assertTrue(second.tool("symphony_mutate_apply", {"plan_id": plan})["isError"])
+        self.assertEqual(self.f.calls(), [])
+        self.assertFalse(first.tool("symphony_mutate_apply", {"plan_id": plan})["isError"])
+
     def test_malformed_catalogue_annotation_rejected_at_startup(self):
         self.data["entries"][0]["tool"]["annotations"]["readOnlyHint"] = "true"
         self.save()

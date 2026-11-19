@@ -1,6 +1,18 @@
 # Disposable reviewer setup
 
-Use the matching platform package and an operator-controlled qxctl built from the recorded Symphony source revision `53d6a5a3bbdfac209b5885a690a8847f0144759e`. The review record used Go 1.26.5 and that repository's declared `go.work`. The plugin does not supply qxctl or install native engines. Newer qxctl revisions require fresh binding and qualification.
+For the beta.2 refresh, follow [the exact released profile and retention
+workflow](openai-beta2-refresh.md) and select its matching qxctl, bridge and
+catalogue. The released native build source is
+`bae2e817120467561ae051c1b08cf61be3436bac`. Do not substitute the historical
+review executable or mix Ubuntu AMD64 cohorts. The plugin does not install
+qxctl or native engines; the separate Symphony distribution supplies them.
+
+The original October review record used Symphony source
+`53d6a5a3bbdfac209b5885a690a8847f0144759e`, Go 1.26.5 and its declared `go.work`.
+Keep those results scoped to their original artifacts. The scenarios below are
+reusable review inputs; executing them on beta.2 requires recording the new
+exact package/profile and observed results. The previous outcome is not a new
+beta.2 qualification.
 
 On a supported local POSIX host with Python 3.11 or newer:
 
@@ -13,7 +25,7 @@ python3 scripts/prepare_reviewer_setup.py \
 
 The output directory must not exist. The helper creates mode-0600 read-only and configuration-write profiles plus `create.json`. It does not apply the configuration. The write profile enables only `qxcmd:symphony:sov.target.configure`. The synthetic native template deliberately does not refer to a real job, target or broker. Only configuration persistence is tested. Do not invoke those example references.
 
-Install the plugin through a supported local marketplace. Run its setup workflow to select qxctl. For these acceptance cases, use the generated profile as the host connection: either create the host's private `${PLUGIN_DATA}/connection.json` from the selected profile after preserving any existing selection, or generate an explicit standalone adapter with `configure_clients.py`. Reconnect whenever selecting a different profile; the bridge reads its configuration at startup. Standalone configuration tests are distinct from GUI installation tests.
+Install the matching plugin through a supported local marketplace. Run its setup workflow to select qxctl. For these acceptance cases, use the generated profile as the host connection: either create the host's private `${PLUGIN_DATA}/connection.json` from the selected profile after preserving any existing selection, or generate an explicit standalone adapter with `configure_clients.py`, including the selected package's `--tool-catalog`. Reconnect whenever selecting a different profile; the bridge reads its configuration at startup. Standalone configuration tests are distinct from GUI installation tests.
 
 Use `read-only.json` for P1–P3. Switch to `configuration-write.json` for P4. Return to read-only for P5 and all negative cases. Substitute the actual `create.json` and `configuration.json` paths in the prompts. Native `configure` requires its input file even though the registry grammar places flags in brackets; registry grammar is not complete native validation.
 
