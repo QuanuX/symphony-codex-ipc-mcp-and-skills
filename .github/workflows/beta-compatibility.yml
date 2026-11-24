@@ -10,6 +10,7 @@ on:
       - 'schemas/**'
       - 'packaging/**'
       - 'scripts/**'
+      - 'install/**'
       - 'tests/**'
       - 'adapters/**'
       - 'skills/**'
@@ -42,6 +43,8 @@ jobs:
         run: |
           python3 -m venv "$RUNNER_TEMP/tools"
           "$RUNNER_TEMP/tools/bin/pip" install --only-binary=:all: cmake==3.31.6
+      - name: Check local Codex bootstrap
+        run: python3 install/test_install_codex.py
       - name: Build and exercise affected bridge contracts
         run: |
           "$RUNNER_TEMP/tools/bin/python" ci/qualify_local.py \

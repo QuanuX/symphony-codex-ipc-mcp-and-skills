@@ -27,24 +27,28 @@ This is a local integration for the public beta. OpenAI directory approval remai
 
 Symphony beta.2.1 is published. Users design their own engines, strategies and integrations and operate them on their own clusters; supplied engines demonstrate capabilities. The agent bridge preserves the selected native contracts and user authority. It adds no QuanuX telemetry or remote support entry point.
 
-## Connect to the published beta.2.1
+## Install the Codex plugin
 
-Use one exact released cohort throughout installation, retention and client setup:
+Start at [Symphony downloads](https://quanux.org/downloads#codex) to install the signed Symphony framework and the Codex plugin together. The plugin also works with a separately retained beta.2.1 `qxctl` on the same host. Use an ordinary user account with Python 3.11+, `curl` and a Codex CLI that supports `plugin marketplace add` and `plugin add`. For an existing installation, download the [Codex setup helper](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/releases/download/v0.2.0-beta.2.1/install-codex.py) and run it locally. The downloads page includes a checksum-verified command.
 
-| Released profile | Architecture |
+```sh
+python3 -I install-codex.py
+```
+
+The default selection is `~/symphony-0.2.0-beta.2.1/bin/qxctl` with your home directory as the Symphony working directory. To select another copy of that release, run `python3 -I install-codex.py --qxctl /absolute/path/to/qxctl --working-directory /absolute/workspace`. Use `--codex-bin /absolute/path/to/codex` for a separately installed CLI. The `--archive /absolute/path/to/plugin.zip` option verifies a previously downloaded [profile ZIP](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/releases/tag/v0.2.0-beta.2.1).
+
+The helper selects and verifies the platform ZIP, registers the QuanuX Symphony local marketplace, installs both skills and the native MCP server, and pins the selected `qxctl` in the plugin’s private read-only connection. The local installation is available independently of OpenAI directory approval. Existing workspace plugin permissions still apply.
+
+Open a **new Codex chat** and ask “Use `symphony_connection` to report the bridge version, then read the SOV target configuration template.” Expect `0.2.0-beta.2.1` and a native `symphony.sov.remote-template.v1` result. The catalogue contains 744 tools. Adding a profile with write permissions is a separate operator action.
+
+| Release profile | Plugin evidence |
 | --- | --- |
-| macOS 15 | Apple Silicon / ARM64 |
-| Ubuntu 24.04 | AMD64 |
-| Ubuntu 24.04 | ARM64 |
-| Ubuntu 26.04 | AMD64 |
+| Ubuntu 26.04 AMD64 | Fresh framework installation, installed Codex plugin and native read in an Ubuntu container on an Intel Mac. |
+| Ubuntu 24.04 AMD64 | Rebuilt server executed the native fixture suites in an Ubuntu container. |
+| macOS 15 ARM64 | Apple Silicon cross-build with minimum deployment target 15.0. Runtime execution on Apple Silicon is pending. |
+| Ubuntu 24.04 ARM64 | Candidate tested with real ARM64 qxctl under emulation. The original two fixture deadline failures and supplemental passing tests are detailed in the [build record](packaging/beta21/bridge-builds.json). |
 
-1. Follow the [beta.2.1 installation guide](https://downloads.quanux.org/symphony/0.2.0-beta.2.1/docs/BETA-INSTALL.md). Verify the release index and selected downloads using its pinned publisher-verification instructions.
-2. Install into a fresh private prefix and retain qxctl in a separate new private custody directory.
-3. Select a ZIP for a profile listed in the [bridge build record](packaging/beta21/bridge-builds.json). Its catalogue matches that profile’s signed release. The two Ubuntu AMD64 cohorts have distinct qualified builds; an architecture match alone is insufficient. A beta.2.1 macOS Intel profile is not supplied.
-4. Use `symphony-setup` to create a private, read-only connection profile for that retained qxctl and the user's chosen workspace. Register the matching client configuration without replacing unrelated host settings.
-5. Inspect `symphony_connection` and perform an appropriate exposed read operation. Enable only the non-read operations the user intends to delegate, preserving native owner authority.
-
-The Mac distribution's detached publisher signature is separate from Apple Developer ID signing and notarization. Existing Alpha users can consult the [published 0.1.0-alpha.1 MCPB](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/releases/tag/v0.1.0-alpha.1-mcpb) and [its setup instructions](docs/mcp-registry.md); that older bundle is not the beta.2.1 client package.
+For signed framework downloads and manual retention, use the [release installation guide](https://github.com/QuanuX/symphony-distribution/releases/download/v0.2.0-beta.2.1/BETA-INSTALL.md). The macOS framework package uses a detached publisher signature. For help, visit [QuanuX support](https://support.quanux.org).
 
 ## Beta.2.1 review interface and provenance
 
