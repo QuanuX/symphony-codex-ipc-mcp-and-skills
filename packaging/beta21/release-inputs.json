@@ -1,0 +1,116 @@
+{
+  "bridge_runtime_version": "0.2.0-alpha.1",
+  "native_files": {
+    "include/symphony/sha256.hpp": "sha256:a0588304e35105b0715bb138a28b8e6cdd0e398fcabd93b3f2a0d95d271fe733",
+    "include/symphony/transport.hpp": "sha256:af5835c5a4dd65d0ef35c05a57b5bf9847134b80439d19dbd22a6588942d9bb9",
+    "src/main.cpp": "sha256:1152fa2e3a62a4d0b8ed2c56d2050672dd66cd5758e61119ff641848a042e3d6",
+    "src/transport.cpp": "sha256:d475ed9d3ed2e07de098edc4fdb3187ac9818dc588970bb8ab21ebc01c22a246",
+    "third_party/NOTICE.md": "sha256:b66d1fb4ddff251065836921c072289efbf0c632a46e9b846319a7ef6064a700",
+    "third_party/nlohmann/LICENSE.MIT": "sha256:c0d068392ea65358b798b8c165103560f06e9e3b38c4ab4e2d8810a7b931af86",
+    "third_party/nlohmann/json.hpp": "sha256:aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63"
+  },
+  "native_source": {
+    "commit": "f828e558cae86ffb860a4fd3b55c6e0d0623d1c9",
+    "repository": "QuanuX/Symphony",
+    "tree": "db96c62e62378499f9adb24dfc7b3ea170d01887"
+  },
+  "package_version": "0.2.0-beta.2.1",
+  "profiles": {
+    "macos15-arm64": {
+      "bindings": {
+        "bridge_sha256": "sha256:20908111bef3e1d1d54bb09df07f6845dc67b350fde8b64b0891d7974ac91308",
+        "catalog_sha256": "sha256:049ae9674fc8c5091422fb76a4f62314e0b71cb4d468b82747e043504b6e9269",
+        "expected_registry_digest": "sha256:941e55e70ab9e66a3cc53da31d0e114101f609ceb0a908e1c153ce116af4bb8d",
+        "observed_registry_digest": "sha256:79edcfa24937a7cd1c9bc313d61fd4a40d7b9bf7f5f3126824fd77e173eff2db",
+        "package_sha256": "sha256:d0ed1fc2d7988d1d19f12557e119cec0febc632587bb5d03b120ec73a4a6bbd3",
+        "qxctl_sha256": "sha256:544308e8b2ee74d9db923fd948b0bfa90994e1ca07c89c9e9d0827d371e6394f"
+      },
+      "carrier_sha256": "sha256:62407dcfe1d0519f032212f0b848a767481288a218da31653864b4f90e484346",
+      "carrier_url": "https://conda.anaconda.org/QuanuX/label/beta/osx-arm64/symphony-client-payload-0.2.0-d14_345c3052208adbafe6e1_1.conda",
+      "evidence_sha256": "sha256:49b2c9237b3112dc2cf7b70f27ae098a72712795541e503e1e4bf0bac7d3fdfd",
+      "evidence_url": "https://downloads.quanux.org/symphony/0.2.0-beta.2.1/evidence/macos15-arm64/client-qualification.json",
+      "files": {
+        "bin/symphony-mcp": "sha256:20908111bef3e1d1d54bb09df07f6845dc67b350fde8b64b0891d7974ac91308",
+        "catalog/beta-source.json": "sha256:5ccba48fa3c1009532dd98ea073cb7f898f482ccc71040bb0c66cb3bf8349225",
+        "catalog/stamped-owner-delta.json": "sha256:2d103287bb1f6df522fc2a36edb731eccbbb5982a7663ce27114475763f62f4d",
+        "catalog/tools.json": "sha256:049ae9674fc8c5091422fb76a4f62314e0b71cb4d468b82747e043504b6e9269"
+      },
+      "released_client_zip_sha256": "sha256:d0ed1fc2d7988d1d19f12557e119cec0febc632587bb5d03b120ec73a4a6bbd3"
+    },
+    "ubuntu24.04-amd64": {
+      "bindings": {
+        "bridge_sha256": "sha256:185dff2170f79b329f97b58aac745aa60bb5166d934ab024fd220838d32d1558",
+        "catalog_sha256": "sha256:76efbc1175f522d785728890453c71388e3943ee229835ac1c80650cdb80c06e",
+        "expected_registry_digest": "sha256:941e55e70ab9e66a3cc53da31d0e114101f609ceb0a908e1c153ce116af4bb8d",
+        "observed_registry_digest": "sha256:ab9fa959c8327db0143fe4a2dd1316ffdb7bb0790d42ad904cb285e06db1feb8",
+        "package_sha256": "sha256:d07c4d0effe59a0111deac686dceacabc0106869ea62c0545e9812f5c31d951f",
+        "qxctl_sha256": "sha256:7453ea600635233df65fddaef4428d03298199ae1cc82637c6de38266ff42cfd"
+      },
+      "carrier_sha256": "sha256:b879aeb5d285016e15d8473b412499daf1db543615c60181d95b19b8750d9ed7",
+      "carrier_url": "https://conda.anaconda.org/QuanuX/label/beta/linux-64/symphony-client-payload-0.2.0-d14_c101eaf0aad0a94e81bc_1.conda",
+      "evidence_sha256": "sha256:2b939191f788881ef4550b52ec3998b2aa4863142c58189d0c97ae38ebdff9a5",
+      "evidence_url": "https://downloads.quanux.org/symphony/0.2.0-beta.2.1/evidence/ubuntu24.04-amd64/client-qualification.json",
+      "files": {
+        "bin/symphony-mcp": "sha256:185dff2170f79b329f97b58aac745aa60bb5166d934ab024fd220838d32d1558",
+        "catalog/beta-source.json": "sha256:a3a5ec76af4ebb5ac19906213f294a03363f1d2d4053d25939382cd29d58be4f",
+        "catalog/stamped-owner-delta.json": "sha256:e8b8cea955f69a8b4ee7349b0c2b30935484df7a3f10d7fcddf7860fd52da910",
+        "catalog/tools.json": "sha256:76efbc1175f522d785728890453c71388e3943ee229835ac1c80650cdb80c06e"
+      },
+      "released_client_zip_sha256": "sha256:d07c4d0effe59a0111deac686dceacabc0106869ea62c0545e9812f5c31d951f"
+    },
+    "ubuntu24.04-arm64": {
+      "bindings": {
+        "bridge_sha256": "sha256:d1cd0e1068446fcdd55cf4e3c866f6605d7e8e0a7305c6d79ffb4ba373183246",
+        "catalog_sha256": "sha256:341aa83989c2d7ac60572fc60085f4e5aadfe3e26fc72e5c715e3c7db6beb5de",
+        "expected_registry_digest": "sha256:941e55e70ab9e66a3cc53da31d0e114101f609ceb0a908e1c153ce116af4bb8d",
+        "observed_registry_digest": "sha256:4df440e217d055509e9543132685282ffe2858d779f6bbff19fbf667d38e66bf",
+        "package_sha256": "sha256:538bfbe2e60fb8a60b42edd437d1c7270c89ea0f5ae5958dad4ededb813bbd3e",
+        "qxctl_sha256": "sha256:c3f4870c0e409bd4eca6ee9dd1f3ee42d957989e3173ed776a8eb6dce73fe67b"
+      },
+      "carrier_sha256": "sha256:b5f648f5e6d14a812fe490e46bf9b5c82b59f125ae47903dca3665b5cdeec297",
+      "carrier_url": "https://conda.anaconda.org/QuanuX/label/beta/linux-aarch64/symphony-client-payload-0.2.0-d14_67b86245f7cc2f128d22_1.conda",
+      "evidence_sha256": "sha256:e98df6dbe5df0b9929cd8339101e8544316060840e6003b772f95a24189ea17d",
+      "evidence_url": "https://downloads.quanux.org/symphony/0.2.0-beta.2.1/evidence/ubuntu24.04-arm64/client-qualification.json",
+      "files": {
+        "bin/symphony-mcp": "sha256:d1cd0e1068446fcdd55cf4e3c866f6605d7e8e0a7305c6d79ffb4ba373183246",
+        "catalog/beta-source.json": "sha256:f428ec122e27b47118fa8353ef636f30a58d3b8bcead66d17bd9f72c775b4b91",
+        "catalog/stamped-owner-delta.json": "sha256:5ef3a1358b69e128b12800b1af9d7b47ad479326a1c92ec5bbe2db6921a6274e",
+        "catalog/tools.json": "sha256:341aa83989c2d7ac60572fc60085f4e5aadfe3e26fc72e5c715e3c7db6beb5de"
+      },
+      "released_client_zip_sha256": "sha256:538bfbe2e60fb8a60b42edd437d1c7270c89ea0f5ae5958dad4ededb813bbd3e"
+    },
+    "ubuntu26.04-amd64": {
+      "bindings": {
+        "bridge_sha256": "sha256:2988db09ad5404fd2d348b574e2805144da72f0b16ea6f4c55fe62adf6e9dca4",
+        "catalog_sha256": "sha256:76efbc1175f522d785728890453c71388e3943ee229835ac1c80650cdb80c06e",
+        "expected_registry_digest": "sha256:941e55e70ab9e66a3cc53da31d0e114101f609ceb0a908e1c153ce116af4bb8d",
+        "observed_registry_digest": "sha256:ab9fa959c8327db0143fe4a2dd1316ffdb7bb0790d42ad904cb285e06db1feb8",
+        "package_sha256": "sha256:30612dff8bd7793d7afb941edb16bf27b5a92cdd6b72fe7e3e86831c92040415",
+        "qxctl_sha256": "sha256:7453ea600635233df65fddaef4428d03298199ae1cc82637c6de38266ff42cfd"
+      },
+      "carrier_sha256": "sha256:abcd4734c53a3e93e1e56c3e8e3bd787afbbf1e1e698ef1989dce2da749ffc63",
+      "carrier_url": "https://conda.anaconda.org/QuanuX/label/beta/linux-64/symphony-client-payload-0.2.0-d14_c84bf44c2db64d232e26_1.conda",
+      "evidence_sha256": "sha256:4f882c36801dbda21d215b108b765cfa71bc8f929907ed50c1589c56605f43e4",
+      "evidence_url": "https://downloads.quanux.org/symphony/0.2.0-beta.2.1/evidence/ubuntu26.04-amd64/client-qualification.json",
+      "files": {
+        "bin/symphony-mcp": "sha256:2988db09ad5404fd2d348b574e2805144da72f0b16ea6f4c55fe62adf6e9dca4",
+        "catalog/beta-source.json": "sha256:154857294bff8c0f21e95074de4ef3249de5edee41f4c378f0fca1e724a2fb91",
+        "catalog/stamped-owner-delta.json": "sha256:e8b8cea955f69a8b4ee7349b0c2b30935484df7a3f10d7fcddf7860fd52da910",
+        "catalog/tools.json": "sha256:76efbc1175f522d785728890453c71388e3943ee229835ac1c80650cdb80c06e"
+      },
+      "released_client_zip_sha256": "sha256:30612dff8bd7793d7afb941edb16bf27b5a92cdd6b72fe7e3e86831c92040415"
+    }
+  },
+  "release": {
+    "index_sha256": "sha256:69c89fef8a2ab2eed8e78b56168fcdbbf285989fedf698a43ea499cd2883e9f0",
+    "index_url": "https://github.com/QuanuX/symphony-distribution/releases/download/v0.2.0-beta.2.1/release-index.json",
+    "url": "https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.2.1",
+    "version": "0.2.0-beta.2.1"
+  },
+  "released_client_source": {
+    "commit": "572627e939250763756167a9dc05d8cb37ab4e30",
+    "repository": "QuanuX/symphony-codex-ipc-mcp-and-skills",
+    "tree": "83a5aad51f809358b72d2cb9f96833b8977b57a0"
+  },
+  "schema": "symphony.beta-review-inputs.v1"
+}

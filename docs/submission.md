@@ -1,8 +1,12 @@
 # Public local-MCP submission
 
-## Current beta.2 package refresh — November 19, 2026
+## November 24, 2026
 
-The current integration source and skills target the published Symphony
+The [beta.2.1 review package](openai-beta21-review.md) includes the version-matched local C++ server, both skills and a catalogue bound to the selected Symphony installation. Upload the single platform ZIP for the intended reviewer host to the existing submission.
+
+## November 19, 2026
+
+The integration source and skills for this refresh targeted the published Symphony
 `0.2.0-beta.2` release and its 744-tool client interface. See
 [the exact profile, provenance and package boundaries](openai-beta2-refresh.md).
 The bridge runtime reports `0.2.0-alpha.1`; preserve that executable identity
@@ -16,8 +20,7 @@ OpenAI local-MCP eligibility, or establish public approval. Record the actual
 submission and portal validation separately. Existing demonstrations and test
 results retain their original interface and artifact scope.
 
-Technical support is described at [quanux.org/help](https://quanux.org/help),
-with ticket intake through [support.quanux.org](https://support.quanux.org).
+For technical support, open a ticket at [support.quanux.org](https://support.quanux.org).
 The `/support` webpage is the contribution campaign. The privacy policy and
 plugin terms remain linked from the package metadata.
 

@@ -2,7 +2,7 @@
 
 The checksum-pinned root `server.json` describes the published [**0.1.0-alpha.1 MCP Bundle (`.mcpb`)**](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/releases/tag/v0.1.0-alpha.1-mcpb). That release contains the C++ bridge, corresponding source and licenses, bundled skills and setup scripts, and four platform executables. Its six-tool interface and original platform evidence apply to that exact artifact.
 
-The current legacy MCPB build template is separately versioned **0.2.0-alpha.1**. It supplies 743 individual operation tools plus connection inspection, 744 total, but has not replaced the published bundle. The [beta.2 OpenAI package refresh](openai-beta2-refresh.md) is a separate profile-specific distribution with its own package version and provenance. Registry publication does not establish OpenAI approval or native Symphony service health.
+The current legacy MCPB build template is separately versioned **0.2.0-alpha.1**. It supplies 743 individual operation tools plus connection inspection, 744 total, but has not replaced the published bundle. The [beta.2.1 OpenAI package refresh](openai-beta21-review.md) is a separate profile-specific distribution with its own package version and provenance. Registry publication does not establish OpenAI approval or native Symphony service health.
 
 ## Install the published 0.1.0-alpha.1 bundle
 

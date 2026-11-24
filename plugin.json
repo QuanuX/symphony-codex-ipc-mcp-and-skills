@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "symphony",
-  "version": "0.2.0-beta.2",
-  "description": "Connect an agent to a configured Symphony beta.2 installation to build and administer user-owned engines through its native qxctl capabilities.",
+  "version": "0.2.0-beta.2.1",
+  "description": "Connect an agent to a configured Symphony beta.2.1 installation to build and administer user-owned engines through its native qxctl capabilities.",
   "author": {
     "name": "QuanuX",
     "url": "https://quanux.org"
@@ -21,7 +21,7 @@
       "interface": {
         "displayName": "Symphony",
         "shortDescription": "Build and administer Symphony",
-        "longDescription": "Build and administer user-owned Symphony engines through individually exposed native operation tools with explicit schemas and safety annotations. This beta.2 review package retains the released local C++ stdio bridge and optional same-user IPC. The user selects their installation and cluster and owns strategy, broker integration, error handling and risk controls. Write previews and apply tools are bound to one operation; native owner authority remains required.",
+        "longDescription": "Build and administer user-owned Symphony engines through individually exposed native operation tools with explicit schemas and safety annotations. The beta.2.1 plugin runs a version-matched local C++ stdio bridge and supports optional same-user IPC. The user selects their installation and cluster and owns strategy, broker integration, error handling and risk controls. Write previews and apply tools are bound to one operation; native owner authority remains required.",
         "developerName": "QuanuX",
         "websiteURL": "https://quanux.org",
         "category": "Developer Tools",
@@ -34,7 +34,7 @@
           "Help me design a Symphony engine using the capabilities available in my selected installation.",
           "Preview the specific Symphony administration change I requested."
         ],
-        "supportURL": "https://quanux.org/help",
+        "supportURL": "https://support.quanux.org",
         "privacyPolicyURL": "https://quanux.org/privacy",
         "termsOfServiceURL": "https://quanux.org/symphony-plugin-terms",
         "logo": "./assets/favicon.svg",
@@ -94,7 +94,7 @@
         }
       },
       "publication": {
-        "release_notes": "Beta.2 package refresh: 523 native command contracts, 303 read tools, 220 preview tools and 220 apply tools, plus connection status (744 total). Includes updated setup and administration skills and profile-specific provenance. The released bridge runtime remains 0.2.0-alpha.1. Local-MCP eligibility, organization allowlisting and publication approval remain separate OpenAI review decisions."
+        "release_notes": "The plugin and native C++ server report 0.2.0-beta.2.1. The release catalogue exposes 523 native command contracts through 303 read, 220 preview and 220 apply tools, plus connection status. The package includes setup and administration skills and records the exact bridge, qxctl and catalogue for its platform."
       }
     }
   }

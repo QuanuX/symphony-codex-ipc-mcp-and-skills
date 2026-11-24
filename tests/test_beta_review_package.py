@@ -42,14 +42,23 @@ class BetaReviewPackageTests(unittest.TestCase):
         pins = {'files': {name: packager.digest(data) for name, data in released.items()},
                 'bindings': {'observed_registry_digest': source['observed_registry_digest'],
                              'qxctl_sha256': 'sha256:' + source['qxctl_build']['executable_sha256']}}
-        self.inputs = {'package_version': '0.2.0-beta.2',
+        self.bridge = self.base / 'symphony-mcp'
+        self.bridge.write_bytes(b'rebuilt beta bridge')
+        self.builds = {'runtime_version': '0.2.0-beta.2.1',
+                       'build_source': {'files': {'src/fixture.cpp': packager.digest(b'int fixture;\n'),
+                                                  'CMakeLists.txt': packager.digest(b'# Fixture\n')}},
+                       'profiles': {self.profile: {'sha256': packager.digest(self.bridge.read_bytes())}}}
+        self.inputs = {'package_version': '0.2.0-beta.2.1',
                        'bridge_runtime_version': '0.2.0-alpha.1',
-                       'release': {'version': '0.2.0-beta.2'},
+                       'release': {'version': '0.2.0-beta.2.1'},
                        'native_source': source['core'],
                        'released_client_source': source['client_dependency'],
                        'native_files': {'src/fixture.cpp': packager.digest(b'int fixture;\n')},
                        'profiles': {self.profile: pins}}
-        files = {'plugin.json': b'{"name":"symphony","version":"0.2.0-beta.2"}\n',
+        files = {'plugin.json': b'{"name":"symphony","version":"0.2.0-beta.2.1"}\n',
+                 '.claude-plugin/plugin.json': b'{"name":"symphony","version":"0.2.0-beta.2.1"}\n',
+                 'CMakeLists.txt': b'# Fixture\n',
+                 packager.BUILDS: packager.json_bytes(self.builds),
                  'mcp.json': b'{}\n', 'INTENT.md': b'Fixture review source.\n',
                  'src/fixture.cpp': b'int fixture;\n',
                  'skills/symphony-admin/SKILL.md': b'Fixture admin skill.\n',
@@ -74,24 +83,26 @@ class BetaReviewPackageTests(unittest.TestCase):
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     def verify(self, profile=None):
-        return packager.verify_inputs(self.root, self.client, profile or self.profile, self.inputs)
+        return packager.verify_inputs(self.root, self.client, profile or self.profile, self.inputs, self.bridge, self.builds)
 
     def test_deterministic_archive_has_exact_inputs_permissions_and_provenance(self):
         identity = packager.source_identity(self.root)
-        entries = packager.build_entries(self.root, self.client, self.profile, self.inputs, identity)
+        entries = packager.build_entries(self.root, self.client, self.profile, self.inputs, identity, self.bridge, self.builds)
         first, second = self.base / 'one.zip', self.base / 'two.zip'
         result = package_release.write_archive(first, entries)
         package_release.write_archive(second, entries)
         self.assertEqual(first.read_bytes(), second.read_bytes())
         self.assertEqual(result['sha256'], hashlib.sha256(first.read_bytes()).hexdigest())
         with zipfile.ZipFile(first) as archive:
-            self.assertEqual(archive.read('bin/symphony-mcp'), (self.client / 'bin/symphony-mcp').read_bytes())
+            self.assertEqual(archive.read('bin/symphony-mcp'), self.bridge.read_bytes())
             mode = archive.getinfo('bin/symphony-mcp').external_attr >> 16
             self.assertEqual(stat.S_IMODE(mode), 0o755)
             metadata = json.loads(archive.read('package-profile.json'))
             self.assertEqual(metadata['profile'], self.profile)
-            self.assertEqual(metadata['package_version'], '0.2.0-beta.2')
-            self.assertEqual(metadata['bridge_runtime_version'], '0.2.0-alpha.1')
+            self.assertEqual(metadata['package_version'], '0.2.0-beta.2.1')
+            self.assertEqual(metadata['bridge_runtime_version'], '0.2.0-beta.2.1')
+            self.assertEqual(metadata['original_bridge_runtime_version'], '0.2.0-alpha.1')
+            self.assertEqual(metadata['bridge_build']['sha256'], packager.digest(self.bridge.read_bytes()))
             self.assertEqual(metadata['review_source'], identity)
             self.assertEqual(set(metadata['files']), set(archive.namelist()) - {'package-profile.json'})
             for name, expected in metadata['files'].items():
@@ -112,6 +123,17 @@ class BetaReviewPackageTests(unittest.TestCase):
             with self.subTest(name=name), self.assertRaisesRegex(ValueError, 'hash/profile mismatch'):
                 self.verify()
             path.write_bytes(original)
+
+    def test_rejects_alpha_executable_and_wrong_bridge_build(self):
+        self.bridge.write_bytes((self.client / 'bin/symphony-mcp').read_bytes())
+        with self.assertRaisesRegex(ValueError, 'Rebuilt bridge hash/profile mismatch'):
+            self.verify()
+        self.builds['profiles'][self.profile]['sha256'] = packager.digest(self.bridge.read_bytes())
+        with self.assertRaisesRegex(ValueError, 'Rebuilt bridge hash/profile mismatch'):
+            self.verify()
+        self.builds['runtime_version'] = '0.2.0-alpha.1'
+        with self.assertRaisesRegex(ValueError, 'versions differ'):
+            self.verify()
 
     def test_rejects_native_source_drift_and_dirty_checkout(self):
         (self.root / 'src/fixture.cpp').write_text('int changed;\n')
@@ -142,7 +164,7 @@ class BetaReviewPackageTests(unittest.TestCase):
                 self.run_git('commit', '-qm', 'Forbidden fixture')
                 with self.assertRaisesRegex(ValueError, 'Private state or additional plugin root'):
                     packager.build_entries(self.root, self.client, self.profile, self.inputs,
-                                           packager.source_identity(self.root))
+                                           packager.source_identity(self.root), self.bridge, self.builds)
                 self.run_git('rm', '-q', name)
                 self.run_git('commit', '-qm', 'Remove forbidden fixture')
 

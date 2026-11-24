@@ -2,7 +2,7 @@
 
 # Symphony Codex IPC/MCP and Skills
 
-Standalone repository: [QuanuX/symphony-codex-ipc-mcp-and-skills](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills). The implemented protocol is **MCP (Model Context Protocol)**; historical migration records preserve the former repository spelling. This package refresh targets **Symphony `0.2.0-beta.2`**. The released beta's bridge executable reports runtime `0.2.0-alpha.1`; framework, package and runtime identities are recorded separately.
+Standalone repository: [QuanuX/symphony-codex-ipc-mcp-and-skills](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills). The implemented protocol is **MCP (Model Context Protocol)**; historical migration records preserve the former repository spelling. This package refresh targets **Symphony `0.2.0-beta.2.1`**. The packaged bridge and plugin report `0.2.0-beta.2.1`. The matching signed framework supplies qxctl and the operation catalogue.
 
 A C++26 MCP bridge, Codex skill/plugin, and reusable client adapters for direct administration of a selected Symphony installation. Publisher: **QuanuX**, [quanux.org](https://quanux.org).
 
@@ -10,7 +10,7 @@ This is a separately maintained integration, not a Symphony module. It builds wi
 
 The public package exposes versioned, individually named operation tools and checks their contracts against the selected qxctl registry. It runs reads and previews/applies configured administration operations. It preserves qxctl as Symphony's operating interface and the native owners' identity, authority, receipts, versions and recovery rules. It adds no new vector or mandatory workload dependency. User modules and compositions remain open-ended.
 
-This is a local integration for the public beta. OpenAI directory approval remains a separate review outcome. Current compatibility uses the explicitly pinned MCP **2025-11-25** protocol. See the [beta.2 package refresh](docs/openai-beta2-refresh.md), [verification](docs/verification.md), [host compatibility](docs/host-compatibility.md) and [submission history](docs/submission.md).
+This is a local integration for the public beta. OpenAI directory approval remains a separate review outcome. Current compatibility uses the explicitly pinned MCP **2025-11-25** protocol. See the [beta.2.1 package refresh](docs/openai-beta21-review.md), [verification](docs/verification.md), [host compatibility](docs/host-compatibility.md) and [submission history](docs/submission.md).
 
 ## What Symphony and qxctl do
 
@@ -22,35 +22,39 @@ This is a local integration for the public beta. OpenAI directory approval remai
 - [qxctl documentation tab and overview](https://docs.quanux.org/symphony/qxctl/overview)
 - [Current Symphony getting-started guidance](https://docs.quanux.org/symphony/quickstart)
 - [Public Symphony source and license](https://github.com/QuanuX/Symphony)
-- [Published Symphony beta.2 release](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.2)
-- [Beta.2 installation and retention guide](https://downloads.quanux.org/symphony/0.2.0-beta.2/docs/BETA-INSTALL.md)
+- [Published Symphony beta.2.1 release](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.2.1)
+- [Beta.2.1 installation and retention guide](https://downloads.quanux.org/symphony/0.2.0-beta.2.1/docs/BETA-INSTALL.md)
 
-Symphony beta.2 is published. Users design their own engines, strategies and integrations and operate them on their own clusters; supplied engines demonstrate capabilities. The agent bridge preserves the selected native contracts and user authority. It adds no QuanuX telemetry or remote support entry point.
+Symphony beta.2.1 is published. Users design their own engines, strategies and integrations and operate them on their own clusters; supplied engines demonstrate capabilities. The agent bridge preserves the selected native contracts and user authority. It adds no QuanuX telemetry or remote support entry point.
 
-## Connect to the published beta.2
+## Install the Codex plugin
 
-Use one exact released cohort throughout installation, retention and client setup:
+Start at [Symphony downloads](https://quanux.org/downloads#codex) to install the signed Symphony framework and the Codex plugin together. The plugin also works with a separately retained beta.2.1 `qxctl` on the same host. Use an ordinary user account with Python 3.11+, `curl` and a Codex CLI that supports `plugin marketplace add` and `plugin add`. For an existing installation, download the [Codex setup helper](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/releases/download/v0.2.0-beta.2.1/install-codex.py) and run it locally. The downloads page includes a checksum-verified command.
 
-| Released profile | Architecture |
+```sh
+python3 -I install-codex.py
+```
+
+The default selection is `~/symphony-0.2.0-beta.2.1/bin/qxctl` with your home directory as the Symphony working directory. To select another copy of that release, run `python3 -I install-codex.py --qxctl /absolute/path/to/qxctl --working-directory /absolute/workspace`. Use `--codex-bin /absolute/path/to/codex` for a separately installed CLI. The `--archive /absolute/path/to/plugin.zip` option verifies a previously downloaded [profile ZIP](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/releases/tag/v0.2.0-beta.2.1).
+
+The helper selects and verifies the platform ZIP, registers the QuanuX Symphony local marketplace, installs both skills and the native MCP server, and pins the selected `qxctl` in the plugin’s private read-only connection. The local installation is available independently of OpenAI directory approval. Existing workspace plugin permissions still apply.
+
+Open a **new Codex chat** and ask “Use `symphony_connection` to report the bridge version, then read the SOV target configuration template.” Expect `0.2.0-beta.2.1` and a native `symphony.sov.remote-template.v1` result. The catalogue contains 744 tools. Adding a profile with write permissions is a separate operator action.
+
+| Release profile | Plugin evidence |
 | --- | --- |
-| macOS 15 | Apple Silicon / ARM64 |
-| Ubuntu 24.04 | AMD64 |
-| Ubuntu 24.04 | ARM64 |
-| Ubuntu 26.04 | AMD64 |
+| Ubuntu 26.04 AMD64 | Fresh framework installation, installed Codex plugin and native read in an Ubuntu container on an Intel Mac. |
+| Ubuntu 24.04 AMD64 | Rebuilt server executed the native fixture suites in an Ubuntu container. |
+| macOS 15 ARM64 | Apple Silicon cross-build with minimum deployment target 15.0. Runtime execution on Apple Silicon is pending. |
+| Ubuntu 24.04 ARM64 | Candidate tested with real ARM64 qxctl under emulation. The original two fixture deadline failures and supplemental passing tests are detailed in the [build record](packaging/beta21/bridge-builds.json). |
 
-1. Follow the [beta.2 installation guide](https://downloads.quanux.org/symphony/0.2.0-beta.2/docs/BETA-INSTALL.md). Verify the release index and selected downloads using its pinned publisher-verification instructions.
-2. Install into a fresh private prefix and retain the selected qxctl and client in a separate new private custody directory. Beta.1-to-beta.2 in-place native upgrade and rollback are not qualified.
-3. Select the matching profile-specific plugin package and its catalogue. The two Ubuntu AMD64 cohorts have distinct qualified builds; an architecture match alone is insufficient. A beta.2 macOS Intel profile is not supplied.
-4. Use `symphony-setup` to create a private, read-only connection profile for that retained qxctl and the user's chosen workspace. Register the matching client configuration without replacing unrelated host settings.
-5. Inspect `symphony_connection` and perform an appropriate exposed read operation. Enable only the non-read operations the user intends to delegate, preserving native owner authority.
+For signed framework downloads and manual retention, use the [release installation guide](https://github.com/QuanuX/symphony-distribution/releases/download/v0.2.0-beta.2.1/BETA-INSTALL.md). The macOS framework package uses a detached publisher signature. For help, visit [QuanuX support](https://support.quanux.org).
 
-The Mac distribution's detached publisher signature is separate from Apple Developer ID signing and notarization. Existing Alpha users can consult the [published 0.1.0-alpha.1 MCPB](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/releases/tag/v0.1.0-alpha.1-mcpb) and [its setup instructions](docs/mcp-registry.md); that older bundle is not the beta.2 client package.
+## Beta.2.1 review interface and provenance
 
-## Beta.2 review interface and provenance
+The refreshed interface contains **303 read tools, 220 preview tools and 220 apply tools**, plus `symphony_connection`: **744 tools total**, covering **523 native command contracts**. It incorporates the client source used by the released beta, including catalogue and compatibility verification. Local C++/stdio and optional same-user IPC remain the transports. See the [beta.2.1 refresh record](docs/openai-beta21-review.md), [W13 compatibility](docs/beta-compatibility.md) and [dated review handoff](docs/beta-review-handoff.md).
 
-The refreshed interface contains **303 read tools, 220 preview tools and 220 apply tools**, plus `symphony_connection`: **744 tools total**, covering **523 native command contracts**. It incorporates the client source used by the released beta, including catalogue and compatibility verification. Local C++/stdio and optional same-user IPC remain the transports. See the [beta.2 refresh record](docs/openai-beta2-refresh.md), [W13 compatibility](docs/beta-compatibility.md) and [dated review handoff](docs/beta-review-handoff.md).
-
-Each selected package records its exact bridge, qxctl and catalogue binding in root `package-profile.json` (`symphony.beta-review-package.v1`). Read that receipt before setup. A shared tool count does not make executable hashes or observed-registry digests interchangeable. The runtime's `0.2.0-alpha.1` string is preserved for the corresponding released executable; a package version does not change those bytes or imply a new runtime build.
+Each selected package records its exact bridge, qxctl and catalogue binding in root `package-profile.json` (`symphony.beta-review-package.v2`). Read that receipt before setup. A shared tool count does not make executable hashes or observed-registry digests interchangeable. The receipt identifies the new bridge build and the framework’s original client separately. The retained framework client still identifies itself as `0.2.0-alpha.1`. Launch `bin/symphony-mcp` from the selected plugin ZIP.
 
 `server.json` remains the checksum-pinned record of the published **0.1.0-alpha.1** MCPB until a verified replacement bundle exists. Profile-specific OpenAI ZIPs do not replace that registry artifact or establish OpenAI submission, eligibility or approval.
 
@@ -126,16 +130,16 @@ Both peers verify the kernel UID; the socket is 0600 in an owned 0700 directory.
 
 ## Packaging and release
 
-Prepare beta.2 review ZIPs for the exact released cohorts above. Include each cohort's matching bridge and catalogue, the updated skills, corresponding source, licenses and provenance. Follow the [beta.2 refresh record](docs/openai-beta2-refresh.md) for the packaging boundary. Neither package extraction nor client launch installs or activates Symphony services.
+Prepare beta.2.1 review ZIPs for the exact released cohorts above. Include each cohort's matching bridge and catalogue, the updated skills, corresponding source, licenses and provenance. Follow the [beta.2.1 refresh record](docs/openai-beta21-review.md) for the packaging boundary. Neither package extraction nor client launch installs or activates Symphony services.
 
-The existing native MCPB packaging path targets macOS Intel/Apple Silicon and Linux x86-64/ARM64. Its target model is broader than the published beta.2 cohort set and does not distinguish Ubuntu 24.04 from 26.04 AMD64. Qualify a replacement explicitly before changing the published bundle or `server.json`. [MCP Registry installation and publishing](docs/mcp-registry.md) records that separate channel. The Windows-to-WSL adapter remains available; its historical checks do not add a beta.2 Windows qualification.
+The existing native MCPB packaging path targets macOS Intel/Apple Silicon and Linux x86-64/ARM64. Its target model is broader than the published beta.2.1 cohort set and does not distinguish Ubuntu 24.04 from 26.04 AMD64. Qualify a replacement explicitly before changing the published bundle or `server.json`. [MCP Registry installation and publishing](docs/mcp-registry.md) records that separate channel. The Windows-to-WSL adapter remains available; its historical checks do not add a beta.2.1 Windows qualification.
 
-The beta.2 packager includes committed source, the exact selected released binary and catalogue, both skills, adapters, licenses and profile provenance. It excludes local profiles, build caches and private evidence, emits an archive digest and never uploads. Use the [reproduction commands](docs/openai-beta2-refresh.md#reproduce-the-review-package) for a verified profile package. The separate generic `scripts/package_release.py` can create a developer source archive by omitting `--binary`; that archive requires a build before installation and does not establish beta.2 profile qualification.
+The beta.2.1 packager includes committed source, the newly built bridge and the signed release catalogue, both skills, adapters, licenses and profile provenance. It excludes local profiles, build caches and private evidence, emits an archive digest and never uploads. Use the [reproduction commands](docs/openai-beta21-review.md#reproduce-the-review-package) for a verified profile package. The separate generic `scripts/package_release.py` can create a developer source archive by omitting `--binary`; that archive requires a build before installation and does not establish beta.2.1 profile qualification.
 
-Publisher contact, original branding, published plugin privacy coverage and [publisher-approved terms](https://quanux.org/symphony-plugin-terms) are included. The earlier submitted draft and demonstration remain dated review artifacts. The beta.2 refresh addresses package compatibility; confirm local-MCP eligibility, review routing and acceptance separately with OpenAI. The configured C++ runtime and adapters have the focused historical evidence recorded in [Codex acceptance](docs/codex-acceptance.md). A successful package test does not establish directory approval.
+Publisher contact, original branding, published plugin privacy coverage and [publisher-approved terms](https://quanux.org/symphony-plugin-terms) are included. The earlier submitted draft and demonstration remain dated review artifacts. The beta.2.1 refresh addresses package compatibility; confirm local-MCP eligibility, review routing and acceptance separately with OpenAI. The configured C++ runtime and adapters have the focused historical evidence recorded in [Codex acceptance](docs/codex-acceptance.md). A successful package test does not establish directory approval.
 
 The [historical platform qualification record](docs/platforms.md) covers eleven earlier native/WSL candidates and separate clean-package checks. Apply those results only to their recorded bytes and environments. [Windows clients use an explicit WSL adapter](docs/windows-wsl2.md). DGX/Spark hardware and actual desktop GUI acceptance require their own evidence.
 
 The manifest now offers the packaged `symphony-setup` onboarding workflow for selecting an existing installation and creating its private pinned profile. See [Codex acceptance](docs/codex-acceptance.md) for installed client evidence and remaining GUI checks. NVIDIA DGX/Spark qualification is a later milestone.
 
-The [D08 stamped-owner handoff](docs/d08-stamped-owner-handoff.md) is retained as historical source-binding evidence. The beta.2 release uses its own exact native source and per-profile artifacts; current package evidence must bind those bytes.
+The [D08 stamped-owner handoff](docs/d08-stamped-owner-handoff.md) is retained as historical source-binding evidence. The beta.2.1 release uses its own exact native source and per-profile artifacts; current package evidence must bind those bytes.

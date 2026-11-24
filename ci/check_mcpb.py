@@ -37,9 +37,11 @@ def main():
                 destination.chmod(0o755 if mode & 0o111 else 0o644)
         manifest = json.loads((root / "manifest.json").read_text())
         assert manifest["server"]["type"] == "binary"
+        assert manifest["version"] == metadata["packages"][0]["version"] == metadata["version"]
         # The test suite supplies private exact-pinned fixture profiles; no real
         # Symphony installation, credentials or production state is used.
-        subprocess.run([os.sys.executable, "tests/test_mcp.py", str(root / "launcher.sh")], check=True)
+        subprocess.run([os.sys.executable, "tests/test_mcp.py", str(root / "launcher.sh"),
+                        manifest["version"]], check=True)
         print(json.dumps({"bundle_sha256": metadata["packages"][0]["fileSha256"], "platform": os.uname().sysname, "architecture": os.uname().machine, "exact_bundle_mcp_tests": "passed"}))
 
 

@@ -19,9 +19,9 @@ bridge adds no QuanuX telemetry or remote support entry point.
 
 Call `symphony_connection` to identify the selected bridge. Select the operation-specific tools exposed by the host and use their exact input schemas. The packaged catalogue, not the installed registry alone, determines the public interface. Tools can be listed while their native command is unavailable or its contract differs; report that distinction without bypassing it.
 
-For a beta.2 package, retain its selected release profile, binary hashes and
-catalogue binding. Framework release, package version and bridge runtime version
-are distinct; the beta.2 release's bridge reports `0.2.0-alpha.1`. Its catalogue
+For a beta.2.1 package, retain its selected release profile, binary hashes and
+catalogue binding. The review bridge reports `0.2.0-beta.2.1` from the CLI, MCP handshake and
+connection inspection. Its catalogue
 contains 744 tools including connection inspection. Neither that count nor a
 version string substitutes for the selected executable and registry identity.
 

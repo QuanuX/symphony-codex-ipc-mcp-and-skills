@@ -1,8 +1,12 @@
 # GitHub and OpenAI beta review handoff
 
-## Current handoff — November 19, 2026
+## November 24, 2026
 
-Symphony `0.2.0-beta.2` is published. The [current package refresh](openai-beta2-refresh.md)
+The [beta.2.1 review instructions](openai-beta21-review.md) identify the updated plugin and native server, release inputs and platform builds.
+
+## November 19, 2026
+
+Symphony `0.2.0-beta.2` is published. The [beta.2 package refresh](openai-beta2-refresh.md)
 uses the released beta's client source, 523 native command contracts and 744
 exposed tools. Prepare one package per exact released cohort with its matching
 bridge, catalogue and provenance. The released bridge's `0.2.0-alpha.1` runtime
