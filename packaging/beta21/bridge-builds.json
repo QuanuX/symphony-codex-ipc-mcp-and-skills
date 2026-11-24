@@ -67,6 +67,70 @@
         "runtime_version": "0.2.0-beta.2.1"
       }
     },
+    "ubuntu24.04-arm64": {
+      "architecture_emulated": true,
+      "build_host": "Docker Desktop on Intel macOS",
+      "build_type": "Release",
+      "cmake": "3.31.6",
+      "compiler": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+      "sha256": "sha256:55a184a68c6ccb56dfc306ebfb7c9baa12a8e525140c4191f35a0e2f3dcd417a",
+      "target": "ubuntu24.04-arm64",
+      "verification": {
+        "original_emulated_fixture_suites": {
+          "failed": [
+            "mcp-integration",
+            "public-operation-tools"
+          ],
+          "observed_failure": "Deadline exceeded in Python fixture subprocess or MCP response during emulation.",
+          "passed": [
+            "beta-compatibility",
+            "beta-review-package",
+            "bounded-hashing",
+            "catalog-contract",
+            "client-adapters",
+            "distribution-compatibility",
+            "qualification-report",
+            "transport"
+          ]
+        },
+        "physical_target_executed": false,
+        "runtime_check": {
+          "bridge_sha256": "sha256:55a184a68c6ccb56dfc306ebfb7c9baa12a8e525140c4191f35a0e2f3dcd417a",
+          "catalog_sha256": "sha256:341aa83989c2d7ac60572fc60085f4e5aadfe3e26fc72e5c715e3c7db6beb5de",
+          "cli_version": "0.2.0-beta.2.1",
+          "connection_version": "0.2.0-beta.2.1",
+          "enabled_writes": 0,
+          "host": "Ubuntu 24.04 ARM64 userland emulated on Intel macOS",
+          "initialize_version": "0.2.0-beta.2.1",
+          "matching_catalog_tools": 744,
+          "native_exit_code": 0,
+          "network": "none",
+          "profile": "ubuntu24.04-arm64",
+          "qxctl_sha256": "sha256:c3f4870c0e409bd4eca6ee9dd1f3ee42d957989e3173ed776a8eb6dce73fe67b",
+          "registered_commands": 525,
+          "registry_digest": "sha256:4df440e217d055509e9543132685282ffe2858d779f6bbff19fbf667d38e66bf",
+          "returned_protocol": "symphony.sov.remote-template.v1",
+          "tool": "symphony_sov_remote_template"
+        },
+        "status": "emulated-runtime-candidate",
+        "supplemental_fixture_checks": {
+          "final_log_sha256": "sha256:22b779f8256e71f71faebb826d70171a6ac869b8237a95280ea065081a68f163",
+          "initial_supplemental_attempt": {
+            "mcp_integration_cases_passed": 20,
+            "public_operation_cases_passed": 9,
+            "public_operation_cases_timed_out": 1
+          },
+          "mcp_integration_cases_passed": 20,
+          "original_suites_affected": [
+            "mcp-integration",
+            "public-operation-tools"
+          ],
+          "public_operation_cases_passed": 10,
+          "source_and_deadlines_unchanged": true,
+          "target": "Same emulated Linux ARM64 bridge with native x86_64 Python fixture driver on the Linux guest filesystem"
+        }
+      }
+    },
     "ubuntu26.04-amd64": {
       "architecture_emulated": false,
       "build_host": "Docker Desktop on Intel macOS",

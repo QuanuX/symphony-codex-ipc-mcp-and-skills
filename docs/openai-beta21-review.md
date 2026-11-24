@@ -9,6 +9,10 @@ The plugin bundles both Symphony skills, the C++ MCP server, its build source, a
 3. Install the matching ZIP through the host’s supported local plugin installation path. Run the `symphony-setup` skill to select the retained qxctl and create the private read-only connection profile. The plugin starts its own `bin/symphony-mcp` with its own `catalog/tools.json`.
 4. Inspect `symphony_connection`, check the bridge version and selected registry, then call an individual read tool such as `symphony_sov_remote_template`. The catalogue includes 303 reads, 220 previews, 220 applies and the connection tool, covering 523 native contracts.
 
+## Ubuntu 24.04 ARM64 candidate
+
+The Ubuntu ARM64 candidate ran with the signed ARM64 qxctl in an offline emulated Ubuntu 24.04 environment. All three version checks returned `0.2.0-beta.2.1`, all 744 tool names matched the released catalogue, and the native target-configuration template read succeeded. Eight of ten original fixture suites passed. Two encountered test deadlines under emulation. See the [per-profile verification record](../packaging/beta21/bridge-builds.json) for the exact checks and supplemental results. Physical ARM64 execution is pending.
+
 ## Verify the package inputs
 
 The [signed release index](https://github.com/QuanuX/symphony-distribution/releases/download/v0.2.0-beta.2.1/release-index.json) has SHA-256 `69c89fef8a2ab2eed8e78b56168fcdbbf285989fedf698a43ea499cd2883e9f0`. Use the release verifier and certificate pins in the [installation guide](https://github.com/QuanuX/symphony-distribution/releases/download/v0.2.0-beta.2.1/BETA-INSTALL.md) to verify the index, the selected client carrier and qualification evidence. Extract the original `client.zip` from that carrier. The [release inputs](../packaging/beta21/release-inputs.json) record each platform’s carrier, qxctl, original bridge, catalogue and source lineage. The framework's original bridge reports `0.2.0-alpha.1`.
