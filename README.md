@@ -41,7 +41,7 @@ The helper selects and verifies the platform ZIP, registers the QuanuX Symphony 
 
 Open a **new Codex chat** and ask “Use `symphony_connection` to report the bridge version, then read the SOV target configuration template.” Expect `0.2.0-beta.2.1` and a native `symphony.sov.remote-template.v1` result. The catalogue contains 744 tools. Adding a profile with write permissions is a separate operator action.
 
-Each public ZIP passed a clean installation of the signed framework and local Codex plugin on its matching native host. The checks exercised the installed bridge directly over STDIO and through a new Codex conversation. Codex loaded both skills, discovered all 744 tool names and completed the read-only SOV target-configuration template call with native exit code 0.
+Each public ZIP passed a clean installation of the signed framework and local Codex plugin on its matching native host. The checks exercised the installed bridge directly over STDIO and through a new Codex conversation. The Codex installation contained both skills. The new conversation discovered all 744 tool names and completed the read-only SOV target-configuration template call with native exit code 0.
 
 | Release profile | Native installation and tool results |
 | --- | --- |
