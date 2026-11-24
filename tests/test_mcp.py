@@ -19,10 +19,11 @@ import time
 import unittest
 
 
-if len(sys.argv) < 2:
-    raise SystemExit("Pass the built symphony-mcp executable as the first argument")
+if len(sys.argv) not in (2, 3):
+    raise SystemExit("Usage: test_mcp.py EXECUTABLE [EXPECTED_RELEASE_VERSION]")
 MCP = str(Path(sys.argv[1]).resolve())
-PLUGIN_VERSION = json.loads((Path(__file__).resolve().parents[1] / "plugin.json").read_text())["version"]
+PLUGIN_VERSION = (sys.argv[2] if len(sys.argv) == 3 else
+                  json.loads((Path(__file__).resolve().parents[1] / "plugin.json").read_text())["version"])
 REGISTRY_PROTOCOL = "symphony.qxctl.command-registry.v1"
 PREFIX = "qxcmd:symphony:"
 
