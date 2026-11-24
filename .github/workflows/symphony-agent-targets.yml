@@ -7,7 +7,7 @@ on:
         description: Target family to verify
         type: choice
         default: all
-        options: [all, smoke, linux, apple, wsl, packages]
+        options: [all, smoke, linux, apple, wsl, packages, release]
       build_run:
         description: Prior successful native build run for package-only checks
         type: string
@@ -25,13 +25,13 @@ env:
 
 jobs:
   linux:
-    if: inputs.suite == 'all' || inputs.suite == 'smoke' || inputs.suite == 'linux'
+    if: inputs.suite == 'all' || inputs.suite == 'smoke' || inputs.suite == 'linux' || inputs.suite == 'release'
     name: Ubuntu ${{ matrix.version }} ${{ matrix.arch }}
     strategy:
       fail-fast: false
       max-parallel: 3
       matrix:
-        include: ${{ fromJSON(inputs.suite == 'smoke' && '[{"runner":"ubuntu-24.04","version":"24.04","arch":"x86_64"}]' || '[{"runner":"ubuntu-22.04","version":"22.04","arch":"x86_64"},{"runner":"ubuntu-24.04","version":"24.04","arch":"x86_64"},{"runner":"ubuntu-26.04","version":"26.04","arch":"x86_64","sanitizers":true},{"runner":"ubuntu-22.04-arm","version":"22.04","arch":"arm64"},{"runner":"ubuntu-24.04-arm","version":"24.04","arch":"arm64"},{"runner":"ubuntu-26.04-arm","version":"26.04","arch":"arm64","sanitizers":true}]') }}
+        include: ${{ fromJSON(inputs.suite == 'smoke' && '[{"runner":"ubuntu-24.04","version":"24.04","arch":"x86_64"}]' || inputs.suite == 'release' && '[{"runner":"ubuntu-26.04","version":"26.04","arch":"x86_64"},{"runner":"ubuntu-24.04","version":"24.04","arch":"x86_64"},{"runner":"ubuntu-24.04-arm","version":"24.04","arch":"arm64"}]' || '[{"runner":"ubuntu-22.04","version":"22.04","arch":"x86_64"},{"runner":"ubuntu-24.04","version":"24.04","arch":"x86_64"},{"runner":"ubuntu-26.04","version":"26.04","arch":"x86_64","sanitizers":true},{"runner":"ubuntu-22.04-arm","version":"22.04","arch":"arm64"},{"runner":"ubuntu-24.04-arm","version":"24.04","arch":"arm64"},{"runner":"ubuntu-26.04-arm","version":"26.04","arch":"arm64","sanitizers":true}]') }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 45
     steps:
@@ -71,12 +71,12 @@ jobs:
           if-no-files-found: error
 
   apple:
-    if: inputs.suite == 'all' || inputs.suite == 'smoke' || inputs.suite == 'apple'
+    if: inputs.suite == 'all' || inputs.suite == 'smoke' || inputs.suite == 'apple' || inputs.suite == 'release'
     name: Apple Silicon ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
-        runner: ${{ fromJSON(inputs.suite == 'smoke' && '["macos-15"]' || '["macos-15","macos-26"]') }}
+        runner: ${{ fromJSON((inputs.suite == 'smoke' || inputs.suite == 'release') && '["macos-15"]' || '["macos-15","macos-26"]') }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 25
     steps:
@@ -99,7 +99,7 @@ jobs:
             --expected-os macos --expected-arch arm64 --host-kind vm --macos-deployment-target 14.0
           "$RUNNER_TEMP/tools/bin/python" "$PLUGIN_ROOT/scripts/package_release.py" \
             --binary "$RUNNER_TEMP/result/build/symphony-mcp" \
-            --output "$RUNNER_TEMP/packages/symphony-0.2.0-alpha.1-macos-arm64-candidate.zip"
+            --output "$RUNNER_TEMP/packages/symphony-macos-arm64-candidate.zip"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:

@@ -22,6 +22,7 @@ import unittest
 if len(sys.argv) < 2:
     raise SystemExit("Pass the built symphony-mcp executable as the first argument")
 MCP = str(Path(sys.argv[1]).resolve())
+PLUGIN_VERSION = json.loads((Path(__file__).resolve().parents[1] / "plugin.json").read_text())["version"]
 REGISTRY_PROTOCOL = "symphony.qxctl.command-registry.v1"
 PREFIX = "qxcmd:symphony:"
 
@@ -231,6 +232,9 @@ class MCPIntegration(unittest.TestCase):
         session = self.session(initialized=False)
         self.assertIn("error", session.rpc("tools/list"))
         initial = session.initialize()
+        self.assertEqual(initial["serverInfo"]["version"], PLUGIN_VERSION)
+        cli_version = subprocess.check_output([MCP, "--version"], text=True).strip()
+        self.assertEqual(cli_version, "symphony-mcp " + PLUGIN_VERSION)
         self.assertEqual(initial["protocolVersion"], "2025-11-25")
         self.assertEqual(set(initial["capabilities"]), {"tools", "resources", "prompts"})
         session.send({"jsonrpc": "2.0", "method": "notifications/unrecognized", "params": {}})
@@ -245,6 +249,7 @@ class MCPIntegration(unittest.TestCase):
     def test_discovery_pagination_and_exact_describe(self):
         session = self.session()
         connection = self.content(session.tool("symphony_connection"))
+        self.assertEqual(connection["bridge_version"], PLUGIN_VERSION)
         self.assertEqual(connection["registered_commands"], len(RECORDS))
         self.assertEqual(connection["service_health"], "not_probed")
         first = self.content(session.tool("symphony_discover", {"limit": 2}))
