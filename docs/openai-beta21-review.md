@@ -11,7 +11,9 @@ The plugin bundles both Symphony skills, the C++ MCP server, its build source, a
 
 ## Ubuntu 24.04 ARM64 candidate
 
-The Ubuntu ARM64 candidate ran with the signed ARM64 qxctl in an offline emulated Ubuntu 24.04 environment. All three version checks returned `0.2.0-beta.2.1`, all 744 tool names matched the released catalogue, and the native target-configuration template read succeeded. Eight of ten original fixture suites passed. Two encountered test deadlines under emulation. See the [per-profile verification record](../packaging/beta21/bridge-builds.json) for the exact checks and supplemental results. Physical ARM64 execution is pending.
+The Ubuntu ARM64 candidate ran with the signed ARM64 qxctl in an offline emulated Ubuntu 24.04 environment. All three version checks returned `0.2.0-beta.2.1`, all 744 tool names matched the released catalogue, and the native target-configuration template read succeeded. Eight of ten original fixture suites passed. Two encountered test deadlines under emulation. See the [per-profile verification record](../packaging/beta21/bridge-builds.json) for the exact checks and supplemental results.
+
+The same published ZIP subsequently passed a clean installation on a native GitHub-hosted Ubuntu 24.04 ARM64 runner. A fresh Codex conversation discovered all 744 tools, reported bridge version `0.2.0-beta.2.1`, and completed the SOV target-configuration template read. [Native ARM64 installation and tool results](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/actions/runs/45461002602/job/138683233815).
 
 ## Verify the package inputs
 
