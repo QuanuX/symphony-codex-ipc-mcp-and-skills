@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 
 
 VERSION = '0.2.0-beta.2.1'
@@ -34,7 +35,31 @@ def download(url, path, sha256):
         assert hashlib.file_digest(stream, 'sha256').hexdigest() == sha256, path.name
 
 
+def check_installed_bridge(package, home, environment):
+    profile, = (home / '.codex/plugins/data/agent-plugins').glob('*/connection.json')
+    requests = [
+        ('initialize', {'protocolVersion': '2025-11-25', 'capabilities': {},
+                        'clientInfo': {'name': 'symphony-release-check', 'version': '1'}}),
+        ('tools/call', {'name': 'symphony_connection', 'arguments': {}}),
+        ('tools/call', {'name': 'symphony_sov_remote_template', 'arguments': {'operation': 'target_configure'}}),
+    ]
+    messages = [dict(jsonrpc='2.0', id=i, method=m, params=p) for i, (m, p) in enumerate(requests, 1)]
+    messages.insert(1, {'jsonrpc': '2.0', 'method': 'notifications/initialized', 'params': {}})
+    response = subprocess.run([package / 'bin/symphony-mcp', '--config', profile,
+                               '--tool-catalog', package / 'catalog/tools.json'], cwd=package, env=environment,
+                              input=''.join(json.dumps(msg) + '\n' for msg in messages),
+                              stdout=subprocess.PIPE, text=True, timeout=90, check=True)
+    init, conn, template = [json.loads(line)['result'] for line in response.stdout.splitlines()]
+    assert init['serverInfo']['version'] == VERSION and not conn.get('isError') and not template.get('isError')
+    assert conn['structuredContent']['bridge_version'] == VERSION
+    native = template['structuredContent']
+    assert native['exit_code'] == 0 and native['parsed_stdout']['protocol'] == 'symphony.sov.remote-template.v1'
+    print('Verified installed bridge, connection and native SOV template over STDIO.', flush=True)
+
+
 def check_chat(cli, home, environment, profile):
+    package = home / f'.codex/plugins/cache/quanux-symphony-beta/symphony/{VERSION}'
+    check_installed_bridge(package, home, environment)
     seq = 0
     proc = subprocess.Popen([cli, 'app-server', '--listen', 'stdio://'], cwd=home, env=environment,
                             stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
@@ -49,6 +74,9 @@ def check_chat(cli, home, environment, profile):
         send({'id': seq, 'method': method, 'params': params})
         for line in proc.stdout:
             msg = json.loads(line)
+            if msg.get('method') == 'mcpServer/startupStatus/updated':
+                status = msg['params']
+                print('MCP startup:', status.get('name'), status['status'], status.get('error'), flush=True)
             if msg.get('id') == seq:
                 if 'error' in msg:
                     raise RuntimeError(f'{method}: {msg["error"]}')
@@ -61,10 +89,17 @@ def check_chat(cli, home, environment, profile):
         send({'method': 'initialized', 'params': {}})
         thread = rpc('thread/start', {'ephemeral': True, 'cwd': str(home), 'sandbox': 'workspace-write',
                                      'approvalPolicy': 'on-request'})['thread']['id']
-        states = rpc('mcpServerStatus/list', {'threadId': thread, 'limit': 100})['data']
-        server, = [s for s in states if s.get('pluginId') == 'symphony@quanux-symphony-beta']
-        assert server['runtimeStatus'] == 'connected'
-        package = home / f'.codex/plugins/cache/quanux-symphony-beta/symphony/{VERSION}'
+        deadline = time.monotonic() + 45
+        while True:
+            states = rpc('mcpServerStatus/list', {'threadId': thread, 'limit': 100})['data']
+            servers = [s for s in states if s.get('pluginId') == 'symphony@quanux-symphony-beta']
+            state = servers[0]['runtimeStatus'] if len(servers) == 1 else None
+            if state == 'connected':
+                server, = servers
+                break
+            if state not in (None, 'notStarted', 'starting') or time.monotonic() >= deadline:
+                raise RuntimeError(f'Codex MCP startup returned {state!r}, with {len(servers)} matching plugins')
+            time.sleep(0.5)
         receipt = json.loads((package / 'package-profile.json').read_bytes())
         assert receipt['profile'] == profile and receipt['package_version'] == VERSION
         catalog = json.loads((package / 'catalog/tools.json').read_bytes())
@@ -99,8 +134,9 @@ def check_chat(cli, home, environment, profile):
 
 def main(profile):
     arch, sha256 = CODEX_ARTIFACTS[profile]
-    with tempfile.TemporaryDirectory(prefix='symphony-hosted-') as tmp:
-        root = Path(tmp)
+    # Keep the isolated home short enough for host Unix-domain sockets on macOS.
+    with tempfile.TemporaryDirectory(prefix='symph-', dir='/tmp') as tmp:
+        root = Path(tmp).resolve()
         home = root / 'home'
         home.mkdir(mode=0o700)
         (home / '.codex').mkdir(mode=0o700)

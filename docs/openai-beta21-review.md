@@ -9,9 +9,15 @@ The plugin bundles both Symphony skills, the C++ MCP server, its build source, a
 3. Install the matching ZIP through the host’s supported local plugin installation path. Run the `symphony-setup` skill to select the retained qxctl and create the private read-only connection profile. The plugin starts its own `bin/symphony-mcp` with its own `catalog/tools.json`.
 4. Inspect `symphony_connection`, check the bridge version and selected registry, then call an individual read tool such as `symphony_sov_remote_template`. The catalogue includes 303 reads, 220 previews, 220 applies and the connection tool, covering 523 native contracts.
 
+## Published ZIP verification
+
+All four published ZIPs passed clean framework and plugin installation on their native release hosts. The installed bridge answered directly over STDIO. A new Codex conversation resolved the read-only connection, discovered all 744 tools, and completed the SOV target-configuration template call with native exit code 0. [Published release verification](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/actions/runs/45471219840).
+
 ## Ubuntu 24.04 ARM64 candidate
 
-The Ubuntu ARM64 candidate ran with the signed ARM64 qxctl in an offline emulated Ubuntu 24.04 environment. All three version checks returned `0.2.0-beta.2.1`, all 744 tool names matched the released catalogue, and the native target-configuration template read succeeded. Eight of ten original fixture suites passed. Two encountered test deadlines under emulation. See the [per-profile verification record](../packaging/beta21/bridge-builds.json) for the exact checks and supplemental results. Physical ARM64 execution is pending.
+The Ubuntu ARM64 candidate ran with the signed ARM64 qxctl in an offline emulated Ubuntu 24.04 environment. All three version checks returned `0.2.0-beta.2.1`, all 744 tool names matched the released catalogue, and the native target-configuration template read succeeded. Eight of ten original fixture suites passed. Two encountered test deadlines under emulation. See the [per-profile verification record](../packaging/beta21/bridge-builds.json) for the exact checks and supplemental results.
+
+The same published ZIP subsequently passed a clean installation on a native GitHub-hosted Ubuntu 24.04 ARM64 runner. A fresh Codex conversation discovered all 744 tools, reported bridge version `0.2.0-beta.2.1`, and completed the SOV target-configuration template read. [Native ARM64 installation and tool results](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/actions/runs/45461002602/job/138683233815).
 
 ## Verify the package inputs
 
