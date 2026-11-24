@@ -103,6 +103,7 @@ def main(profile):
         root = Path(tmp)
         home = root / 'home'
         home.mkdir(mode=0o700)
+        (home / '.codex').mkdir(mode=0o700)
         archive = root / 'codex.tar.gz'
         stem = f'codex-{arch}'
         download(f'https://github.com/openai/codex/releases/download/rust-v{CODEX_VERSION}/{stem}.tar.gz', archive, sha256)
