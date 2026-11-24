@@ -7,7 +7,7 @@ on:
         description: Target family to verify
         type: choice
         default: all
-        options: [all, smoke, linux, apple, wsl, packages, release]
+        options: [all, smoke, linux, apple, wsl, packages, release, published-beta]
       build_run:
         description: Prior successful native build run for package-only checks
         type: string
@@ -188,3 +188,29 @@ jobs:
           path: evidence
           retention-days: 14
           if-no-files-found: error
+
+  published-beta:
+    if: inputs.suite == 'published-beta'
+    name: Published Codex plugin ${{ matrix.profile }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            profile: macos15-arm64
+          - runner: ubuntu-24.04
+            profile: ubuntu24.04-amd64
+          - runner: ubuntu-24.04-arm
+            profile: ubuntu24.04-arm64
+          - runner: ubuntu-26.04
+            profile: ubuntu26.04-amd64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - name: Install public framework and plugin, then inspect a new Codex conversation
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: python3 -I ci/check_codex_release.py "$PROFILE"

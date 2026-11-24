@@ -43,10 +43,12 @@ Open a **new Codex chat** and ask “Use `symphony_connection` to report the bri
 
 | Release profile | Plugin evidence |
 | --- | --- |
-| Ubuntu 26.04 AMD64 | Fresh framework installation, installed Codex plugin and native read in an Ubuntu container on an Intel Mac. |
-| Ubuntu 24.04 AMD64 | Rebuilt server executed the native fixture suites in an Ubuntu container. |
+| Ubuntu 26.04 AMD64 | Clean installation of the signed framework and published plugin on the native hosted runner. A new Codex chat resolved all 744 tools and read the native SOV template. |
+| Ubuntu 24.04 AMD64 | Clean native hosted installation, Codex connection, all 744 tool names and successful native template read. |
 | macOS 15 ARM64 | Apple Silicon cross-build with minimum deployment target 15.0. Runtime execution on Apple Silicon is pending. |
-| Ubuntu 24.04 ARM64 | Candidate tested with real ARM64 qxctl under emulation. The original two fixture deadline failures and supplemental passing tests are detailed in the [build record](packaging/beta21/bridge-builds.json). |
+| Ubuntu 24.04 ARM64 | The exact candidate ZIP passed a clean installation, all 744 tool names and the native read on an ARM64 hosted runner. The [build record](packaging/beta21/bridge-builds.json) retains its earlier emulation evidence. |
+
+[Native Codex acceptance results](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/actions/runs/45456474634) identify the exact hosts, installer and released packages used.
 
 For signed framework downloads and manual retention, use the [release installation guide](https://github.com/QuanuX/symphony-distribution/releases/download/v0.2.0-beta.2.1/BETA-INSTALL.md). The macOS framework package uses a detached publisher signature. For help, visit [QuanuX support](https://support.quanux.org).
 
