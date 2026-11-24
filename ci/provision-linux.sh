@@ -5,7 +5,7 @@ export DEBIAN_FRONTEND=noninteractive
 . /etc/os-release
 test "$ID" = ubuntu
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl gnupg make g++ libssl-dev binutils python3 python3-venv xz-utils
+apt-get install -y --no-install-recommends ca-certificates curl git gnupg make g++ libssl-dev binutils python3 python3-venv xz-utils
 case "$VERSION_ID" in
   26.04)
     apt-get install -y --no-install-recommends clang-21 libclang-rt-21-dev cmake

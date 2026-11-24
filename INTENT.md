@@ -1,7 +1,7 @@
 # Current intent
 
 Refresh the local Symphony MCP plugin and its bundled setup and administration
-skills for the published Symphony `0.2.0-beta.2` release.
+skills for the published Symphony `0.2.0-beta.2.1` release.
 
 ## Scope
 
@@ -9,15 +9,15 @@ skills for the published Symphony `0.2.0-beta.2` release.
   public review package.
 - Preserve the 523 native command contracts and their 744 exposed tools,
   including connection inspection.
-- Build profile-specific review packages with exact released binary, catalogue,
+- Build profile-specific review packages with the rebuilt bridge, exact released catalogue,
   source and checksum provenance.
-- Update installation and reviewer guidance to the published beta.2 profiles
+- Update installation and reviewer guidance to the published beta.2.1 profiles
   and private retention workflow.
 
 ## Boundaries
 
-Keep framework, package and bridge runtime versions distinct. Preserve the
-released bridge's actual runtime identity and native owner authorization.
+Align the package and rebuilt bridge with the published framework version. Record
+the original released bridge identity and preserve native owner authorization.
 Default connections to reads; retain operation-bound preview/apply and
 unknown-outcome recovery. User-designed engines, strategies, providers and
 cluster operation remain the user's choices. Add no telemetry or remote

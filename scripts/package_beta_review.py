@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build one beta.2 review ZIP from clean source and an exact released client.
+"""Build one beta.2.1 review ZIP from a released client and a pinned bridge build.
 
 This performs no download, installation, upload or submission. First verify the
 beta publisher signature and extract the selected client using the release guide.
@@ -15,7 +15,8 @@ import subprocess
 import package_release
 
 ROOT = Path(__file__).resolve().parents[1]
-INPUTS = 'packaging/beta2/release-inputs.json'
+INPUTS = 'packaging/beta21/release-inputs.json'
+BUILDS = 'packaging/beta21/bridge-builds.json'
 REPLACED = ('bin/symphony-mcp', 'catalog/tools.json', 'catalog/beta-source.json',
             'catalog/stamped-owner-delta.json')
 NATIVE_DIRS = ('src', 'include', 'third_party')
@@ -42,7 +43,7 @@ def regular_bytes(root, name):
     return path.read_bytes()
 
 
-def verify_inputs(root, released_client, profile, inputs):
+def verify_inputs(root, released_client, profile, inputs, bridge, builds):
     if profile not in inputs['profiles']:
         raise ValueError('Unsupported beta profile: ' + profile)
     pins = inputs['profiles'][profile]
@@ -55,13 +56,25 @@ def verify_inputs(root, released_client, profile, inputs):
         if digest(data) != pins['files'][name]:
             raise ValueError('Released input hash/profile mismatch: ' + name)
         replacements[name] = data
+    # The distro pins describe the original bridge. The review package has its
+    # own executable and build provenance, plus the same released catalogue.
+    if (inputs['release']['version'] != version or builds['runtime_version'] != version
+            or json.loads(regular_bytes(root, '.claude-plugin/plugin.json'))['version'] != version):
+        raise ValueError('Framework, plugin and review bridge versions differ')
+    if profile not in builds['profiles']:
+        raise ValueError('No verified bridge build for profile: ' + profile)
+    build = builds['profiles'][profile]
+    binary = regular_bytes(bridge.parent, bridge.name)
+    if digest(binary) != build['sha256'] or digest(binary) == pins['files']['bin/symphony-mcp']:
+        raise ValueError('Rebuilt bridge hash/profile mismatch')
     native_names = {p.relative_to(root).as_posix() for directory in NATIVE_DIRS
                     for p in (root / directory).rglob('*') if p.is_file() or p.is_symlink()}
-    if native_names != set(inputs['native_files']):
-        raise ValueError('Native source file set differs from the released bridge')
-    for name, expected in inputs['native_files'].items():
+    if native_names | {'CMakeLists.txt'} != set(builds['build_source']['files']):
+        raise ValueError('Native source file set differs from the rebuilt bridge')
+    for name, expected in builds['build_source']['files'].items():
         if digest(regular_bytes(root, name)) != expected:
-            raise ValueError('Native source differs from the released bridge: ' + name)
+            raise ValueError('Native source differs from the rebuilt bridge: ' + name)
+    replacements['bin/symphony-mcp'] = binary
     source = json.loads(replacements['catalog/beta-source.json'])
     catalog = json.loads(replacements['catalog/tools.json'])
     if (source['core'] != inputs['native_source']
@@ -74,7 +87,7 @@ def verify_inputs(root, released_client, profile, inputs):
     counts = Counter(entry['binding']['kind'] for entry in catalog['entries'])
     contracts = {entry['binding']['command_id'] for entry in catalog['entries']}
     if counts != {'read': 303, 'preview': 220, 'apply': 220} or len(contracts) != 523:
-        raise ValueError('Unexpected beta.2 tool/contract census')
+        raise ValueError('Unexpected tool/contract census')
     return replacements, source
 
 
@@ -92,8 +105,8 @@ def source_identity(root, require_clean=True):
             'clean': not dirty}
 
 
-def build_entries(root, released_client, profile, inputs, identity):
-    replacements, source = verify_inputs(root, released_client, profile, inputs)
+def build_entries(root, released_client, profile, inputs, identity, bridge, builds):
+    replacements, source = verify_inputs(root, released_client, profile, inputs, bridge, builds)
     if not identity.get('clean'):
         raise ValueError('Final packages require clean review source')
     paths = git(root, 'ls-files', '-z').split('\0')
@@ -116,22 +129,23 @@ def build_entries(root, released_client, profile, inputs, identity):
             raise ValueError('Missing required review package file: ' + required)
     pins = inputs['profiles'][profile]
     metadata = {
-        'schema': 'symphony.beta-review-package.v1',
+        'schema': 'symphony.beta-review-package.v2',
         'profile': profile,
         'package_version': inputs['package_version'],
-        'bridge_runtime_version': inputs['bridge_runtime_version'],
+        'bridge_runtime_version': builds['runtime_version'],
+        'original_bridge_runtime_version': inputs['bridge_runtime_version'],
         'release': inputs['release'],
         'review_source': identity,
+        'bridge_build': builds['profiles'][profile],
+        'bridge_source': builds['build_source'],
         'native_source': inputs['native_source'],
         'released_client_source': inputs['released_client_source'],
         'released_inputs': pins,
         'qxctl_build': source['qxctl_build'],
         'tool_counts': {'native_contracts': 523, 'read': 303, 'preview': 220,
                         'apply': 220, 'connection': 1, 'total': 744},
-        'constraints': {'fresh_beta2_prefix_required': True,
-                        'beta1_in_place_upgrade_qualified': False,
-                        'runtime_binary_rebuilt_for_this_refresh': False,
-                        'native_sources_identical_to_released_bridge': True,
+        'constraints': {'fresh_prefix_required': True,
+                        'runtime_binary_rebuilt_for_this_refresh': True,
                         'openai_submission_or_approval_claimed': False},
         'files': {name: digest(data) for name, data in sorted(entries.items())},
     }
@@ -146,24 +160,27 @@ def main():
     parser.add_argument('--profile', required=True)
     parser.add_argument('--released-client', required=True, type=Path,
                         help='Extracted verified client root containing bin/ and catalog/')
+    parser.add_argument('--bridge', required=True, type=Path,
+                        help='Verified bridge executable from the selected profile build')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--validate-only', action='store_true',
                         help='Check released inputs/native sources without writing a package; permits uncommitted review edits')
     args = parser.parse_args()
     try:
         inputs = json.loads(regular_bytes(ROOT, INPUTS))
-        verify_inputs(ROOT, args.released_client, args.profile, inputs)
+        builds = json.loads(regular_bytes(ROOT, BUILDS))
         identity = source_identity(ROOT, require_clean=not args.validate_only)
         if args.validate_only:
+            verify_inputs(ROOT, args.released_client, args.profile, inputs, args.bridge, builds)
             print(json.dumps({'profile': args.profile, 'inputs_verified': True,
                               'source_clean': identity['clean'], 'package_created': False}, indent=2))
             return
         if args.output is None:
             parser.error('--output is required when creating a package')
-        entries = build_entries(ROOT, args.released_client, args.profile, inputs, identity)
+        entries = build_entries(ROOT, args.released_client, args.profile, inputs, identity, args.bridge, builds)
         result = package_release.write_archive(args.output, entries)
         result.update({'profile': args.profile, 'package_version': inputs['package_version'],
-                       'bridge_runtime_version': inputs['bridge_runtime_version'],
+                       'bridge_runtime_version': builds['runtime_version'],
                        'review_source': identity})
         print(json.dumps(result, indent=2))
     except (KeyError, OSError, ValueError, subprocess.CalledProcessError) as error:

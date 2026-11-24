@@ -1,0 +1,100 @@
+{
+  "build_source": {
+    "commit": "8e661c598be0f111795643c6556f8a796a1989ea",
+    "files": {
+      "CMakeLists.txt": "sha256:6368fd04a8c059001ac591a5733cc5dd7825f7409c78e51a04dd25008fd87dde",
+      "include/symphony/sha256.hpp": "sha256:a0588304e35105b0715bb138a28b8e6cdd0e398fcabd93b3f2a0d95d271fe733",
+      "include/symphony/transport.hpp": "sha256:af5835c5a4dd65d0ef35c05a57b5bf9847134b80439d19dbd22a6588942d9bb9",
+      "src/main.cpp": "sha256:c0a60c6f931219a16af4db95e06710b582563b1e5fadd5f290fdf615f37ea482",
+      "src/transport.cpp": "sha256:d475ed9d3ed2e07de098edc4fdb3187ac9818dc588970bb8ab21ebc01c22a246",
+      "third_party/NOTICE.md": "sha256:b66d1fb4ddff251065836921c072289efbf0c632a46e9b846319a7ef6064a700",
+      "third_party/nlohmann/LICENSE.MIT": "sha256:c0d068392ea65358b798b8c165103560f06e9e3b38c4ab4e2d8810a7b931af86",
+      "third_party/nlohmann/json.hpp": "sha256:aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63"
+    },
+    "repository": "QuanuX/symphony-codex-ipc-mcp-and-skills",
+    "tree": "28ae7805181e14c1c83c41e2a1acbcc121c05710"
+  },
+  "profiles": {
+    "macos15-arm64": {
+      "build_arguments": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_OSX_ARCHITECTURES=arm64",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=15.0",
+        "-DBUILD_TESTING=OFF"
+      ],
+      "build_host": "macOS Intel x86_64",
+      "build_type": "Release",
+      "cmake": "4.4.3",
+      "compiler": "Apple clang 21.0.0 (clang-2100.1.1.101)",
+      "sdk": "macOS 26.5",
+      "sha256": "sha256:f0276112e95c056942b912c4c3fc1604e2aa3e9481544b168fbb2b97c9cf3f95",
+      "target": "macOS 15 arm64",
+      "verification": {
+        "embedded_version": "0.2.0-beta.2.1",
+        "executed_on_target": false,
+        "linked_libraries": [
+          "/usr/lib/libc++.1.dylib",
+          "/usr/lib/libSystem.B.dylib"
+        ],
+        "macho_arch": "arm64",
+        "minimum_macos": "15.0"
+      }
+    },
+    "ubuntu24.04-amd64": {
+      "architecture_emulated": false,
+      "build_host": "Docker Desktop on Intel macOS",
+      "build_type": "Release",
+      "cmake": "3.31.6",
+      "compiler": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+      "sha256": "sha256:466997a5dfecc20c8611e1e6699b2a84a7d114d18a1c88cc26681a4699bb54e7",
+      "target": "ubuntu24.04-amd64",
+      "verification": {
+        "architecture": "x86_64",
+        "environment": "Ubuntu 24.04 container",
+        "executed_in_target_userland": true,
+        "fixture_suites": [
+          "beta-compatibility",
+          "beta-review-package",
+          "bounded-hashing",
+          "catalog-contract",
+          "client-adapters",
+          "distribution-compatibility",
+          "mcp-integration",
+          "public-operation-tools",
+          "qualification-report",
+          "transport"
+        ],
+        "runtime_version": "0.2.0-beta.2.1"
+      }
+    },
+    "ubuntu26.04-amd64": {
+      "architecture_emulated": false,
+      "build_host": "Docker Desktop on Intel macOS",
+      "build_type": "Release",
+      "cmake": "4.2.3",
+      "compiler": "Ubuntu clang version 21.1.8 (6ubuntu1)",
+      "sha256": "sha256:ba4c5c141dd345836667c24ec0099ae74a126f65e1d5e3487719adde3560ef10",
+      "target": "ubuntu26.04-amd64",
+      "verification": {
+        "architecture": "x86_64",
+        "environment": "Ubuntu 26.04 container",
+        "executed_in_target_userland": true,
+        "fixture_suites": [
+          "beta-compatibility",
+          "beta-review-package",
+          "bounded-hashing",
+          "catalog-contract",
+          "client-adapters",
+          "distribution-compatibility",
+          "mcp-integration",
+          "public-operation-tools",
+          "qualification-report",
+          "transport"
+        ],
+        "runtime_version": "0.2.0-beta.2.1"
+      }
+    }
+  },
+  "runtime_version": "0.2.0-beta.2.1",
+  "schema": "symphony.review-bridge-builds.v1"
+}

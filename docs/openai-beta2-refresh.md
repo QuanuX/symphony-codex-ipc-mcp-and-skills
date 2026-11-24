@@ -110,6 +110,8 @@ building it does not establish publication in either registry.
 
 ## Reproduce the review package
 
+Use the [historical beta.2 checkout](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/tree/28ef2f2) for the following commands.
+
 First verify and extract the exact released client for the selected profile
 using the release guide. The checked-in
 [input pins](../packaging/beta2/release-inputs.json) bind its carrier URL, binary,

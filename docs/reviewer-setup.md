@@ -1,18 +1,18 @@
 # Disposable reviewer setup
 
-For the beta.2 refresh, follow [the exact released profile and retention
-workflow](openai-beta2-refresh.md) and select its matching qxctl, bridge and
-catalogue. The released native build source is
-`bae2e817120467561ae051c1b08cf61be3436bac`. Do not substitute the historical
+For the beta.2.1 refresh, follow [the exact released profile and retention
+workflow](openai-beta21-review.md) and select the retained qxctl, packaged bridge and
+catalogue. The signed qxctl and catalogue use Symphony core source
+`f828e558cae86ffb860a4fd3b55c6e0d0623d1c9`. The ZIP records the new server’s source in `bridge_source`. Do not substitute the historical
 review executable or mix Ubuntu AMD64 cohorts. The plugin does not install
 qxctl or native engines; the separate Symphony distribution supplies them.
 
 The original October review record used Symphony source
 `53d6a5a3bbdfac209b5885a690a8847f0144759e`, Go 1.26.5 and its declared `go.work`.
 Keep those results scoped to their original artifacts. The scenarios below are
-reusable review inputs; executing them on beta.2 requires recording the new
+reusable review inputs; executing them on beta.2.1 requires recording the new
 exact package/profile and observed results. The previous outcome is not a new
-beta.2 qualification.
+beta.2.1 qualification.
 
 On a supported local POSIX host with Python 3.11 or newer:
 

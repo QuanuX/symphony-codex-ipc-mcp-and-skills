@@ -8,11 +8,11 @@ The socket belongs to this bridge. It is not a generic pre-existing Symphony adm
 
 Client registration examples are provided by the package's adapter generator. A missing binary, configuration, socket, or qxctl installation is setup work. Preserve an existing configuration and report the exact missing input; do not invent an installation from repository contents. Never collect credentials in chat.
 
-For the public beta.2, follow [release-specific setup](../../../docs/openai-beta2-refresh.md)
-and select a matching retained qxctl/client pair. Keep the exact operating-system
+For the public beta.2.1, follow [release-specific setup](../../../docs/openai-beta21-review.md)
+and select the retained qxctl with the bridge in the matching plugin ZIP. Keep the exact operating-system
 cohort, binary and observed-registry identities with its catalogue. Ubuntu 24.04
 and 26.04 AMD64 builds are distinct even though they share an architecture.
-Preserve the new private prefix and retention boundary for beta.2; an older
+Preserve the new private prefix and retention boundary for beta.2.1; an older
 installation is not upgraded by replacing a bridge profile or catalogue.
 
 For a Windows-host client, use the package's `adapters/codex/windows-wsl2.toml.example` or `adapters/generic/windows-wsl2.json.example` and `docs/windows-wsl2.md`. Select the distribution, Linux user and Linux paths explicitly. A Windows client launches the Linux binary through `wsl.exe`; a POSIX executable path alone is insufficient.
