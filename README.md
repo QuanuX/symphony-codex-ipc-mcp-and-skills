@@ -41,14 +41,16 @@ The helper selects and verifies the platform ZIP, registers the QuanuX Symphony 
 
 Open a **new Codex chat** and ask “Use `symphony_connection` to report the bridge version, then read the SOV target configuration template.” Expect `0.2.0-beta.2.1` and a native `symphony.sov.remote-template.v1` result. The catalogue contains 744 tools. Adding a profile with write permissions is a separate operator action.
 
-| Release profile | Plugin evidence |
-| --- | --- |
-| Ubuntu 26.04 AMD64 | Clean installation of the signed framework and published plugin on the native hosted runner. A new Codex chat resolved all 744 tools and read the native SOV template. |
-| Ubuntu 24.04 AMD64 | Clean native hosted installation, Codex connection, all 744 tool names and successful native template read. |
-| macOS 15 ARM64 | Apple Silicon cross-build with minimum deployment target 15.0. Runtime execution on Apple Silicon is pending. |
-| Ubuntu 24.04 ARM64 | The exact candidate ZIP passed a clean installation, all 744 tool names and the native read on an ARM64 hosted runner. The [build record](packaging/beta21/bridge-builds.json) retains its earlier emulation evidence. |
+Each public ZIP passed a clean installation of the signed framework and local Codex plugin on its matching native host. The checks exercised the installed bridge directly over STDIO and through a new Codex conversation. Codex loaded both skills, discovered all 744 tool names and completed the read-only SOV target-configuration template call with native exit code 0.
 
-[Native Codex acceptance results](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/actions/runs/45456474634) identify the exact hosts, installer and released packages used.
+| Release profile | Native installation and tool results |
+| --- | --- |
+| macOS 15 Apple Silicon | [GitHub-hosted verification](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/actions/runs/45471219840/job/138719377798) |
+| Ubuntu 24.04 AMD64 | [GitHub-hosted verification](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/actions/runs/45471219840/job/138719377399) |
+| Ubuntu 24.04 ARM64 | [GitHub-hosted verification](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/actions/runs/45471219840/job/138719377872) |
+| Ubuntu 26.04 AMD64 | [GitHub-hosted verification](https://github.com/QuanuX/symphony-codex-ipc-mcp-and-skills/actions/runs/45471219840/job/138719377923) |
+
+The Ubuntu 24.04 ARM64 download retains its original candidate filename and checksum. Its earlier emulation tests are in the [build record](packaging/beta21/bridge-builds.json).
 
 For signed framework downloads and manual retention, use the [release installation guide](https://github.com/QuanuX/symphony-distribution/releases/download/v0.2.0-beta.2.1/BETA-INSTALL.md). The macOS framework package uses a detached publisher signature. For help, visit [QuanuX support](https://support.quanux.org).
 
